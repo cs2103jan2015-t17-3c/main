@@ -10,14 +10,16 @@ UI::UI(void) {
 UI::~UI(void) {
 }
 void UI::readMessage(){
-	Logic logic;
 	string command;
 	string message;
-	cout << MESSAGE_WELCOME<<MESSAGE_DEFAULT;
-	getline(cin, command);
-	cout << endl;
-	message=logic.receiveCommand(command);
-	printToUser(message);
+	cout << MESSAGE_WELCOME;
+	while (true){
+		cout << MESSAGE_DEFAULT;
+		getline(cin, command);
+		cout << endl;
+		message = logic.receiveCommand(command);
+		printToUser(message);
+	}
 }
 
 void UI::printToUser(string message){

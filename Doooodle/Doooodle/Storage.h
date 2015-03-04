@@ -10,12 +10,12 @@
 
 using namespace std;
 
-typedef struct Task{
+struct Task{
 	string taskDetails;
 	string startTime;
 	string endTime;
 };
-typedef struct History{
+struct History{
 	string requestTime;
 	Task commandDetails;
 };

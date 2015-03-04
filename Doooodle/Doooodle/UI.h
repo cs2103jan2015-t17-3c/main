@@ -12,6 +12,7 @@ class UI {
 
 private:
 	
+	Logic logic;
 	static const string MESSAGE_ADD;
 	static const string MESSAGE_DEFAULT;
 	static const string MESSAGE_WELCOME;
