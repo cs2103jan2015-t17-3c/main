@@ -69,6 +69,25 @@ string Parser::getStartDetail(string input){
 	}
 	return task;
 }
+
 string Parser::getEndDetail(string input){
-	return "2:00 pm";
+	size_t positionA = 0;
+	size_t positionB = 0;
+	string task;
+	for (int i = 0; i < NO_OF_TIME_INDICATORS; i++){
+		positionA = input.find(TIME_INDICATORS[i]);
+		if (positionA != string::npos && TIME_INDICATORS[i] != " from "){
+			positionA = input.find(DELIMITERS, positionA + 1);
+			positionA++;
+			positionB = input.find(DELIMITERS, positionA);
+			break;
+		}
+	}
+	if (positionB == 0){
+		task = "";
+	}
+	else{
+		task = input.substr(positionA, positionB - positionA);
+	}
+	return task;
 }
