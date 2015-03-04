@@ -15,8 +15,8 @@ public:
 	string timeEnd;
 	string itemToDelete;
 
-	CommandDetails();
-	~CommandDetails();
+	CommandDetails(void);
+	~CommandDetails(void);
 };
 
 #endif
