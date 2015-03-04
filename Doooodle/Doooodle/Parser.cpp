@@ -2,6 +2,13 @@
 
 const string Parser::DELIMITERS = " ";
 
+Parser::Parser(){
+
+}
+Parser::~Parser(){
+
+}
+
 void Parser::processCommand(string input,string& commandType,string& userTask,
 	string& startDetail, string& endDetail){
 	commandType = getCommandType(input);
@@ -22,6 +29,12 @@ string Parser::getCommandType(string input){
 	return command;
 }
 
-string getUserTask(string);
-string getStartDetail(string);
-string getEndDetail(string);
+string Parser::getUserTask(string input){
+	return "Task";
+}
+string Parser::getStartDetail(string input){
+	return "12:00 pm";
+}
+string Parser::getEndDetail(string input){
+	return "2:00 pm";
+}

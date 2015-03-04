@@ -2,7 +2,6 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-#include "standardForm.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -20,8 +19,8 @@ private:
 	string getStartDetail(string);
 	string getEndDetail(string);
 
+
 public:
-	
 	Parser();
 	~Parser();
 	void processCommand(string,string&,string&,string&,string&);
