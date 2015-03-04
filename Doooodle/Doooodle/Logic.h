@@ -20,8 +20,8 @@ public:
 	string receiveCommand(string);
 
 private:
-//	Storage storage;
-//	Parser parser;
+	Storage storage;
+	Parser parser;
 	vector<CommandDetails*> commandDetails;
 
 	enum COMMAND_TYPE {

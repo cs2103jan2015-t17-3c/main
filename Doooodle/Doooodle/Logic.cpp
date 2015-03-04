@@ -15,7 +15,7 @@ string Logic::receiveCommand(string userInput) {
 string Logic::executeLogicCore(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	//parser.processCommand(userInput, &commandDetails[indexToUpdate].commandType, &commandDetails[indexToUpdate].task, &commandDetails[indexToUpdate].timeStart ,&commandDetails[indexToUpdate].timeEnd, &commandDetails[indexToUpdate].itemToDelete);
-	//string displayMessage = storage.processCommand(commandDetails[indexToUpdate].commandType, commandDetails[indexToUpdate].task, commandDetails[indexToUpdate].timeStart ,commandDetails[indexToUpdate].timeEnd, commandDetails[indexToUpdate].itemToDelete); 
-	//return displayMessage;
+	parser.processCommand(userInput, &commandDetails[indexToUpdate].commandType, &commandDetails[indexToUpdate].task, &commandDetails[indexToUpdate].timeStart ,&commandDetails[indexToUpdate].timeEnd, &commandDetails[indexToUpdate].itemToDelete);
+	string displayMessage = storage.processCommand(commandDetails[indexToUpdate].commandType, commandDetails[indexToUpdate].task, commandDetails[indexToUpdate].timeStart ,commandDetails[indexToUpdate].timeEnd, commandDetails[indexToUpdate].itemToDelete); 
+	return displayMessage;
 }
