@@ -14,6 +14,9 @@ class Parser {
 
 private:
 	static const string DELIMITERS;
+	static const string TIME_INDICATORS[];
+	static const int NO_OF_TIME_INDICATORS;
+
 	string getCommandType(string);
 	string getUserTask(string);
 	string getStartDetail(string);

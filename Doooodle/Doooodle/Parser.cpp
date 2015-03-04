@@ -1,7 +1,8 @@
 #include "Parser.h"
 
 const string Parser::DELIMITERS = " ";
-
+const string Parser::TIME_INDICATORS[10] = { "from","by" };
+const int Parser::NO_OF_TIME_INDICATORS = 2;
 Parser::Parser(){
 
 }
@@ -23,14 +24,26 @@ string Parser::getCommandType(string input){
 	size_t positionA=0;
 	size_t positionB=0;
 	string command;
-	positionB = input.find_first_of(DELIMITERS);
+	positionA = input.find_first_of(DELIMITERS);
+	for (int i = 0; i < NO_OF_TIME_INDICATORS; i++){
+		positionB = input.find(TIME_INDICATORS[i], positionA + 1);
+		if (positionB != string::npos){
+			break;
+		}
+	}
 	command = input.substr(positionA, positionB - positionA);
 
 	return command;
 }
 
 string Parser::getUserTask(string input){
-	return "Task";
+	size_t positionA = 0;
+	size_t positionB = 0;
+	string task;
+	positionB = input.find_first_of(DELIMITERS);
+	task = input.substr(positionA, positionB - positionA);
+
+	return task;
 }
 string Parser::getStartDetail(string input){
 	return "12:00 pm";
