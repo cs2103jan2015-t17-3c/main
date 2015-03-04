@@ -2,7 +2,7 @@
 
 const string Parser::DELIMITERS = " ";
 const int Parser::NO_OF_TIME_INDICATORS = 5;
-const string Parser::TIME_INDICATORS[NO_OF_TIME_INDICATORS] = { "from","by" ,"at","on","in"};
+const string Parser::TIME_INDICATORS[NO_OF_TIME_INDICATORS] = { " from "," by "," at "," on "," in "};
 
 Parser::Parser(){
 
@@ -42,7 +42,7 @@ string Parser::getUserTask(string input){
 			break;
 		}
 	}
-	task = input.substr(positionA, positionB - positionA-1);
+	task = input.substr(positionA, positionB - positionA);
 
 	return task;
 }
@@ -54,16 +54,19 @@ string Parser::getStartDetail(string input){
 	string task;
 	for (int i = 0; i < NO_OF_TIME_INDICATORS; i++){
 		positionA = input.find(TIME_INDICATORS[i]);
-		if (positionA != string::npos && i==0){
+		if (positionA != string::npos && TIME_INDICATORS[i]!=" by "){
 			positionA = input.find(DELIMITERS, positionA + 1);
 			positionA++;
 			positionB = input.find(DELIMITERS, positionA);
 			break;
 		}
 	}
-	
-	task = input.substr(positionA, positionB - positionA - 1);
-
+	if (positionB==0){
+		task = "";
+	}
+	else{
+		task = input.substr(positionA, positionB - positionA);
+	}
 	return task;
 }
 string Parser::getEndDetail(string input){
