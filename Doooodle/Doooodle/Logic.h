@@ -3,6 +3,7 @@
 #define LOGIC_H_
 
 #include <iostream>
+#include <vector>
 #include <ctime>
 #include <chrono>
 #include "Parser.h"
@@ -19,10 +20,9 @@ public:
 	string receiveCommand(string);
 
 private:
-
-//	Storage storage;
-//	Parser parser;
-	CommandDetails commandDetails;
+	Storage storage;
+	Parser parser;
+	vector<CommandDetails*> commandDetails;
 
 	enum COMMAND_TYPE {
 		ADD, DELETE, EDIT, SEARCH, HELP, ARCHIVE 
