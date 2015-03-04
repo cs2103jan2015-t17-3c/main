@@ -27,6 +27,9 @@
     <ClCompile Include="Storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommandDetails.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logic.h">
@@ -41,7 +44,11 @@
     <ClInclude Include="UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="standardForm.h">
+=======
+    <ClInclude Include="CommandDetails.h">
+>>>>>>> e73fca3ce429af75f7cd43cd732c87192a554f54
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
