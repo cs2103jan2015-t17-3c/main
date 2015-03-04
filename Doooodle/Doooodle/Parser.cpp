@@ -1,8 +1,8 @@
 #include "Parser.h"
 
 const string Parser::DELIMITERS = " ";
-const int Parser::NO_OF_TIME_INDICATORS = 5;
-const string Parser::TIME_INDICATORS[NO_OF_TIME_INDICATORS] = { " from "," by "," at "," on "," in "};
+const int Parser::NO_OF_TIME_INDICATORS = 6;
+const string Parser::TIME_INDICATORS[NO_OF_TIME_INDICATORS] = { " from "," by "," at "," on "," in ", " to "};
 
 Parser::Parser(){
 

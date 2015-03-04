@@ -46,5 +46,22 @@ namespace TestLibrary
 			Assert::AreEqual(expected, C);
 		}
 
+		TEST_METHOD(testGetEndDetail1)
+		{
+			Parser parser;
+			string A, B, C, D;
+			parser.processCommand("add submit work by today", A, B, C, D);
+			string expected = "today";
+			Assert::AreEqual(expected, D);
+		}
+
+		TEST_METHOD(testGetEndDetail2)
+		{
+			Parser parser;
+			string A, B, C, D;
+			parser.processCommand("add meeting with bob from 14:00 to 15:00", A, B, C, D);
+			string expected = "15:00";
+			Assert::AreEqual(expected, D);
+		}
 	};
 }
