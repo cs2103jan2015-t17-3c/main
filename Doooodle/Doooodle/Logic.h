@@ -6,6 +6,7 @@
 #include <vector>
 #include <ctime>
 #include <chrono>
+#include <string>
 #include "Parser.h"
 #include "Storage.h"
 #include "CommandDetails.h"
@@ -24,12 +25,12 @@ private:
 	Parser parser;
 	vector<CommandDetails*> commandDetails;
 
-	enum COMMAND_TYPE {
-		ADD, DELETE, EDIT, SEARCH, HELP, ARCHIVE 
+	enum TASK_TYPE {
+		DEADLINE, FLOATING, NORMAL 
 	};
 
 	string executeLogicCore(string);
-	COMMAND_TYPE getCommandType(string);
+	TASK_TYPE determineSpecificTaskType(int);
 
 };
 
