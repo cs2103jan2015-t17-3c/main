@@ -20,11 +20,14 @@ string Logic::executeLogicCore(string userInput) {
 	string displayMessage;
 	switch(taskType) {
 	case NORMAL:
-		displayMessage = storage.addNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd);
+		normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
+		break;
 	case DEADLINE:
 		displayMessage = storage.addDueTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeEnd);
+		break;
 	case FLOATING:
 		displayMessage = storage.addFloatTask(commandDetails[indexToUpdate]->task);
+		break;
 	} 
 	return displayMessage;
 }

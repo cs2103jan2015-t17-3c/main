@@ -4,12 +4,11 @@
 
 #include <iostream>
 #include <vector>
-#include <ctime>
-#include <chrono>
 #include <string>
 #include "Parser.h"
 #include "Storage.h"
 #include "CommandDetails.h"
+#include "NormalTask.h"
 
 using namespace std;
 
@@ -23,6 +22,7 @@ public:
 private:
 	Storage storage;
 	Parser parser;
+	NormalTask normTask;
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
@@ -31,7 +31,6 @@ private:
 
 	string executeLogicCore(string);
 	TASK_TYPE determineSpecificTaskType(int);
-
 };
 
 
