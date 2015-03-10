@@ -70,11 +70,17 @@ string Storage::addFloatTask(string task){
 
 vector<string> Storage::retrieveTopFive(){
 	vector<string> TopFive;
+	
 	for (int i = 0; i < 5; i++){
-		Task dummy = activeTask[i];
-		ostringstream oneTask;
-		oneTask << dummy.taskDetails << " " << dummy.startTime << " " << dummy.endTime << endl;
-		TopFive.push_back(oneTask.str());
+		/*if (i < activeTask.size()) {
+			Task dummy = activeTask[i];
+			ostringstream oneTask;
+			oneTask << dummy.taskDetails << " " << dummy.startTime << " " << dummy.endTime << endl;
+			TopFive.push_back(oneTask.str());
+		}
+		else*/ {
+			TopFive.push_back("");
+		}
 	}
 	return TopFive;
 }
