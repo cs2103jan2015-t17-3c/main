@@ -7,6 +7,10 @@ Logic::Logic(void) {
 Logic::~Logic(void) {
 }
 
+vector<string> Logic::displayTopFive(void) {
+	return storage.retrieveTopFive();
+}
+
 string Logic::receiveCommand(string userInput) {
 	string displayMessage = executeLogicCore(userInput);
 	return displayMessage;
@@ -15,7 +19,7 @@ string Logic::receiveCommand(string userInput) {
 string Logic::executeLogicCore(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd);
+	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd,);
 	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
 	string displayMessageToUI;
 	switch(taskType) {

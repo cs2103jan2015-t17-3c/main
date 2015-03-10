@@ -20,6 +20,7 @@ public:
 	Logic(void);
 	~Logic(void);
 	string receiveCommand(string);
+	vector<string> displayTopFive(void);
 
 private:
 	Storage storage;
