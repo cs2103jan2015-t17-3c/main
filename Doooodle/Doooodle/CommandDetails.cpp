@@ -4,9 +4,10 @@
 CommandDetails::CommandDetails(void) {
 	commandType = "";
 	task = "";
-	timeStart = "";
-	timeEnd = "";
-	itemToDelete = "";
+	dateStart = boost::gregorian::day_clock::local_day();
+	dateEnd = boost::gregorian::day_clock::local_day();
+	timeStart = boost::posix_time::not_a_date_time;
+	timeEnd = boost::posix_time::not_a_date_time;
 }
 
 CommandDetails::~CommandDetails(void) {
