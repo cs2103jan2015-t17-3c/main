@@ -10,6 +10,8 @@
     <ClCompile Include="NormalTask.cpp" />
     <ClCompile Include="DeadlineTask.cpp" />
     <ClCompile Include="FloatingTask.cpp" />
+    <ClCompile Include="DateParser.cpp" />
+    <ClCompile Include="TimeParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
@@ -21,5 +23,7 @@
     <ClInclude Include="NormalTask.h" />
     <ClInclude Include="DeadlineTask.h" />
     <ClInclude Include="FloatingTask.h" />
+    <ClInclude Include="DateParser.h" />
+    <ClInclude Include="TimeParser.h" />
   </ItemGroup>
 </Project>
