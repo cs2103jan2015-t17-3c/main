@@ -26,7 +26,7 @@ string Logic::executeLogicCore(string userInput) {
 		displayMessageToUI = deadlineTask.loadDeadlineTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeEnd, storage);
 		break;
 	case FLOATING:
-		displayMessageToUI = storage.addFloatTask(commandDetails[indexToUpdate]->task);
+		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
 		break;
 	} 
 	return displayMessageToUI;

@@ -10,6 +10,7 @@
 #include "CommandDetails.h"
 #include "NormalTask.h"
 #include "DeadlineTask.h"
+#include "FloatingTask.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ private:
 	Parser parser;
 	NormalTask normTask;
 	DeadlineTask deadlineTask;
+	FloatingTask floatingTask;
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {

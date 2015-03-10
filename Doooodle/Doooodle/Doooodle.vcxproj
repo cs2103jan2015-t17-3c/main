@@ -66,6 +66,7 @@
   <ItemGroup>
     <ClCompile Include="CommandDetails.cpp" />
     <ClCompile Include="DeadlineTask.cpp" />
+    <ClCompile Include="FloatingTask.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NormalTask.cpp" />
@@ -76,6 +77,7 @@
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
     <ClInclude Include="DeadlineTask.h" />
+    <ClInclude Include="FloatingTask.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="NormalTask.h" />
     <ClInclude Include="Parser.h" />
