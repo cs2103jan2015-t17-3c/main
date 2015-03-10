@@ -32,18 +32,25 @@ string Logic::executeLogicCore(string userInput) {
 	case FLOATING:
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
 		break;
+	case DELETE:
+//		displayMessageToUI = deleteTask(commandDetails[indexToUpdate]->task);
 	} 
 	return displayMessageToUI;
 }
 
 Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
-	if(commandDetails[indexToUpdate]->timeEnd=="") {
-		return FLOATING;
+	if(commandDetails[indexToUpdate]->commandType=="add") {
+		if(commandDetails[indexToUpdate]->timeEnd=="") {
+			return FLOATING;
+		}
+		else if(commandDetails[indexToUpdate]->timeStart=="") {
+			return DEADLINE;
+		}
+		else {
+			return NORMAL;
+		}
 	}
-	else if(commandDetails[indexToUpdate]->timeStart=="") {
-		return DEADLINE;
-	}
-	else {
-		return NORMAL;
+	else if(commandDetails[indexToUpdate]->commandType=="delete") {
+		return DELETE;
 	}
 }
