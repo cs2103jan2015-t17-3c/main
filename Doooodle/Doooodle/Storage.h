@@ -32,6 +32,7 @@ public:
 	vector<string> retrieveTopFive();
 	void sortStorage();
 	string writeToFile(string);
+	string deleteTask(int);
 
 private:
 	vector<Task> archivedTask;

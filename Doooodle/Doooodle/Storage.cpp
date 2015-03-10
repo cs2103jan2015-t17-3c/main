@@ -113,6 +113,13 @@ string Storage::writeToFile(string textFileName){
 	
 }
 
+string Storage::deleteTask(int index){
+	vector<Task>::iterator iter;
+	activeTask.erase(iter + index - 1);
+	ostringstream feedbackMessage;
+	feedbackMessage << (iter + index - 1)->taskDetails << " is successfully deleted.\n";
+	return feedbackMessage.str();
+}
 
 
 
