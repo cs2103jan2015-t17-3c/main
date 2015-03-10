@@ -25,7 +25,7 @@ public:
 	Storage(void);
 	~Storage(void);
 	string addNormalTask(string, string, string);
-	string addDueTask(string, string);
+	string addDeadlineTask(string, string);
 	string addFloatTask(string);
 private:
 	vector<Task> archivedTask;

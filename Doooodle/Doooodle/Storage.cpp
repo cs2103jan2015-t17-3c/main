@@ -24,11 +24,11 @@ string Storage::addNormalTask(string task, string startTime, string endTime){
 	commandHistory.push_back(trace);*/
 	
 	ostringstream feedback;
-	feedback << "Normal task: " << task << " from " << startTime << " to " << endTime << " successfully added : )\n";
+	feedback << "Normal task: " << task << " from " << startTime << " to " << endTime << " successfully added.\n";
 	return feedback.str();
 };
 
-string Storage::addDueTask(string task, string time){
+string Storage::addDeadlineTask(string task, string time){
 	Task temp;
 	temp.taskDetails = task;
 	temp.startTime = time;
@@ -44,7 +44,7 @@ string Storage::addDueTask(string task, string time){
 	commandHistory.push_back(trace);*/
 	
 	ostringstream feedback;
-	feedback << "Due task: " << task << " at " << time << " successfully added : )\n";
+	feedback << "Deadline task: " << task << " at " << time << " successfully added.\n";
 	return feedback.str();
 };
 
@@ -64,7 +64,7 @@ string Storage::addFloatTask(string task){
 	commandHistory.push_back(trace);*/
 	
 	ostringstream feedback;
-	feedback << "Float task: " << task << " successfully added : )\n";
+	feedback << "Float task: " << task << " successfully added.\n";
 	return feedback.str();
 };
 
