@@ -68,6 +68,38 @@ string Storage::addFloatTask(string task){
 	return feedback.str();
 };
 
+vector<string> Storage::retrieveTopFive(){
+	vector<string> TopFive;
+	
+	for (int i = 0; i < 5; i++){
+		/*if (i < activeTask.size()) {
+			Task dummy = activeTask[i];
+			ostringstream oneTask;
+			oneTask << dummy.taskDetails << " " << dummy.startTime << " " << dummy.endTime << endl;
+			TopFive.push_back(oneTask.str());
+		}
+		else*/ {
+			TopFive.push_back("");
+		}
+	}
+	return TopFive;
+}
+
+void Storage::sortStorage(){
+	int i, j;
+	for (i = 0; i < activeTask.size() - 1; i++){
+
+		for (j = i + 1; j < activeTask.size(); j++){
+			if (activeTask[i].startTime.compare(activeTask[j].startTime) > 0){
+				Task dummy = activeTask[i];
+				activeTask[i] = activeTask[j];
+				activeTask[j] = dummy;
+			}
+
+		}
+	}
+}
+
 
 
 
