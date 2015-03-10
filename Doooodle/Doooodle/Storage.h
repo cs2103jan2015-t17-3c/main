@@ -27,6 +27,9 @@ public:
 	string addNormalTask(string, string, string);
 	string addDeadlineTask(string, string);
 	string addFloatTask(string);
+	vector<string> retrieveTopFive();
+	void sortStorage();
+
 private:
 	vector<Task> archivedTask;
 	vector<Task> activeTask;
