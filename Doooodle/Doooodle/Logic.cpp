@@ -21,6 +21,10 @@ string Logic::executeLogicCore(string userInput) {
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd);
 	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
+	return executeTask(taskType, indexToUpdate);
+}
+
+string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	string displayMessageToUI;
 	switch(taskType) {
 	case NORMAL:
@@ -32,8 +36,11 @@ string Logic::executeLogicCore(string userInput) {
 	case FLOATING:
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
 		break;
-//	case DELETE:
-//		displayMessageToUI = deleteTask(commandDetails[indexToUpdate]->task);
+	case DELETE:
+		displayMessageToUI = storage.deleteTask(stoi(commandDetails[indexToUpdate]->task));
+		break;
+	case SEARCH:
+		break;
 	} 
 	return displayMessageToUI;
 }
@@ -52,5 +59,8 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 	}
 	else if(commandDetails[indexToUpdate]->commandType=="delete") {
 		return DELETE;
+	}
+	else if(commandDetails[indexToUpdate]->commandType=="search") {
+		return SEARCH;
 	}
 }
