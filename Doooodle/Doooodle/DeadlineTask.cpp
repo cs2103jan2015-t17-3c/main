@@ -13,5 +13,6 @@ string DeadlineTask::loadDeadlineTask(string task, string timeEnd, Storage& stor
 	this->task = task;
 	this->timeEnd = timeEnd;
 	string displayMessageToLogic = storage.addDeadlineTask(task, timeEnd);
+	storage.sortStorage();
 	return displayMessageToLogic;
 }

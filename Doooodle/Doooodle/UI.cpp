@@ -19,12 +19,12 @@ void UI::readMessage(){
 	while (true){
 		cout << MESSAGE_TOPFIVE;
 		displayMessage = logic.displayTopFive();
-		for (int i = 0; displayMessage.size();i++){
+		for (int i = 0; i<displayMessage.size();i++){
 
-			//isplayMessage = logic.displayTopFive();
+			displayMessage = logic.displayTopFive();
 			printToUser(displayMessage[i]);
 		}
-		cout << MESSAGE_DEFAULT;
+		cout << endl << MESSAGE_DEFAULT;
 		getline(cin, command);
 		cout << endl;
 		message = logic.receiveCommand(command);

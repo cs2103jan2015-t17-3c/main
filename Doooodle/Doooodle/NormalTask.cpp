@@ -15,5 +15,6 @@ string NormalTask::loadNormalTask(string task, string timeStart, string timeEnd,
 	this->timeStart = timeStart;
 	this->timeEnd = timeEnd;
 	string displayMessageToLogic = storage.addNormalTask(task, timeStart, timeEnd);
+	storage.sortStorage();
 	return displayMessageToLogic;
 }

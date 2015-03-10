@@ -72,32 +72,45 @@ vector<string> Storage::retrieveTopFive(){
 	vector<string> TopFive;
 	
 	for (int i = 0; i < 5; i++){
-		/*if (i < activeTask.size()) {
+		if (i < activeTask.size()) {
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
-			oneTask << dummy.taskDetails << " " << dummy.startTime << " " << dummy.endTime << endl;
+			if (activeTask[i].endTime != "\0"){
+
+				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startTime << " to " << dummy.endTime;
+
+			}
+			else
+				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.startTime;
+				
 			TopFive.push_back(oneTask.str());
 		}
-		else*/ {
+		else {
 			TopFive.push_back("");
 		}
 	}
 	return TopFive;
 }
 
+bool task_sorter(Task const& lhs, Task const& rhs){
+	return lhs.startTime < rhs.startTime;
+}
+
 void Storage::sortStorage(){
-	int i, j;
-	for (i = 0; i < activeTask.size() - 1; i++){
+	sort(activeTask.begin(), activeTask.end(), &task_sorter);
+}
 
-		for (j = i + 1; j < activeTask.size(); j++){
-			if (activeTask[i].startTime.compare(activeTask[j].startTime) > 0){
-				Task dummy = activeTask[i];
-				activeTask[i] = activeTask[j];
-				activeTask[j] = dummy;
-			}
-
-		}
+string Storage::writeToFile(string textFileName){
+	ofstream outputFile;
+	outputFile.open(textFileName);
+	for (int index = 0; index < activeTask.size(); index++){
+		outputFile << index + 1 << ". " << activeTask[index].taskDetails << " " << activeTask[index].startTime << " " << activeTask[index].endTime << endl;
 	}
+	outputFile.close();
+	ostringstream returnMessage;
+	returnMessage << textFileName << " is successfully saved.\n";
+	return returnMessage.str();
+	
 }
 
 

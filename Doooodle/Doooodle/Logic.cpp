@@ -19,7 +19,7 @@ string Logic::receiveCommand(string userInput) {
 string Logic::executeLogicCore(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd,);
+	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd);
 	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
 	string displayMessageToUI;
 	switch(taskType) {
@@ -32,7 +32,7 @@ string Logic::executeLogicCore(string userInput) {
 	case FLOATING:
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
 		break;
-	case DELETE:
+//	case DELETE:
 //		displayMessageToUI = deleteTask(commandDetails[indexToUpdate]->task);
 	} 
 	return displayMessageToUI;

@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -29,6 +31,7 @@ public:
 	string addFloatTask(string);
 	vector<string> retrieveTopFive();
 	void sortStorage();
+	string writeToFile(string);
 
 private:
 	vector<Task> archivedTask;
