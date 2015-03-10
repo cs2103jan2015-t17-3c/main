@@ -13,13 +13,17 @@ UI::~UI(void) {
 void UI::readMessage(){
 	string command;
 	string message;
-	string displayMessage;
+	vector<string> displayMessage;
 
 	cout << MESSAGE_WELCOME;
 	while (true){
 		cout << MESSAGE_TOPFIVE;
 		displayMessage = logic.displayTopFive();
-		printToUser(displayMessage);	
+		for (int i = 0; displayMessage.size();i++){
+
+			//isplayMessage = logic.displayTopFive();
+			printToUser(displayMessage[i]);
+		}
 		cout << MESSAGE_DEFAULT;
 		getline(cin, command);
 		cout << endl;
@@ -28,6 +32,7 @@ void UI::readMessage(){
 	}
 }
 
+
 void UI::printToUser(string message){
-	cout << message;
+	cout << message << endl;
 }
