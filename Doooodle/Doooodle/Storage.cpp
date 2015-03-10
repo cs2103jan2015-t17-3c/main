@@ -1,6 +1,7 @@
 #include "Storage.h"
 
-using namespace chrono;
+using namespace boost;
+
 
 Storage::Storage(void){
 };
@@ -8,31 +9,35 @@ Storage::Storage(void){
 Storage::~Storage(void){
 };
 
-string Storage::addNormalTask(string task, string startTime, string endTime){
+string Storage::addNormalTask(string task, gregorian::date startDate, gregorian::date endDate, posix_time::ptime startTime, posix_time::ptime endTime){
 	Task temp;
 	temp.taskDetails = task;
+	temp.startDate = startDate;
+	temp.endDate = endDate;
 	temp.startTime = startTime;
 	temp.endTime = endTime;
 	activeTask.push_back(temp);
 	
 	/*History trace;
-	time_t tt;
-	tt = system_clock::to_time_t(system_clock::now());
-	string currentTime = ctime(&tt);
+	//time_t tt;
+	//tt = system_clock::to_time_t(system_clock::now());
+	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
 	commandHistory.push_back(trace);*/
 	
 	ostringstream feedback;
-	feedback << "Normal task: " << task << " from " << startTime << " to " << endTime << " successfully added.\n";
+	feedback << "Normal task: " << task << " from " << startDate <<" " << startTime << " to " << endDate << " " << endTime << " successfully added.\n";
 	return feedback.str();
 };
 
-string Storage::addDeadlineTask(string task, string time){
+string Storage::addDeadlineTask(string task, gregorian::date date, posix_time::ptime time){
 	Task temp;
 	temp.taskDetails = task;
+	temp.startDate = date;
 	temp.startTime = time;
-	//temp.endTime = time;
+	temp.endTime = time;
+	temp.endDate = date;
 	activeTask.push_back(temp);
 	
 	/*History trace;
@@ -44,7 +49,7 @@ string Storage::addDeadlineTask(string task, string time){
 	commandHistory.push_back(trace);*/
 	
 	ostringstream feedback;
-	feedback << "Deadline task: " << task << " at " << time << " successfully added.\n";
+	feedback << "Deadline task: " << task << " at " << date << " " << time << " successfully added.\n";
 	return feedback.str();
 };
 
@@ -75,7 +80,7 @@ vector<string> Storage::retrieveTopFive(){
 		if (i < activeTask.size()) {
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
-			if (activeTask[i].endTime != "\0"){
+			if (activeTask[i].endTime != activeTask[i].startTime || activeTask[i].endDate != activeTask[i].startDate){
 
 				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startTime << " to " << dummy.endTime;
 
@@ -93,6 +98,8 @@ vector<string> Storage::retrieveTopFive(){
 }
 
 bool task_sorter(Task const& lhs, Task const& rhs){
+	if (lhs.startDate != rhs.startDate)
+		return lhs.startDate < rhs.startDate;
 	return lhs.startTime < rhs.startTime;
 }
 
@@ -104,13 +111,12 @@ string Storage::writeToFile(string textFileName){
 	ofstream outputFile;
 	outputFile.open(textFileName);
 	for (int index = 0; index < activeTask.size(); index++){
-		outputFile << index + 1 << ". " << activeTask[index].taskDetails << " " << activeTask[index].startTime << " " << activeTask[index].endTime << endl;
+		outputFile << index + 1 << ". " << activeTask[index].taskDetails << " " << activeTask[index].startDate << " " <<activeTask[index].startTime<< activeTask[index].endDate << activeTask[index].endTime << endl;
 	}
 	outputFile.close();
 	ostringstream returnMessage;
 	returnMessage << textFileName << " is successfully saved.\n";
 	return returnMessage.str();
-	
 }
 
 string Storage::deleteTask(int index){
@@ -132,11 +138,11 @@ vector<string> Storage::searchTask(string thingsToSearch){
 		if (found != string::npos){
 			findIt = true;
 			ostringstream oneTask;
-			if (iter->endTime != "\0"){
-				oneTask << count << ". " << iter->taskDetails << " from " << iter->startTime << " to " << iter->endTime;
+			if (iter->endTime != iter->startTime || iter->endDate != iter->startDate){
+				oneTask << count << ". " << iter->taskDetails << " from " << iter->startDate << " " << iter->startTime << " to " << iter->endDate << " " << iter->endTime;
 				}
 				else
-					oneTask << count << ". " << iter->taskDetails << " by " << iter->startTime;
+					oneTask << count << ". " << iter->taskDetails << " by " << iter->startDate << " " << iter-> startTime;
 			searchedStuff.push_back(oneTask.str());
 		
 		
