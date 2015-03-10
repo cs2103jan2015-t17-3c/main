@@ -17,19 +17,19 @@ string Logic::executeLogicCore(string userInput) {
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd);
 	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
-	string displayMessage;
+	string displayMessageToUI;
 	switch(taskType) {
 	case NORMAL:
-		normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
+		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
 		break;
 	case DEADLINE:
-		displayMessage = storage.addDueTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeEnd);
+		displayMessageToUI = deadlineTask.loadDeadlineTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->timeEnd, storage);
 		break;
 	case FLOATING:
-		displayMessage = storage.addFloatTask(commandDetails[indexToUpdate]->task);
+		displayMessageToUI = storage.addFloatTask(commandDetails[indexToUpdate]->task);
 		break;
 	} 
-	return displayMessage;
+	return displayMessageToUI;
 }
 
 Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {

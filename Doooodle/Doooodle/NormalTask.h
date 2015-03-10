@@ -16,7 +16,7 @@ public:
 
 	NormalTask(void);
 	~NormalTask(void);
-	void loadNormalTask(string, string, string, Storage&);
+	string loadNormalTask(string, string, string, Storage&);
 
 private:
 

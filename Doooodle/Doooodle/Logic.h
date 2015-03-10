@@ -9,6 +9,7 @@
 #include "Storage.h"
 #include "CommandDetails.h"
 #include "NormalTask.h"
+#include "DeadlineTask.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ private:
 	Storage storage;
 	Parser parser;
 	NormalTask normTask;
+	DeadlineTask deadlineTask;
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {

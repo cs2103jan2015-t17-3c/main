@@ -65,6 +65,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CommandDetails.cpp" />
+    <ClCompile Include="DeadlineTask.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NormalTask.cpp" />
@@ -74,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
+    <ClInclude Include="DeadlineTask.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="NormalTask.h" />
     <ClInclude Include="Parser.h" />

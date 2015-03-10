@@ -10,9 +10,10 @@ NormalTask::NormalTask(void) {
 NormalTask::~NormalTask(void) {
 }
 
-void NormalTask::loadNormalTask(string task, string timeStart, string timeEnd, Storage& storage) {
+string NormalTask::loadNormalTask(string task, string timeStart, string timeEnd, Storage& storage) {
 	this->task = task;
 	this->timeStart = timeStart;
 	this->timeEnd = timeEnd;
-	storage.addNormalTask(task, timeStart, timeEnd);
+	string displayMessageToLogic = storage.addNormalTask(task, timeStart, timeEnd);
+	return displayMessageToLogic;
 }
