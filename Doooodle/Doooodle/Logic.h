@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <boost/date_time.hpp>
 #include "Parser.h"
 #include "Storage.h"
 #include "CommandDetails.h"
@@ -20,6 +21,7 @@ public:
 	Logic(void);
 	~Logic(void);
 	string receiveCommand(string);
+	vector<string> displayTopFive(void);
 
 private:
 	Storage storage;
@@ -30,10 +32,11 @@ private:
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL 
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH
 	};
 
 	string executeLogicCore(string);
+	string executeTask(TASK_TYPE, int);
 	TASK_TYPE determineSpecificTaskType(int);
 };
 

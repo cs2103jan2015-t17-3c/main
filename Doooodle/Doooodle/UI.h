@@ -16,6 +16,7 @@ private:
 	static const string MESSAGE_ADD;
 	static const string MESSAGE_DEFAULT;
 	static const string MESSAGE_WELCOME;
+	static const string MESSAGE_TOPFIVE;
 
 	void printToUser(string);
 

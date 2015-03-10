@@ -68,6 +68,84 @@ string Storage::addFloatTask(string task){
 	return feedback.str();
 };
 
+vector<string> Storage::retrieveTopFive(){
+	vector<string> TopFive;
+	
+	for (int i = 0; i < 5; i++){
+		if (i < activeTask.size()) {
+			Task dummy = activeTask[i];
+			ostringstream oneTask;
+			if (activeTask[i].endTime != "\0"){
+
+				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startTime << " to " << dummy.endTime;
+
+			}
+			else
+				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.startTime;
+				
+			TopFive.push_back(oneTask.str());
+		}
+		else {
+			TopFive.push_back("");
+		}
+	}
+	return TopFive;
+}
+
+bool task_sorter(Task const& lhs, Task const& rhs){
+	return lhs.startTime < rhs.startTime;
+}
+
+void Storage::sortStorage(){
+	sort(activeTask.begin(), activeTask.end(), &task_sorter);
+}
+
+string Storage::writeToFile(string textFileName){
+	ofstream outputFile;
+	outputFile.open(textFileName);
+	for (int index = 0; index < activeTask.size(); index++){
+		outputFile << index + 1 << ". " << activeTask[index].taskDetails << " " << activeTask[index].startTime << " " << activeTask[index].endTime << endl;
+	}
+	outputFile.close();
+	ostringstream returnMessage;
+	returnMessage << textFileName << " is successfully saved.\n";
+	return returnMessage.str();
+	
+}
+
+string Storage::deleteTask(int index){
+	vector<Task>::iterator iter;
+	activeTask.erase(iter + index - 1);
+	ostringstream feedbackMessage;
+	feedbackMessage << (iter + index - 1)->taskDetails << " is successfully deleted.\n";
+	return feedbackMessage.str();
+}
+
+vector<string> Storage::searchTask(string thingsToSearch){
+	vector<string> searchedStuff;
+	bool findIt = false;
+	vector<Task>::iterator iter;
+	int count = 1;
+	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
+		string temp = iter->taskDetails;
+		size_t found = temp.find(thingsToSearch);
+		if (found != string::npos){
+			findIt = true;
+			ostringstream oneTask;
+			if (iter->endTime != "\0"){
+				oneTask << count << ". " << iter->taskDetails << " from " << iter->startTime << " to " << iter->endTime;
+				}
+				else
+					oneTask << count << ". " << iter->taskDetails << " by " << iter->startTime;
+			searchedStuff.push_back(oneTask.str());
+		
+		
+		
+		}
+		count++;
+	}
+	return searchedStuff;
+}
 
 
 
