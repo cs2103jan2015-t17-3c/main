@@ -33,6 +33,7 @@ public:
 	void sortStorage();
 	string writeToFile(string);
 	string deleteTask(int);
+	vector<string> searchTask(string);
 
 private:
 	vector<Task> archivedTask;

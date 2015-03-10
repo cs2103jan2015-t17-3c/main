@@ -121,6 +121,32 @@ string Storage::deleteTask(int index){
 	return feedbackMessage.str();
 }
 
+vector<string> Storage::searchTask(string thingsToSearch){
+	vector<string> searchedStuff;
+	bool findIt = false;
+	vector<Task>::iterator iter;
+	int count = 1;
+	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
+		string temp = iter->taskDetails;
+		size_t found = temp.find(thingsToSearch);
+		if (found != string::npos){
+			findIt = true;
+			ostringstream oneTask;
+			if (iter->endTime != "\0"){
+				oneTask << count << ". " << iter->taskDetails << " from " << iter->startTime << " to " << iter->endTime;
+				}
+				else
+					oneTask << count << ". " << iter->taskDetails << " by " << iter->startTime;
+			searchedStuff.push_back(oneTask.str());
+		
+		
+		
+		}
+		count++;
+	}
+	return searchedStuff;
+}
+
 
 
 
