@@ -18,13 +18,13 @@ string Storage::addNormalTask(string task, gregorian::date startDate, gregorian:
 	temp.endTime = endTime;
 	activeTask.push_back(temp);
 	
-	/*History trace;
-	//time_t tt;
-	//tt = system_clock::to_time_t(system_clock::now());
+	History trace;
+	posix_time::ptime currentTime;
+	currentTime = posix_time::second_clock::local_time();
 	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
-	commandHistory.push_back(trace);*/
+	commandHistory.push_back(trace);
 	
 	ostringstream feedback;
 	feedback << "Normal task: " << task << " from " << startDate <<" " << startTime << " to " << endDate << " " << endTime << " successfully added.\n";
@@ -40,13 +40,13 @@ string Storage::addDeadlineTask(string task, gregorian::date date, posix_time::p
 	temp.endDate = date;
 	activeTask.push_back(temp);
 	
-	/*History trace;
-	time_t tt;
-	tt = system_clock::to_time_t(system_clock::now());
-	string currentTime = ctime(&tt);
+	History trace;
+	posix_time::ptime currentTime;
+	currentTime = posix_time::second_clock::local_time();
+	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
-	commandHistory.push_back(trace);*/
+	commandHistory.push_back(trace);
 	
 	ostringstream feedback;
 	feedback << "Deadline task: " << task << " at " << date << " " << time << " successfully added.\n";
@@ -60,13 +60,13 @@ string Storage::addFloatTask(string task){
 	//temp.endTime = time;
 	activeTask.push_back(temp);
 	
-	/*History trace;
-	time_t tt;
-	tt = system_clock::to_time_t(system_clock::now());
-	string currentTime = ctime(&tt);
+	History trace;
+	posix_time::ptime currentTime;
+	currentTime = posix_time::second_clock::local_time();
+	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
-	commandHistory.push_back(trace);*/
+	commandHistory.push_back(trace);
 	
 	ostringstream feedback;
 	feedback << "Float task: " << task << " successfully added.\n";
