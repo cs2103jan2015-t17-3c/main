@@ -2,18 +2,23 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
+#include "DateParser.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <fstream>
 #include <algorithm>
 #include <boost/date_time.hpp>
+#include <sstream>
 
 using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class Parser {
 
 private:
+	static const int POSITION_COMMAND_TYPE;
 	static const string DELIMITERS;
 	static const string START_TIME_INDICATORS[];
 	static const string END_TIME_INDICATORS[];
@@ -21,14 +26,16 @@ private:
 	static const int NO_OF_START_TIME_INDICATORS;
 	static const int NO_OF_END_TIME_INDICATORS;
 	static const int NO_OF_TIME_IDENTIFIERS;
+	vector<string> tokens;
 
-
+	void tokenizeInput(string);
 	string getCommandType(string);
 	string getUserTask(string);
-	boost::gregorian::date getStartDate(string);
-	boost::gregorian::date getEndDate(string);
-	boost::posix_time::ptime getStartTime(string);
-	boost::posix_time::ptime getEndTime(string);
+	boost::gregorian::date getStartDate(int&);
+	boost::gregorian::date getEndDate(int&);
+	boost::posix_time::ptime getStartTime(int&);
+	boost::posix_time::ptime getEndTime(int&);
+	size_t intToPos(int,string);
 	size_t getEndOfUserTask(string);
 	size_t getStartOfUserTask(string);
 
