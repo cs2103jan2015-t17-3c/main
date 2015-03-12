@@ -4,7 +4,7 @@ const string UI::MESSAGE_ADD = "added to calendar successfully";
 const string UI::MESSAGE_DEFAULT = "Enter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
 *        Doooodle       *\n*************************\n";
-const string UI::MESSAGE_TOPFIVE = "Below is the list of top five items in your scheduler for now\n";
+const string UI::MESSAGE_TOPFIVE = "Below is the list of top five items in your scheduler for now\n\n";
 
 UI::UI(void) {
 }
