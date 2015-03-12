@@ -4,7 +4,7 @@ const int Parser::POSITION_COMMAND_TYPE = 0;
 const string Parser::DELIMITERS = " ";
 const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
-const int Parser :: NO_OF_TIME_IDENTIFIERS = 20;
+const int Parser :: NO_OF_TIME_IDENTIFIERS = 18;
 const string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
 const string Parser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
@@ -29,7 +29,6 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	endDate = getEndDate(pos);
 	startTime = getStartTime(pos);
 	endTime = getEndTime(pos);
-	cout << startDate << " " << endDate << endl;
 	if (startDate == endDate && startTime == endTime){
 		startDate = d1;
 		startTime = d2;
@@ -44,7 +43,6 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59));
 		endTime = t;
 	}
-	cout << startDate << " " << endDate << endl;
 	return;
 }
 
@@ -152,6 +150,12 @@ size_t Parser::getEndOfUserTask(string input){
 	}
 	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++){
 		pos = input.find(TIME_IDENTIFIERS[i]);
+		if (pos != string::npos){
+			return pos;
+		}
+	}
+	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
+		pos = input.find(END_TIME_INDICATORS[i]);
 		if (pos != string::npos){
 			return pos;
 		}
