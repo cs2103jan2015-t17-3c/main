@@ -26,18 +26,21 @@ string Logic::executeLogicCore(string userInput) {
 
 string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	string displayMessageToUI;
+	int intToPass;
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
 		break;
 	case DEADLINE:
+		cout << commandDetails[indexToUpdate]->dateEnd << commandDetails[indexToUpdate]->timeEnd << endl;
 		displayMessageToUI = deadlineTask.loadDeadlineTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeEnd, storage);
 		break;
 	case FLOATING:
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
 		break;
 	case DELETE:
-		displayMessageToUI = storage.deleteTask(atoi((commandDetails[indexToUpdate]->task).c_str));
+		intToPass = atoi((commandDetails[indexToUpdate]->task).c_str());
+		displayMessageToUI = storage.deleteTask(intToPass);
 		break;
 	case SEARCH:
 		displayMessageToUI = storage.searchTask(commandDetails[indexToUpdate]->task);
@@ -50,11 +53,12 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 }
 
 Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
+	boost::gregorian::date d2(boost::date_time::not_a_date_time);
 	if(commandDetails[indexToUpdate]->commandType=="add") {
-		if((commandDetails[indexToUpdate]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateEnd==boost::gregorian::not_a_date_time)) {
+		if((commandDetails[indexToUpdate]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateEnd==d2)) {
 			return FLOATING;
 		}
-		else if((commandDetails[indexToUpdate]->timeStart==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateStart==boost::gregorian::not_a_date_time)) {
+		else if((commandDetails[indexToUpdate]->timeStart==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateStart==d2)) {
 			return DEADLINE;
 		}
 		else {

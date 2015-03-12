@@ -13,15 +13,15 @@ class DateParser {
 
 private:
 	enum weekdays { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
-	enum nearfuture { Today,Tomorrow };
-	static const int NO_OF_TIME_IDENTIFIERS=20;
-	static const string TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS];
-	static const int NO_OF_WEEKDAYS_IDENTIFIERS=14;
-	static const string WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS];
-	static const int NO_OF_NEARFUTURE_IDENTIFIERS=4;
-	static const string NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS];
-	static const int NO_OF_DELIMITERS=1;
-	static const string DELIMITERS[NO_OF_DELIMITERS];
+	enum nearfuture { Today=0,Tomorrow };
+	static const int NO_OF_TIME_IDENTIFIERS;
+	static const string TIME_IDENTIFIERS[];
+	static const int NO_OF_WEEKDAYS_IDENTIFIERS;
+	static const string WEEKDAYS_IDENTIFIERS[];
+	static const int NO_OF_NEARFUTURE_IDENTIFIERS;
+	static const string NEARFUTURE_IDENTIFIERS[];
+	static const int NO_OF_DELIMITERS;
+	static const string DELIMITERS[];
 	int weekdaysToNum(string);
 	int nearfutureToNum(string);
 	void removeSlash(string&);

@@ -39,8 +39,9 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	if (endDate == d1&&endTime != d2){
 		assignToday(endDate);
 	}
-	if (endDate == d1&&endTime == d2){
+	if (endDate != d1&&endTime == d2){
 		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59));
+		endTime = t;
 	}
 	return;
 }
@@ -74,10 +75,11 @@ boost::gregorian::date Parser::getStartDate(int& num){
 	DateParser dateparser;
 	boost::gregorian::date d(boost::date_time::not_a_date_time);
 	string task;
+	string str;
 	for (int i = 0; i < tokens.size(); i++){
 		if (dateparser.isDate(tokens[i])){
-			return dateparser.standardiseDate(tokens[i]);
 			num = i;
+			return dateparser.standardiseDate(tokens[i]);
 		}
 	}
 	return d;
@@ -87,7 +89,7 @@ boost::gregorian::date Parser::getEndDate(int& num){
 	DateParser dateparser;
 	boost::gregorian::date d(boost::date_time::not_a_date_time);
 	string task;
-	for (int i = tokens.size(); i > 0; i--){
+	for (int i = tokens.size()-1; i > 0; i--){
 		if (dateparser.isDate(tokens[i])){
 			num = i;
 			return dateparser.standardiseDate(tokens[i]);
@@ -101,8 +103,8 @@ boost::posix_time::ptime Parser::getStartTime(int& num){
 	string task;
 	for (int i = 0; i < tokens.size(); i++){
 		if (timeparser.isTime(tokens[i])){
-			return timeparser.standardTime(tokens[i]);
 			num = i;
+			return timeparser.standardTime(tokens[i]);	
 		}
 	}
 		return d;
@@ -112,7 +114,7 @@ boost::posix_time::ptime Parser::getEndTime(int& num){
 	TimeParser timeparser;
 	boost::posix_time::ptime d(boost::date_time::not_a_date_time);
 	string task;
-	for (int i = tokens.size(); i > 0; i--){
+	for (int i = tokens.size()-1; i > 0; i--){
 		if (timeparser.isTime(tokens[i])){
 			return timeparser.standardTime(tokens[i]);
 			num = i;
@@ -154,6 +156,7 @@ size_t Parser::getEndOfUserTask(string input){
 	getStartDate(num);
 	pos = intToPos(num, input);
 	pos++;
+
 	return pos;
 }
 
