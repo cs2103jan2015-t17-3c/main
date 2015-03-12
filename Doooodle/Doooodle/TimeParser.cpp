@@ -1,11 +1,11 @@
 #include "TimeParser.h"
 
 const int TimeParser::NO_OF_TYPE1_INDICATORS = 2;
-const int TimeParser::NO_OF_TYPE2_INDICATORS = 23;
+const int TimeParser::NO_OF_TYPE2_INDICATORS = 21;
 const int TimeParser::NO_OF_TYPE3_INDICATORS = 4;
 const int TimeParser::DIFFERENCE_BETWEEN_12HRS_24HRS = 12;
 const string TimeParser::TYPE1_INDICATORS[NO_OF_TYPE1_INDICATORS] = {":", "."};
-const string TimeParser::TYPE2_INDICATORS[NO_OF_TYPE2_INDICATORS] = {"am", "Am", "AM", "aM", "pm", "Pm", "PM", "pM", "hr", "hrs", "HR", "HRS", "Hr", "Hrs", "hours", "hour", "HOURS", "Hours", "today", "Today", "clock", ":", "."};
+const string TimeParser::TYPE2_INDICATORS[NO_OF_TYPE2_INDICATORS] = {"am", "Am", "AM", "aM", "pm", "Pm", "PM", "pM", "hr", "hrs", "HR", "HRS", "Hr", "Hrs", "hours", "hour", "HOURS", "Hours", "clock", ":", "."};
 const string TimeParser::TYPE3_INDICATORS[NO_OF_TYPE3_INDICATORS] = {"pm", "pM", "PM", "Pm"};
 
 TimeParser::TimeParser(){
