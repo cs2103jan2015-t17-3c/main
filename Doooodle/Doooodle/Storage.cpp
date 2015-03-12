@@ -81,20 +81,21 @@ string Storage::addFloatTask(string task){
 
 vector<string> Storage::retrieveTopFive(){
 	vector<string> TopFive;
+	int defaultwidth = 25;
 	int topfunf = 5;
 	for (int i = 0; i < topfunf; i++){
 		if (i < activeTask.size()) {
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
 			if ((activeTask[i].endTime == d2) && (activeTask[i].endDate == d1)){  
-				oneTask << i + 1 << ". " << left << setw(25) << dummy.taskDetails ;
+				oneTask << i + 1 << ". " << left << setw(defaultwidth) << dummy.taskDetails ;
 			}
 			else 
 				if ((activeTask[i].startTime == d2) && (activeTask[i].startDate == d1)){
-					oneTask << i + 1 << ". " << left << setw(25) << dummy.taskDetails << " by " << dummy.endDate << " " << dummy.endTime.time_of_day();
+					oneTask << i + 1 << ". " << left << setw(defaultwidth) << dummy.taskDetails << " by " << dummy.endDate << " " << dummy.endTime.time_of_day();
 				}
 				else
-					oneTask << i + 1 << ". " << left << setw(25) << dummy.taskDetails << " from " << dummy.startDate << " " << dummy.startTime.time_of_day() << " to " << dummy.endDate << " " << dummy.endTime.time_of_day();
+					oneTask << i + 1 << ". " << left << setw(defaultwidth) << dummy.taskDetails << " from " << dummy.startDate << " " << dummy.startTime.time_of_day() << " to " << dummy.endDate << " " << dummy.endTime.time_of_day();
 			TopFive.push_back(oneTask.str());
 		}
 		else {
