@@ -3,6 +3,10 @@
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
+date d1(not_a_date_time);
+ptime d2(not_a_date_time);
+
+
 Storage::Storage(void){
 };
 
@@ -34,8 +38,8 @@ string Storage::addNormalTask(string task, date startDate, date endDate, ptime s
 string Storage::addDeadlineTask(string task, date date, ptime time){
 	Task temp;
 	temp.taskDetails = task;
-	temp.startDate = date;
-	temp.startTime = time;
+	temp.startDate = d1;
+	temp.startTime = d2;
 	temp.endTime = time;
 	temp.endDate = date;
 	activeTask.push_back(temp);
@@ -56,8 +60,10 @@ string Storage::addDeadlineTask(string task, date date, ptime time){
 string Storage::addFloatTask(string task){
 	Task temp;
 	temp.taskDetails = task;
-	//temp.startTime = time;
-	//temp.endTime = time;
+	temp.startTime = d2;
+	temp.endTime = d2;
+	temp.startDate = d1;
+	temp.endDate = d1;
 	activeTask.push_back(temp);
 	
 	History trace;
@@ -79,11 +85,15 @@ vector<string> Storage::retrieveTopFive(){
 		if (i < activeTask.size()) {
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
-			if ((activeTask[i].endTime != activeTask[i].startTime) || (activeTask[i].endDate != activeTask[i].startDate)){
-				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startDate << " " << dummy.startTime.time_of_day() << " to " << dummy.endDate << " " << dummy.endTime.time_of_day();
+			if ((activeTask[i].endTime == d2) && (activeTask[i].endDate == d1)){  
+				oneTask << i + 1 << ". " << dummy.taskDetails ;
 			}
 			else 
-				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.endDate << " " << dummy.endTime.time_of_day();
+				if ((activeTask[i].startTime == d2) && (activeTask[i].startDate == d1)){
+					oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.endDate << " " << dummy.endTime.time_of_day();
+				}
+				else
+					oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startDate << " " << dummy.startTime.time_of_day() << " to " << dummy.endDate << " " << dummy.endTime.time_of_day();
 			TopFive.push_back(oneTask.str());
 		}
 		else {
