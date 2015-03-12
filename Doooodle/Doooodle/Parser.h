@@ -3,6 +3,7 @@
 #define PARSER_H_
 
 #include "DateParser.h"
+#include "TimeParser.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -38,7 +39,7 @@ private:
 	size_t intToPos(int,string);
 	size_t getEndOfUserTask(string);
 	size_t getStartOfUserTask(string);
-
+	void assignToday(boost::gregorian::date&);
 
 public:
 	Parser();

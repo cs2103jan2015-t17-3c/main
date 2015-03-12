@@ -19,6 +19,8 @@ Parser::~Parser(){
 
 void Parser::processCommand(string input, string& commandType, string& userTask, boost::gregorian::date& startDate, boost::gregorian::date& endDate, 
 	boost::posix_time::ptime& startTime, boost::posix_time::ptime& endTime){
+	boost::gregorian::date d1(boost::date_time::not_a_date_time);
+	boost::posix_time::ptime d2(boost::date_time::not_a_date_time);
 	int pos;
 	tokenizeInput(input);    //tokenize string by white space
 	commandType = getCommandType(input);
@@ -27,7 +29,19 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	endDate = getEndDate(pos);
 	startTime = getStartTime(pos);
 	endTime = getEndTime(pos);
-
+	if (startDate == endDate && startTime == endTime){
+		startDate = d1;
+		startTime = d2;
+	}
+	if (startDate == d1&&startTime != d2){
+		assignToday(startDate);
+	}
+	if (endDate == d1&&endTime != d2){
+		assignToday(endDate);
+	}
+	if (endDate == d1&&endTime == d2){
+		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59));
+	}
 	return;
 }
 
@@ -81,13 +95,29 @@ boost::gregorian::date Parser::getEndDate(int& num){
 	}
 	return d;
 }
-boost::posix_time::ptime Parser::getStartTime(int& pos){
+boost::posix_time::ptime Parser::getStartTime(int& num){
+	TimeParser timeparser;
 	boost::posix_time::ptime d(boost::date_time::not_a_date_time);
+	string task;
+	for (int i = 0; i < tokens.size(); i++){
+		if (timeparser.isTime(tokens[i])){
+			return timeparser.standardTime(tokens[i]);
+			num = i;
+		}
+	}
 		return d;
 }
 
-boost::posix_time::ptime Parser::getEndTime(int& pos){
+boost::posix_time::ptime Parser::getEndTime(int& num){
+	TimeParser timeparser;
 	boost::posix_time::ptime d(boost::date_time::not_a_date_time);
+	string task;
+	for (int i = tokens.size(); i > 0; i--){
+		if (timeparser.isTime(tokens[i])){
+			return timeparser.standardTime(tokens[i]);
+			num = i;
+		}
+	}
 	return d;
 }
 
@@ -127,3 +157,8 @@ size_t Parser::getEndOfUserTask(string input){
 	return pos;
 }
 
+void Parser::assignToday(boost::gregorian::date& d){
+	boost::gregorian::date today(day_clock::local_day());
+	d = today;
+	return;
+}

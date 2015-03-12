@@ -20,8 +20,11 @@ private:
 	static const string WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS];
 	static const int NO_OF_NEARFUTURE_IDENTIFIERS=4;
 	static const string NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS];
+	static const int NO_OF_DELIMITERS=1;
+	static const string DELIMITERS[NO_OF_DELIMITERS];
 	int weekdaysToNum(string);
 	int nearfutureToNum(string);
+	void removeSlash(string&);
 public:
 	DateParser();
 	~DateParser();

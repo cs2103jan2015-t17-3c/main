@@ -10,7 +10,8 @@ const string DateParser::WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS] = { "M
 const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
 const string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS] = { "Tomorrow", "tomorrow", "today", "Today" };
 const int DateParser::NO_OF_NEARFUTURE_IDENTIFIERS = 4;
-
+const string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\"};
+const int DateParser::NO_OF_DELIMITERS = 1;
 DateParser::DateParser(){
 
 }
@@ -54,8 +55,11 @@ bool DateParser::isDate(string input){
 		if (input == TIME_IDENTIFIERS[i]){
 			return true;
 		}
-		else if (atoi(input.c_str())>20150101){
-			return true;
+		else if (atoi(input.c_str())>2015){
+			removeSlash(input);
+			if (atoi(input.c_str()) > 20150000){
+				return true;
+			}
 		}
 	return false;
 }
@@ -78,10 +82,26 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 			date d=today+days(nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]));
 		}
 	}
-	if (atoi(input.c_str()) > 20150101){
+	if (atoi(input.c_str()) > 20150000){
 			date d(from_undelimited_string(input));
 		}
 	
 	//std::cout << to_iso_extended_string(d1) << std::endl;
 	return d;
+}
+
+void DateParser::removeSlash(string& input){
+	size_t position;
+	for (int i = 0; i<NO_OF_DELIMITERS; i++) {
+		position = input.find(DELIMITERS[i]);
+		if (position != string::npos) {
+			input.erase(input.begin() + position);
+		}
+	}
+	for (int i = 0; i<NO_OF_DELIMITERS; i++) {
+		position = input.find(DELIMITERS[i]);
+		if (position != string::npos) {
+			input.erase(input.begin() + position);
+		}
+	}
 }
