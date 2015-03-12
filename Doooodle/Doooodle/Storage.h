@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <fstream>
 #include <boost/date_time.hpp>
+#include <iomanip>
 
 using namespace std;
 using namespace boost;
