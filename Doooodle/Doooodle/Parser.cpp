@@ -40,7 +40,7 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 		assignToday(endDate);
 	}
 	if (endDate != d1&&endTime == d2){
-		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59));
+		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59)+boost::posix_time::seconds(59));
 		endTime = t;
 	}
 	return;
