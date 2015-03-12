@@ -52,6 +52,9 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	case EXIT:
 		exit(0);
 		break;
+	case INVALID:
+		displayMessageToUI = "ERROR!";
+		break;
 	} 
 	return displayMessageToUI;
 }
@@ -78,4 +81,5 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 	else if(commandDetails[indexToUpdate]->commandType=="exit") {
 		return EXIT;
 	}
+	else return INVALID;
 }
