@@ -79,11 +79,11 @@ vector<string> Storage::retrieveTopFive(){
 		if (i < activeTask.size()) {
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
-			if (activeTask[i].endTime != activeTask[i].startTime || activeTask[i].endDate != activeTask[i].startDate){
-				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startTime << " to " << dummy.endTime;
+			if ((activeTask[i].endTime != activeTask[i].startTime) || (activeTask[i].endDate != activeTask[i].startDate)){
+				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startDate << dummy.startTime << " to " << dummy.endDate << dummy.endTime;
 			}
-			else
-				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.startTime;
+			else 
+				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.endDate << dummy.endTime;
 			TopFive.push_back(oneTask.str());
 		}
 		else {
