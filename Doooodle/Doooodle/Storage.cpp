@@ -27,7 +27,7 @@ string Storage::addNormalTask(string task, date startDate, date endDate, ptime s
 	commandHistory.push_back(trace);
 	
 	ostringstream feedback;
-	feedback << "Normal task: " << task << " from " << startDate <<" " << startTime << " to " << endDate << " " << endTime << " successfully added.\n";
+	feedback << "Normal task: " << task << " from " << startDate <<" " << startTime.time_of_day() << " to " << endDate << " " << endTime.time_of_day() << " successfully added.\n";
 	return feedback.str();
 };
 
@@ -49,7 +49,7 @@ string Storage::addDeadlineTask(string task, date date, ptime time){
 	commandHistory.push_back(trace);
 	
 	ostringstream feedback;
-	feedback << "Deadline task: " << task << " at " << date << " " << time << " successfully added.\n";
+	feedback << "Deadline task: " << task << " at " << date << " " << time.time_of_day() << " successfully added.\n";
 	return feedback.str();
 };
 
@@ -80,10 +80,10 @@ vector<string> Storage::retrieveTopFive(){
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
 			if ((activeTask[i].endTime != activeTask[i].startTime) || (activeTask[i].endDate != activeTask[i].startDate)){
-				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startDate << dummy.startTime << " to " << dummy.endDate << dummy.endTime;
+				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startDate << " " << dummy.startTime.time_of_day() << " to " << dummy.endDate << " " << dummy.endTime.time_of_day();
 			}
 			else 
-				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.endDate << dummy.endTime;
+				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.endDate << " " << dummy.endTime.time_of_day();
 			TopFive.push_back(oneTask.str());
 		}
 		else {
@@ -121,10 +121,11 @@ void Storage::writeToFile(string textFileName){
 }
 
 string Storage::deleteTask(int index){
-	vector<Task>::iterator iter;
-	activeTask.erase(iter + index - 1);
 	ostringstream feedbackMessage;
-	feedbackMessage << (iter + index - 1)->taskDetails << " is successfully deleted.\n";
+	vector<Task>::iterator iter = activeTask.begin();
+	feedbackMessage << activeTask[index - 1].taskDetails << " is successfully deleted.\n";
+	activeTask.erase(iter + index - 1);
+	
 	return feedbackMessage.str();
 }
 

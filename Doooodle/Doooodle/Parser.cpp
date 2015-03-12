@@ -48,6 +48,7 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 
 void Parser::tokenizeInput(string input){
 	string buf; 
+	tokens.clear();
 	stringstream ss(input); // Insert the string into a stream
 	while (ss >> buf)
 		tokens.push_back(buf);
