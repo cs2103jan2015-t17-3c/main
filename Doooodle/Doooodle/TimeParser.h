@@ -18,6 +18,7 @@ private:
 	static const string TYPE1_INDICATORS[];
 	static const string TYPE2_INDICATORS[];
 	static const string TYPE3_INDICATORS[];
+	static const int DIFFERENCE_BETWEEN_12HRS_24HRS;
 
 public:
 	TimeParser();
