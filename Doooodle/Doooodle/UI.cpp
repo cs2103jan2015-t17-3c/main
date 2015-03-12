@@ -26,7 +26,7 @@ void UI::readMessage(){
 		}
 		cout << endl << endl << endl << endl << endl << endl << endl << MESSAGE_DEFAULT;
 		getline(cin, command);
-		cout << endl;
+		cout << endl << endl << endl << endl << endl << endl;
 		message = logic.receiveCommand(command);
 		printToUser(message);
 	}
