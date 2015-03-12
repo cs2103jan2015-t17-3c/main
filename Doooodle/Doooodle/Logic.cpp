@@ -33,7 +33,6 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		storage.writeToFile();
 		break;
 	case DEADLINE:
-		cout << commandDetails[indexToUpdate]->dateEnd << commandDetails[indexToUpdate]->timeEnd << endl;
 		displayMessageToUI = deadlineTask.loadDeadlineTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeEnd, storage);
 		storage.writeToFile();
 		break;
