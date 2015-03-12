@@ -1,7 +1,7 @@
 #include "Storage.h"
 
-using namespace boost;
-
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 Storage::Storage(void){
 };
@@ -9,7 +9,7 @@ Storage::Storage(void){
 Storage::~Storage(void){
 };
 
-string Storage::addNormalTask(string task, gregorian::date startDate, gregorian::date endDate, posix_time::ptime startTime, posix_time::ptime endTime){
+string Storage::addNormalTask(string task, date startDate, date endDate, ptime startTime, ptime endTime){
 	Task temp;
 	temp.taskDetails = task;
 	temp.startDate = startDate;
@@ -19,8 +19,8 @@ string Storage::addNormalTask(string task, gregorian::date startDate, gregorian:
 	activeTask.push_back(temp);
 	
 	History trace;
-	posix_time::ptime currentTime;
-	currentTime = posix_time::second_clock::local_time();
+	ptime currentTime;
+	currentTime = second_clock::local_time();
 	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
@@ -31,7 +31,7 @@ string Storage::addNormalTask(string task, gregorian::date startDate, gregorian:
 	return feedback.str();
 };
 
-string Storage::addDeadlineTask(string task, gregorian::date date, posix_time::ptime time){
+string Storage::addDeadlineTask(string task, date date, ptime time){
 	Task temp;
 	temp.taskDetails = task;
 	temp.startDate = date;
@@ -41,8 +41,8 @@ string Storage::addDeadlineTask(string task, gregorian::date date, posix_time::p
 	activeTask.push_back(temp);
 	
 	History trace;
-	posix_time::ptime currentTime;
-	currentTime = posix_time::second_clock::local_time();
+	ptime currentTime;
+	currentTime = second_clock::local_time();
 	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
@@ -61,8 +61,8 @@ string Storage::addFloatTask(string task){
 	activeTask.push_back(temp);
 	
 	History trace;
-	posix_time::ptime currentTime;
-	currentTime = posix_time::second_clock::local_time();
+	ptime currentTime;
+	currentTime = second_clock::local_time();
 	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
@@ -75,19 +75,15 @@ string Storage::addFloatTask(string task){
 
 vector<string> Storage::retrieveTopFive(){
 	vector<string> TopFive;
-	
 	for (int i = 0; i < 5; i++){
 		if (i < activeTask.size()) {
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
 			if (activeTask[i].endTime != activeTask[i].startTime || activeTask[i].endDate != activeTask[i].startDate){
-
 				oneTask << i + 1 << ". " << dummy.taskDetails << " from " << dummy.startTime << " to " << dummy.endTime;
-
 			}
 			else
 				oneTask << i + 1 << ". " << dummy.taskDetails << " by " << dummy.startTime;
-				
 			TopFive.push_back(oneTask.str());
 		}
 		else {
@@ -107,16 +103,21 @@ void Storage::sortStorage(){
 	sort(activeTask.begin(), activeTask.end(), &task_sorter);
 }
 
-string Storage::writeToFile(string textFileName){
+void Storage::writeToFile(string textFileName){
 	ofstream outputFile;
 	outputFile.open(textFileName);
 	for (int index = 0; index < activeTask.size(); index++){
-		outputFile << index + 1 << ". " << activeTask[index].taskDetails << " " << activeTask[index].startDate << " " <<activeTask[index].startTime<< activeTask[index].endDate << activeTask[index].endTime << endl;
-	}
+		if (activeTask[index].endTime != activeTask[index].startTime || activeTask[index].endDate != activeTask[index].startDate){
+			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " from " << activeTask[index].startDate << " " << activeTask
+				[index].startTime << " to " << activeTask[index].endDate << " " << activeTask[index].endTime;
+		}
+		else
+			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " by " << activeTask[index].startDate << " " << activeTask[index].startTime;	
+			}
 	outputFile.close();
-	ostringstream returnMessage;
-	returnMessage << textFileName << " is successfully saved.\n";
-	return returnMessage.str();
+	//ostringstream returnMessage;
+	//returnMessage << textFileName << " is successfully saved.\n";
+	//return returnMessage.str();
 }
 
 string Storage::deleteTask(int index){
@@ -127,7 +128,8 @@ string Storage::deleteTask(int index){
 	return feedbackMessage.str();
 }
 
-vector<string> Storage::searchTask(string thingsToSearch){
+//vector<string> ususal
+string Storage::searchTask(string thingsToSearch){
 	vector<string> searchedStuff;
 	bool findIt = false;
 	vector<Task>::iterator iter;
@@ -144,13 +146,16 @@ vector<string> Storage::searchTask(string thingsToSearch){
 				else
 					oneTask << count << ". " << iter->taskDetails << " by " << iter->startDate << " " << iter-> startTime;
 			searchedStuff.push_back(oneTask.str());
-		
-		
-		
 		}
 		count++;
 	}
-	return searchedStuff;
+	if (findIt){
+		return "item found.";
+	}
+	else
+		return "item is not there.";
+	//return findIt;
+	//return searchedStuff;
 }
 
 

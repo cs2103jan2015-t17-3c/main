@@ -24,7 +24,7 @@ void UI::readMessage(){
 			displayMessage = logic.displayTopFive();
 			printToUser(displayMessage[i]);
 		}
-		cout << endl << MESSAGE_DEFAULT;
+		cout << endl << endl << endl << endl << endl << endl << endl << MESSAGE_DEFAULT;
 		getline(cin, command);
 		cout << endl;
 		message = logic.receiveCommand(command);
