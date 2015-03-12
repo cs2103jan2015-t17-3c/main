@@ -37,9 +37,10 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
 		break;
 	case DELETE:
-		displayMessageToUI = storage.deleteTask(stoi(commandDetails[indexToUpdate]->task));
+		displayMessageToUI = storage.deleteTask(atoi((commandDetails[indexToUpdate]->task).c_str));
 		break;
 	case SEARCH:
+		displayMessageToUI = storage.searchTask(commandDetails[indexToUpdate]->task);
 		break;
 	} 
 	return displayMessageToUI;

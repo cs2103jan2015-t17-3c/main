@@ -15,17 +15,9 @@ private:
 	static const int NO_OF_TYPE1_INDICATORS;
 	static const int NO_OF_TYPE2_INDICATORS;
 	static const int NO_OF_TYPE3_INDICATORS;
-	static const int NO_OF_TYPE4_INDICATORS;
-	static const int NO_OF_TYPE5_INDICATORS;
-	static const int NO_OF_TYPE6_INDICATORS;
-	static const int NO_OF_TYPE7_INDICATORS;
 	static const string TYPE1_INDICATORS[];
 	static const string TYPE2_INDICATORS[];
 	static const string TYPE3_INDICATORS[];
-	static const string TYPE4_INDICATORS[];
-	static const string TYPE5_INDICATORS[];
-	static const string TYPE6_INDICATORS[];
-	static const string TYPE7_INDICATORS[];
 
 public:
 	TimeParser();
