@@ -81,7 +81,8 @@ string Storage::addFloatTask(string task){
 
 vector<string> Storage::retrieveTopFive(){
 	vector<string> TopFive;
-	for (int i = 0; i < 5; i++){
+	int topfunf = 5;
+	for (int i = 0; i < topfunf; i++){
 		if (i < activeTask.size()) {
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
@@ -137,21 +138,20 @@ void Storage::sortStorage(){
 	sort(activeTask.begin(), activeTask.end(), &task_sorter);
 }
 
-void Storage::writeToFile(string textFileName){
+void Storage::writeToFile(){
 	ofstream outputFile;
-	outputFile.open(textFileName);
+	outputFile.open("Doooodle.txt");
 	for (int index = 0; index < activeTask.size(); index++){
-		if (activeTask[index].endTime != activeTask[index].startTime || activeTask[index].endDate != activeTask[index].startDate){
-			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " from " << activeTask[index].startDate << " " << activeTask
-				[index].startTime << " to " << activeTask[index].endDate << " " << activeTask[index].endTime;
+		if ((activeTask[index].endTime == d2) && (activeTask[index].endDate == d1)){
+			outputFile << index + 1 << ". " << activeTask[index].taskDetails << endl;
+		}
+		else if ((activeTask[index].startTime == d2) && (activeTask[index].startDate == d1)){
+			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " by " << activeTask[index].endDate << " " << activeTask[index].endTime.time_of_day() << endl;
 		}
 		else
-			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " by " << activeTask[index].startDate << " " << activeTask[index].startTime;	
-			}
-	outputFile.close();
-	//ostringstream returnMessage;
-	//returnMessage << textFileName << " is successfully saved.\n";
-	//return returnMessage.str();
+			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " from " << activeTask[index].startDate << " " << activeTask[index].startTime.time_of_day() << " to " << activeTask[index].endDate << " " << activeTask[index].endTime.time_of_day() << endl;
+	}
+	outputFile.close();	
 }
 
 string Storage::deleteTask(int index){

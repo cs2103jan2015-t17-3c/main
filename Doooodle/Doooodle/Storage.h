@@ -35,7 +35,7 @@ public:
 	string addFloatTask(string);
 	vector<string> retrieveTopFive();
 	void sortStorage();
-	void writeToFile(string);
+	void writeToFile();
 	string deleteTask(int);
 	string searchTask(string);
 
