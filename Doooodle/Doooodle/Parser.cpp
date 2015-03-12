@@ -148,14 +148,14 @@ size_t Parser::getEndOfUserTask(string input){
 			return pos;
 		}
 	}
-	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++){
-		pos = input.find(TIME_IDENTIFIERS[i]);
+	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
+		pos = input.find(END_TIME_INDICATORS[i]);
 		if (pos != string::npos){
 			return pos;
 		}
 	}
-	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
-		pos = input.find(END_TIME_INDICATORS[i]);
+	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++){
+		pos = input.find(TIME_IDENTIFIERS[i]);
 		if (pos != string::npos){
 			return pos;
 		}

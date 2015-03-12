@@ -108,25 +108,28 @@ bool task_sorter(Task const& lhs, Task const& rhs){
 		if (rhs.startDate == d1 && rhs.startTime == d2 && rhs.endDate != d1 && rhs.endTime != d2){
 			if (lhs.endDate != rhs.endDate){
 				return lhs.endDate < rhs.endDate;
-			}else
-			return lhs.endTime < rhs.endTime;
+			}else{
+				return lhs.endTime < rhs.endTime;
+			}
 		}else if (lhs.endDate != rhs.startDate){
 				return lhs.endDate < rhs.startDate;
 			}
-			else	
-		return lhs.endTime < rhs.startTime;
-	}
-	else
-		if (rhs.startDate == d1 && rhs.startTime == d2 && rhs.endDate != d1 && rhs.endTime != d2){
-			if (lhs.startDate != rhs.endDate)
-				return lhs.startDate < rhs.endDate;
+		else{
+			return lhs.endTime < rhs.startTime;
+		}
+	}else if (rhs.startDate == d1 && rhs.startTime == d2 && rhs.endDate != d1 && rhs.endTime != d2){
+		if (lhs.startDate != rhs.endDate){
+			return lhs.startDate < rhs.endDate;
+		}else{
 			return lhs.startTime < rhs.endTime;
 		}
+		}else{
+		if (lhs.startDate != rhs.startDate){
+			return lhs.startDate < rhs.startDate;
+		}
 		else{
-				if (lhs.startDate != rhs.startDate)
-					return lhs.startDate < rhs.startDate;
-				else
-					return lhs.startTime < rhs.startTime;
+			return lhs.startTime < rhs.startTime;
+		}
 			}
 }
 
