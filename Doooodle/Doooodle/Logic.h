@@ -32,7 +32,7 @@ private:
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT
 	};
 
 	string executeLogicCore(string);
