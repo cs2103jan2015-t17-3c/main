@@ -3,6 +3,7 @@
 const int TimeParser::NO_OF_TYPE1_INDICATORS = 2;
 const int TimeParser::NO_OF_TYPE2_INDICATORS = 23;
 const int TimeParser::NO_OF_TYPE3_INDICATORS = 4;
+const int TimeParser::DIFFERENCE_BETWEEN_12HRS_24HRS = 12;
 const string TimeParser::TYPE1_INDICATORS[NO_OF_TYPE1_INDICATORS] = {":", "."};
 const string TimeParser::TYPE2_INDICATORS[NO_OF_TYPE2_INDICATORS] = {"am", "Am", "AM", "aM", "pm", "Pm", "PM", "pM", "hr", "hrs", "HR", "HRS", "Hr", "Hrs", "hours", "hour", "HOURS", "Hours", "today", "Today", "clock", ":", "."};
 const string TimeParser::TYPE3_INDICATORS[NO_OF_TYPE3_INDICATORS] = {"pm", "pM", "PM", "Pm"};
@@ -25,7 +26,7 @@ bool TimeParser::isTime(string input) {
 }
 
 boost::posix_time::ptime TimeParser::standardTime(string input) {
-	boost::posix_time::ptime time(boost::gregorian::date(), boost::posix_time::hours(0) + boost::posix_time::minutes(0));
+	boost::posix_time::ptime time(boost::gregorian::date(boost::gregorian::day_clock::local_day()), boost::posix_time::hours(0) + boost::posix_time::minutes(0));
 	size_t position = 0;
 	bool isColonDotCase = false;
 	bool isPmCase = false;
@@ -47,14 +48,16 @@ boost::posix_time::ptime TimeParser::standardTime(string input) {
 			isPmCase = true;
 		}
 	}
-
 	int timeInt = atoi(input.c_str());
-	if(timeInt<100) {
+	if(timeInt<100 && !isPmCase) {
 		time += boost::posix_time::hours(timeInt);
-	} else if((timeInt<10000) && (!isPmCase)) {
+	}else if (timeInt < 100 && isPmCase){
+		time += boost::posix_time::hours(timeInt + DIFFERENCE_BETWEEN_12HRS_24HRS);
+	}else if((timeInt<10000) && (!isPmCase)) {
 		time += boost::posix_time::hours(timeInt/100) + boost::posix_time::minutes(timeInt%100);
-	} else if((timeInt<10000) && (isPmCase)) {
-		time += boost::posix_time::hours(12+(timeInt/100)) + boost::posix_time::minutes(timeInt%100);
+	}else if((timeInt<10000) && (isPmCase)) {
+		time += boost::posix_time::hours(DIFFERENCE_BETWEEN_12HRS_24HRS + (timeInt / 100)) + boost::posix_time::minutes(timeInt % 100);
 	}
+
 	return time;
 }
