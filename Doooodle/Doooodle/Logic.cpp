@@ -30,23 +30,28 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
+		storage.writeToFile();
 		break;
 	case DEADLINE:
 		cout << commandDetails[indexToUpdate]->dateEnd << commandDetails[indexToUpdate]->timeEnd << endl;
 		displayMessageToUI = deadlineTask.loadDeadlineTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeEnd, storage);
+		storage.writeToFile();
 		break;
 	case FLOATING:
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
+		storage.writeToFile();
 		break;
 	case DELETE:
 		intToPass = atoi((commandDetails[indexToUpdate]->task).c_str());
 		displayMessageToUI = storage.deleteTask(intToPass);
+		storage.writeToFile();
 		break;
 	case SEARCH:
 		displayMessageToUI = storage.searchTask(commandDetails[indexToUpdate]->task);
+		storage.writeToFile();
 		break;
 	case EXIT:
-		storage.writeToFile("Doooodle.txt");
+		exit(0);
 		break;
 	} 
 	return displayMessageToUI;
