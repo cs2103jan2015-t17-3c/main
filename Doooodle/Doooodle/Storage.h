@@ -2,8 +2,6 @@
 #define STORAGE_H_
 
 #include <iostream>
-#include <ctime>
-#include <chrono>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -37,9 +35,9 @@ public:
 	string addFloatTask(string);
 	vector<string> retrieveTopFive();
 	void sortStorage();
-	string writeToFile(string);
+	void writeToFile(string);
 	string deleteTask(int);
-	vector<string> searchTask(string);
+	string searchTask(string);
 
 private:
 	vector<Task> archivedTask;
