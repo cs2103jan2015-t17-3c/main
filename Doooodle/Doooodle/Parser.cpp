@@ -29,6 +29,7 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	endDate = getEndDate(pos);
 	startTime = getStartTime(pos);
 	endTime = getEndTime(pos);
+	cout << startDate << " " << endDate << endl;
 	if (startDate == endDate && startTime == endTime){
 		startDate = d1;
 		startTime = d2;
@@ -43,6 +44,7 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59));
 		endTime = t;
 	}
+	cout << startDate << " " << endDate << endl;
 	return;
 }
 

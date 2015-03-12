@@ -125,7 +125,6 @@ string Storage::deleteTask(int index){
 	vector<Task>::iterator iter = activeTask.begin();
 	feedbackMessage << activeTask[index - 1].taskDetails << " is successfully deleted.\n";
 	activeTask.erase(iter + index - 1);
-	
 	return feedbackMessage.str();
 }
 

@@ -60,7 +60,7 @@ bool DateParser::isDate(string input){
 		if (input == TIME_IDENTIFIERS[i]){
 			return true;
 		}
-		else if (atoi(input.c_str())>2015){
+		else if (atoi(input.c_str())>=2015){
 			removeSlash(input);
 			if (atoi(input.c_str()) > 20150000){
 				return true;
@@ -88,9 +88,10 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 			d=today+days(nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]));
 		}
 	}
+	removeSlash(input);
 	if (atoi(input.c_str()) > 20150000){
-			d=from_undelimited_string(input);
-		}
+		d=from_undelimited_string(input);
+	}
 
 	return d;
 	//std::cout << to_iso_extended_string(d1) << std::endl;
