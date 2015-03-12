@@ -10,6 +10,7 @@ UI::UI(void) {
 }
 UI::~UI(void) {
 }
+
 void UI::readMessage(){
 	string command;
 	string message;
@@ -20,7 +21,6 @@ void UI::readMessage(){
 		cout << MESSAGE_TOPFIVE;
 		displayMessage = logic.displayTopFive();
 		for (int i = 0; i<displayMessage.size();i++){
-
 			displayMessage = logic.displayTopFive();
 			printToUser(displayMessage[i]);
 		}
