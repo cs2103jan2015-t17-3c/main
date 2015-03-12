@@ -3,9 +3,8 @@
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
-date d1(not_a_date_time);
-ptime d2(not_a_date_time);
-
+date nonDate(not_a_date_time);
+ptime nonTime(not_a_date_time);
 
 Storage::Storage(void){
 };
@@ -13,126 +12,125 @@ Storage::Storage(void){
 Storage::~Storage(void){
 };
 
-string Storage::addNormalTask(string task, date startDate, date endDate, ptime startTime, ptime endTime){
+Task initializeNormalTask(string task, date startDate, date endDate, ptime startTime, ptime endTime){
+	int defaultWidth = 25;
 	Task temp;
 	temp.taskDetails = task;
 	temp.startDate = startDate;
 	temp.endDate = endDate;
 	temp.startTime = startTime;
 	temp.endTime = endTime;
-	activeTask.push_back(temp);
-	
+	temp.taskType = NORMAL;
+	ostringstream outputTask;
+	outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day() << " to " << endDate << " " << endTime.time_of_day();
+	temp.taskDisplay = outputTask.str();
+	return temp;
+}
+
+History registerHistory(Task temp){
 	History trace;
 	ptime currentTime;
 	currentTime = second_clock::local_time();
-	//string currentTime = ctime(&tt);
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
-	commandHistory.push_back(trace);
+	return trace;
+}
+
+string Storage::addNormalTask(string task, date startDate, date endDate, ptime startTime, ptime endTime){
 	
+	Task temp = initializeNormalTask(task, startDate, endDate, startTime, endTime);
+	activeTask.push_back(temp);
+	History trace = registerHistory(temp) ;
+	commandHistory.push_back(trace);
 	ostringstream feedback;
-	feedback << "Normal task: " << task << " from " << startDate <<" " << startTime.time_of_day() << " to " << endDate << " " << endTime.time_of_day() << " successfully added.\n";
+	feedback << "Normal task: " << temp.taskDisplay << " successfully added.\n";
 	return feedback.str();
 };
 
-string Storage::addDeadlineTask(string task, date date, ptime time){
+Task initializeDeadlineTask(string task, date endDate, ptime endTime){
+	int defaultWidth = 25;
 	Task temp;
 	temp.taskDetails = task;
-	temp.startDate = d1;
-	temp.startTime = d2;
-	temp.endTime = time;
-	temp.endDate = date;
+	temp.startDate = nonDate;
+	temp.endDate = endDate;
+	temp.startTime = nonTime;
+	temp.endTime = endTime;
+	temp.taskType = DEADLINE;
+	ostringstream outputTask;
+	outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day();
+	temp.taskDisplay = outputTask.str();
+
+	return temp;
+}
+
+string Storage::addDeadlineTask(string task, date endDate, ptime endTime){
+	Task temp = initializeDeadlineTask(task,endDate,endTime);
 	activeTask.push_back(temp);
-	
-	History trace;
-	ptime currentTime;
-	currentTime = second_clock::local_time();
-	//string currentTime = ctime(&tt);
-	trace.requestTime = currentTime;
-	trace.commandDetails = temp;
+	History trace = registerHistory(temp);
 	commandHistory.push_back(trace);
-	
 	ostringstream feedback;
-	feedback << "Deadline task: " << task << " by " << date << " " << time.time_of_day() << " successfully added.\n";
+	feedback << "Deadline task: " << temp.taskDisplay << " successfully added.\n";
 	return feedback.str();
 };
+
+Task initializeFloatTask(string task){
+	int defaultWidth = 25;
+	Task temp;
+	temp.taskDetails = task;
+	temp.startDate = nonDate;
+	temp.endDate = nonDate;
+	temp.startTime = nonTime;
+	temp.endTime = nonTime;
+	temp.taskType = FLOAT;
+	ostringstream outputTask;
+	outputTask << left << setw(defaultWidth) << task;
+	temp.taskDisplay = outputTask.str();
+	return temp;
+}
 
 string Storage::addFloatTask(string task){
-	Task temp;
-	temp.taskDetails = task;
-	temp.startTime = d2;
-	temp.endTime = d2;
-	temp.startDate = d1;
-	temp.endDate = d1;
+	Task temp = initializeFloatTask(task);
 	activeTask.push_back(temp);
-	
-	History trace;
-	ptime currentTime;
-	currentTime = second_clock::local_time();
-	//string currentTime = ctime(&tt);
-	trace.requestTime = currentTime;
-	trace.commandDetails = temp;
+	History trace = registerHistory(temp);
 	commandHistory.push_back(trace);
-	
 	ostringstream feedback;
-	feedback << "Float task: " << task << " successfully added.\n";
+	feedback << "Float task: " << temp.taskDisplay << " successfully added.\n";
 	return feedback.str();
 };
 
 vector<string> Storage::retrieveTopFive(){
-	vector<string> TopFive;
-	int defaultwidth = 25;
-	int topfunf = 5;
-	for (int i = 0; i < topfunf; i++){
-		if (i < activeTask.size()) {
+	vector<string> TopTasks;
+	int defaultWidth = 25;
+	int numberOfDisplay = 5;
+	for (int i = 0; i < numberOfDisplay && i < activeTask.size(); i++){
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
-			if ((activeTask[i].endTime == d2) && (activeTask[i].endDate == d1)){  
-				oneTask << i + 1 << ". " << left << setw(defaultwidth) << dummy.taskDetails ;
-			}
-			else 
-				if ((activeTask[i].startTime == d2) && (activeTask[i].startDate == d1)){
-					oneTask << i + 1 << ". " << left << setw(defaultwidth) << dummy.taskDetails << " by " << dummy.endDate << " " << dummy.endTime.time_of_day();
-				}
-				else
-					oneTask << i + 1 << ". " << left << setw(defaultwidth) << dummy.taskDetails << " from " << dummy.startDate << " " << dummy.startTime.time_of_day() << " to " << dummy.endDate << " " << dummy.endTime.time_of_day();
-			TopFive.push_back(oneTask.str());
-		}
-		else {
-			TopFive.push_back("");
-		}
-	}
-	return TopFive;
+			oneTask << i + 1 << ". " << dummy.taskDisplay;
+		    TopTasks.push_back(oneTask.str());
+		} 	
+	return TopTasks;
 }
 
+
 bool task_sorter(Task const& lhs, Task const& rhs){
-	if (lhs.startDate == d1 && lhs.startTime == d2 && lhs.endDate != d1 && lhs.endTime != d2){
-		if (rhs.startDate == d1 && rhs.startTime == d2 && rhs.endDate != d1 && rhs.endTime != d2){
-			if (lhs.endDate != rhs.endDate){
-				return lhs.endDate < rhs.endDate;
-			}else{
-				return lhs.endTime < rhs.endTime;
-			}
-		}else if (lhs.endDate != rhs.startDate){
-				return lhs.endDate < rhs.startDate;
-			}
-		else{
-			return lhs.endTime < rhs.startTime;
-		}
-	}else if (rhs.startDate == d1 && rhs.startTime == d2 && rhs.endDate != d1 && rhs.endTime != d2){
-		if (lhs.startDate != rhs.endDate){
-			return lhs.startDate < rhs.endDate;
-		}else{
-			return lhs.startTime < rhs.endTime;
-		}
-		}else{
-		if (lhs.startDate != rhs.startDate){
+	if (lhs.taskType == NORMAL && rhs.taskType == NORMAL){
+		if (lhs.startDate != rhs.startDate)
 			return lhs.startDate < rhs.startDate;
-		}
-		else{
-			return lhs.startTime < rhs.startTime;
-		}
-			}
+		return lhs.startTime < rhs.startTime;
+	}else if (lhs.taskType == NORMAL && rhs.taskType == DEADLINE){
+		if (lhs.startDate != rhs.endDate)
+			return lhs.startDate < rhs.endDate;
+		return lhs.startTime < rhs.endTime;
+	}else if (lhs.taskType == DEADLINE && rhs.taskType == NORMAL){
+		if (lhs.endDate != rhs.startDate)
+			return lhs.endDate < rhs.startDate;
+		return lhs.endTime < rhs.startTime;
+	}else if (lhs.taskType == DEADLINE && rhs.taskType == DEADLINE){
+		if (lhs.endDate != rhs.endDate)
+			return lhs.endDate < rhs.endDate;
+		return lhs.endTime < rhs.endTime;
+	}else if (lhs.taskType == FLOAT || rhs.taskType == FLOAT)
+		return lhs.endDate < rhs.endDate;
 }
 
 void Storage::sortStorage(){
@@ -143,14 +141,7 @@ void Storage::writeToFile(){
 	ofstream outputFile;
 	outputFile.open("Doooodle.txt");
 	for (int index = 0; index < activeTask.size(); index++){
-		if ((activeTask[index].endTime == d2) && (activeTask[index].endDate == d1)){
-			outputFile << index + 1 << ". " << activeTask[index].taskDetails << endl;
-		}
-		else if ((activeTask[index].startTime == d2) && (activeTask[index].startDate == d1)){
-			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " by " << activeTask[index].endDate << " " << activeTask[index].endTime.time_of_day() << endl;
-		}
-		else
-			outputFile << index + 1 << ". " << activeTask[index].taskDetails << " from " << activeTask[index].startDate << " " << activeTask[index].startTime.time_of_day() << " to " << activeTask[index].endDate << " " << activeTask[index].endTime.time_of_day() << endl;
+		outputFile << index + 1 << ". " << activeTask[index].taskDisplay << endl;
 	}
 	outputFile.close();	
 }
@@ -158,8 +149,9 @@ void Storage::writeToFile(){
 string Storage::deleteTask(int index){
 	ostringstream feedbackMessage;
 	vector<Task>::iterator iter = activeTask.begin();
-	feedbackMessage << activeTask[index - 1].taskDetails << " is successfully deleted.\n";
+	string tempDisplay = activeTask[index - 1].taskDetails;;	
 	activeTask.erase(iter + index - 1);
+	feedbackMessage << tempDisplay << " is successfully deleted.\n";
 	return feedbackMessage.str();
 }
 
@@ -175,14 +167,10 @@ string Storage::searchTask(string thingsToSearch){
 		if (found != string::npos){
 			findIt = true;
 			ostringstream oneTask;
-			if (iter->endTime != iter->startTime || iter->endDate != iter->startDate){
-				oneTask << count << ". " << iter->taskDetails << " from " << iter->startDate << " " << iter->startTime << " to " << iter->endDate << " " << iter->endTime;
-				}
-				else
-					oneTask << count << ". " << iter->taskDetails << " by " << iter->startDate << " " << iter-> startTime;
+			oneTask << count << ". " << iter->taskDisplay << endl;		
 			searchedStuff.push_back(oneTask.str());
+			count++;
 		}
-		count++;
 	}
 	if (findIt){
 		return "item found.";

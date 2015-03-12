@@ -13,6 +13,10 @@
 using namespace std;
 using namespace boost;
 
+enum TYPE_OF_TASK{
+	DEADLINE, FLOAT, NORMAL
+};
+
 struct Task{
 	string taskDetails;
 	boost::gregorian::date startDate;
@@ -20,6 +24,8 @@ struct Task{
 
 	posix_time::ptime endTime;
 	posix_time::ptime startTime;
+	TYPE_OF_TASK taskType;
+	string taskDisplay;
 };
 struct History{
 	gregorian::date requestDate;
