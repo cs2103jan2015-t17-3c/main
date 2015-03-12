@@ -53,7 +53,7 @@ string Storage::addDeadlineTask(string task, date date, ptime time){
 	commandHistory.push_back(trace);
 	
 	ostringstream feedback;
-	feedback << "Deadline task: " << task << " at " << date << " " << time.time_of_day() << " successfully added.\n";
+	feedback << "Deadline task: " << task << " by " << date << " " << time.time_of_day() << " successfully added.\n";
 	return feedback.str();
 };
 
@@ -104,9 +104,30 @@ vector<string> Storage::retrieveTopFive(){
 }
 
 bool task_sorter(Task const& lhs, Task const& rhs){
-	if (lhs.startDate != rhs.startDate)
-		return lhs.startDate < rhs.startDate;
-	return lhs.startTime < rhs.startTime;
+	if (lhs.startDate == d1 && lhs.startTime == d2 && lhs.endDate != d1 && lhs.endTime != d2){
+		if (rhs.startDate == d1 && rhs.startTime == d2 && rhs.endDate != d1 && rhs.endTime != d2){
+			if (lhs.endDate != rhs.endDate){
+				return lhs.endDate < rhs.endDate;
+			}else
+			return lhs.endTime < rhs.endTime;
+		}else if (lhs.endDate != rhs.startDate){
+				return lhs.endDate < rhs.startDate;
+			}
+			else	
+		return lhs.endTime < rhs.startTime;
+	}
+	else
+		if (rhs.startDate == d1 && rhs.startTime == d2 && rhs.endDate != d1 && rhs.endTime != d2){
+			if (lhs.startDate != rhs.endDate)
+				return lhs.startDate < rhs.endDate;
+			return lhs.startTime < rhs.endTime;
+		}
+		else{
+				if (lhs.startDate != rhs.startDate)
+					return lhs.startDate < rhs.startDate;
+				else
+					return lhs.startTime < rhs.startTime;
+			}
 }
 
 void Storage::sortStorage(){
