@@ -12,6 +12,7 @@
     <ClCompile Include="FloatingTask.cpp" />
     <ClCompile Include="DateParser.cpp" />
     <ClCompile Include="TimeParser.cpp" />
+    <ClCompile Include="UndoTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
@@ -25,5 +26,6 @@
     <ClInclude Include="FloatingTask.h" />
     <ClInclude Include="DateParser.h" />
     <ClInclude Include="TimeParser.h" />
+    <ClInclude Include="UndoTask.h" />
   </ItemGroup>
 </Project>
