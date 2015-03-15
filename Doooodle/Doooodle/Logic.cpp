@@ -52,6 +52,14 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	case EXIT:
 		exit(0);
 		break;
+	case UNDO:
+		displayMessageToUI = undoTask.loadUndoTask(commandDetails, storage);
+		storage.writeToFile;
+		break;
+	case EDIT:
+		displayMessageToUI = "";
+		storage.writeToFile;
+		break;
 	case INVALID:
 		displayMessageToUI = "ERROR!";
 		break;
@@ -80,6 +88,12 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 	}
 	else if(commandDetails[indexToUpdate]->commandType=="exit") {
 		return EXIT;
+	}
+	else if(commandDetails[indexToUpdate]->commandType=="undo") {
+		return UNDO;
+	}
+	else if(commandDetails[indexToUpdate]->commandType=="edit") {
+		return EDIT;
 	}
 	else return INVALID;
 }

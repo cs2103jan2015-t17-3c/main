@@ -12,6 +12,7 @@
 #include "NormalTask.h"
 #include "DeadlineTask.h"
 #include "FloatingTask.h"
+#include "UndoTask.h"
 
 using namespace std;
 
@@ -29,10 +30,11 @@ private:
 	NormalTask normTask;
 	DeadlineTask deadlineTask;
 	FloatingTask floatingTask;
+	UndoTask undoTask;
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
 	};
 
 	string executeLogicCore(string);
