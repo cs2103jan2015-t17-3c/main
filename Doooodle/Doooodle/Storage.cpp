@@ -156,7 +156,7 @@ string Storage::deleteTask(int index){
 }
 
 //vector<string> ususal
-string Storage::searchTask(string thingsToSearch){
+vector<string> Storage::searchTask(string thingsToSearch){
 	vector<string> searchedStuff;
 	bool findIt = false;
 	vector<Task>::iterator iter;
@@ -173,11 +173,12 @@ string Storage::searchTask(string thingsToSearch){
 		}
 	}
 	if (findIt){
-		return "item found.";
+		return searchedStuff;
 	}
-	else
-		return "item is not there.";
-	//return findIt;
+	else {
+		searchedStuff.push_back("Item is not there\n");
+		return searchedStuff;
+	}	//return findIt;
 	//return searchedStuff;
 }
 
