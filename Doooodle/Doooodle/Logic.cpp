@@ -26,7 +26,6 @@ string Logic::executeLogicCore(string userInput) {
 
 string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	string displayMessageToUI;
-	int intToPass;
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
@@ -41,9 +40,7 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		storage.writeToFile();
 		break;
 	case DELETE:
-		intToPass = atoi((commandDetails[indexToUpdate]->task).c_str());
-		displayMessageToUI = storage.deleteTask(intToPass);
-		storage.writeToFile();
+		displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
 		break;
 	case SEARCH:
 		displayMessageToUI = storage.searchTask(commandDetails[indexToUpdate]->task);

@@ -13,6 +13,9 @@
 #include "DeadlineTask.h"
 #include "FloatingTask.h"
 #include "UndoTask.h"
+#include "DeleteTask.h"
+#include "SearchTask.h"
+#include "EditTask.h"
 
 using namespace std;
 
@@ -31,6 +34,10 @@ private:
 	DeadlineTask deadlineTask;
 	FloatingTask floatingTask;
 	UndoTask undoTask;
+	DeleteTask deleteTask;
+	SearchTask searchTask;
+	EditTask editTask;
+
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
