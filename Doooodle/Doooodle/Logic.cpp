@@ -29,15 +29,12 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
-		storage.writeToFile();
 		break;
 	case DEADLINE:
 		displayMessageToUI = deadlineTask.loadDeadlineTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeEnd, storage);
-		storage.writeToFile();
 		break;
 	case FLOATING:
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
-		storage.writeToFile();
 		break;
 	case DELETE:
 		displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
@@ -55,7 +52,6 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		break;
 	case EDIT:
 		displayMessageToUI = "";
-		storage.writeToFile;
 		break;
 	case INVALID:
 		displayMessageToUI = "ERROR!";
