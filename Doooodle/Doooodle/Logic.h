@@ -31,11 +31,10 @@ private:
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH
+		DEADLINE, FLOATING, NORMAL, DELETE 
 	};
 
 	string executeLogicCore(string);
-	string executeTask(TASK_TYPE, int);
 	TASK_TYPE determineSpecificTaskType(int);
 };
 
