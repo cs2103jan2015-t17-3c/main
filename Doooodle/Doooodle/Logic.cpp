@@ -40,8 +40,7 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
 		break;
 	case SEARCH:
-		displayMessageToUI = storage.searchTask(commandDetails[indexToUpdate]->task);
-		storage.writeToFile();
+		displayMessageToUI = searchTask.loadSearchTask(commandDetails[indexToUpdate]->task, storage);
 		break;
 	case EXIT:
 		exit(0);
