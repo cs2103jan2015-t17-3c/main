@@ -60,12 +60,12 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 }
 
 Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
-	boost::gregorian::date d2(boost::date_time::not_a_date_time);
+	boost::gregorian::date d(boost::date_time::not_a_date_time);
 	if(commandDetails[indexToUpdate]->commandType=="add") {
-		if((commandDetails[indexToUpdate]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateEnd==d2)) {
+		if((commandDetails[indexToUpdate]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateEnd==d)) {
 			return FLOATING;
 		}
-		else if((commandDetails[indexToUpdate]->timeStart==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateStart==d2)) {
+		else if((commandDetails[indexToUpdate]->timeStart==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateStart==d)) {
 			return DEADLINE;
 		}
 		else {

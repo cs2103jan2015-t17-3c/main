@@ -13,6 +13,9 @@
     <ClCompile Include="DateParser.cpp" />
     <ClCompile Include="TimeParser.cpp" />
     <ClCompile Include="UndoTask.cpp" />
+    <ClCompile Include="SearchTask.cpp" />
+    <ClCompile Include="DeleteTask.cpp" />
+    <ClCompile Include="EditTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
@@ -27,5 +30,8 @@
     <ClInclude Include="DateParser.h" />
     <ClInclude Include="TimeParser.h" />
     <ClInclude Include="UndoTask.h" />
+    <ClInclude Include="SearchTask.h" />
+    <ClInclude Include="DeleteTask.h" />
+    <ClInclude Include="EditTask.h" />
   </ItemGroup>
 </Project>
