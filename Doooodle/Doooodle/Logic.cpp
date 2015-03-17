@@ -16,6 +16,19 @@ vector<string> Logic::receiveCommand(string userInput) {
 	return displayMessage;
 }
 
+bool Logic::isSearch(string userInput) {
+	int indexToUpdate = commandDetails.size();
+	commandDetails.push_back(new CommandDetails());
+	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
+	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
+	if (taskType == SEARCH) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 vector<string> Logic::executeLogicCore(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
