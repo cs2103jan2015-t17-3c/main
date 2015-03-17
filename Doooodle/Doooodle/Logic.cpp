@@ -8,7 +8,9 @@ Logic::~Logic(void) {
 }
 
 vector<string> Logic::displayTopFive(void) {
-	return storage.retrieveTopFive();
+	vector<string> topFiveToDisplay = storage.retrieveTopFive();
+	assert(topFiveToDisplay.size()==5);
+	return topFiveToDisplay; 
 }
 
 vector<string> Logic::receiveCommand(string userInput) {
@@ -71,6 +73,7 @@ vector<string> Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		displayMessageToUI = displayInvalidMessage;
 		break;
 	} 
+	assert(displayMessageToUI.size()!=0);
 	return displayMessageToUI;
 }
 

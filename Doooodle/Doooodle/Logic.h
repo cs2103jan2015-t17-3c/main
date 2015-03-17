@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <assert.h>
 #include <boost/date_time.hpp>
 #include "Parser.h"
 #include "Storage.h"

@@ -3,6 +3,7 @@
 #define SEARCHTASK_H_
 
 #include <iostream>
+#include <assert.h>
 #include "Storage.h"
 
 using namespace std;
