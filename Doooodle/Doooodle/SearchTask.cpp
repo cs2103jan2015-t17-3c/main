@@ -7,8 +7,9 @@ SearchTask::SearchTask(void) {
 SearchTask::~SearchTask(void) {
 }
 
-string SearchTask::loadSearchTask(string stringToSearch, Storage& storage){
-	string displayMessage = storage.searchTask(stringToSearch);
+vector<string> SearchTask::loadSearchTask(string stringToSearch, Storage& storage){
+	vector<string> displayMessage;
+	displayMessage.push_back(storage.searchTask(stringToSearch));
 	storage.writeToFile;
 	return displayMessage;
 }

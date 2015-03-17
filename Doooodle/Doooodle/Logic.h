@@ -24,7 +24,7 @@ class Logic {
 public:
 	Logic(void);
 	~Logic(void);
-	string receiveCommand(string);
+	vector<string> receiveCommand(string);
 	vector<string> displayTopFive(void);
 
 private:
@@ -44,8 +44,8 @@ private:
 		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
 	};
 
-	string executeLogicCore(string);
-	string executeTask(TASK_TYPE, int);
+	vector<string> executeLogicCore(string);
+	vector<string> executeTask(TASK_TYPE, int);
 	TASK_TYPE determineSpecificTaskType(int);
 };
 

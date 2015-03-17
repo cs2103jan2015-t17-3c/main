@@ -11,12 +11,12 @@ vector<string> Logic::displayTopFive(void) {
 	return storage.retrieveTopFive();
 }
 
-string Logic::receiveCommand(string userInput) {
-	string displayMessage = executeLogicCore(userInput);
+vector<string> Logic::receiveCommand(string userInput) {
+	vector<string> displayMessage = executeLogicCore(userInput);
 	return displayMessage;
 }
 
-string Logic::executeLogicCore(string userInput) {
+vector<string> Logic::executeLogicCore(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
@@ -24,8 +24,10 @@ string Logic::executeLogicCore(string userInput) {
 	return executeTask(taskType, indexToUpdate);
 }
 
-string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
-	string displayMessageToUI;
+vector<string> Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
+	vector<string> displayMessageToUI;
+	vector<string> displayInvalidMessage;
+	displayInvalidMessage.push_back("ERROR!");
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
@@ -50,10 +52,10 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		storage.writeToFile;
 		break;
 	case EDIT:
-		displayMessageToUI = "";
+		//displayMessageToUI = " ";
 		break;
 	case INVALID:
-		displayMessageToUI = "ERROR!";
+		displayMessageToUI = displayInvalidMessage;
 		break;
 	} 
 	return displayMessageToUI;

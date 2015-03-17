@@ -7,8 +7,9 @@ EditTask::EditTask(void) {
 EditTask::~EditTask(void) {
 }
 
-string EditTask::loadEditTask(int intToDelete, Storage& storage){
-	string displayMessage =  storage.deleteTask(intToDelete);
+vector<string> EditTask::loadEditTask(int intToDelete, Storage& storage){
+	vector<string> displayMessage;
+	displayMessage.push_back(storage.deleteTask(intToDelete));
 	storage.writeToFile;
 	return displayMessage;
 }

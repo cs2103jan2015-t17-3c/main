@@ -12,7 +12,7 @@ class SearchTask {
 public:
 	SearchTask(void);
 	~SearchTask(void);
-	string loadSearchTask(string, Storage&);
+	vector<string> loadSearchTask(string, Storage&);
 
 private:
 

@@ -16,7 +16,7 @@ class UndoTask {
 public:
 	UndoTask(void);
 	~UndoTask(void);
-	string loadUndoTask(vector<CommandDetails*>, Storage&);
+	vector<string> loadUndoTask(vector<CommandDetails*>, Storage&);
 
 private:
 	enum TASK_TYPE {
