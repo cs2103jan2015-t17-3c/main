@@ -20,7 +20,7 @@ public:
 
 private:
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
+		ADD, DELETE, EDIT, NIL
 	};
 	string task;
 	boost::gregorian::date dateStart;
@@ -29,6 +29,9 @@ private:
 	boost::posix_time::ptime timeEnd;
 
 	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>);
+	vector<string> executeUndoAdd(vector<CommandDetails*>, Storage&);
+	vector<string> executeUndoDelete(vector<CommandDetails*>, Storage&);
+	vector<string> executeUndoEdit(vector<CommandDetails*>, Storage&);
 };
 
 #endif
