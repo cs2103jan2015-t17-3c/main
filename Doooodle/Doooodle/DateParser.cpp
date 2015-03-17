@@ -1,6 +1,6 @@
 #include "DateParser.h"
 using namespace boost::gregorian;
-const int DateParser::NO_OF_DELIMITERS = 1;
+const int DateParser::NO_OF_DELIMITERS = 2;
 const int DateParser::NO_OF_NEARFUTURE_IDENTIFIERS = 4;
 const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
 const int DateParser::NO_OF_TIME_IDENTIFIERS = 18;
@@ -14,7 +14,7 @@ const string DateParser::WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS] = { "M
 
 const string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS] = { "Tomorrow", "tomorrow", "today", "Today" };
 
-const string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\"};
+const string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\","/"};
 
 DateParser::DateParser(){
 

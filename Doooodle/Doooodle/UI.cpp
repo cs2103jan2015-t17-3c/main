@@ -1,6 +1,5 @@
 #include "UI.h"
 
-const string UI::MESSAGE_ADD = "added to calendar successfully";
 const string UI::MESSAGE_DEFAULT = "Enter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
 *        Doooodle       *\n*************************\n";

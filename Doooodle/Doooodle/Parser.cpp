@@ -141,30 +141,45 @@ size_t Parser::getStartOfUserTask(string input){
 
 size_t Parser::getEndOfUserTask(string input){
 	size_t pos;
+	size_t position;
 	int num;
+	//check for start time indicators
 	for (int i = 0; i < NO_OF_START_TIME_INDICATORS; i++){
 		pos = input.find(START_TIME_INDICATORS[i]);
 		if (pos != string::npos){
-			return pos;
+			break;
 		}
 	}
-	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
-		pos = input.find(END_TIME_INDICATORS[i]);
-		if (pos != string::npos){
-			return pos;
-		}
-	}
+	position = pos;
+	//check for time indentidiers
 	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++){
 		pos = input.find(TIME_IDENTIFIERS[i]);
 		if (pos != string::npos){
-			return pos;
+			break;
 		}
 	}
+	if (pos < position){
+		position = pos;
+	}
+	//check for end time indicators
+	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
+		pos = input.find(END_TIME_INDICATORS[i]);
+		if (pos != string::npos){
+			break;
+		}
+	}
+	if (pos < position){
+		position = pos;
+	}
+	//check for date
 	getStartDate(num);
 	pos = intToPos(num, input);
 	pos++;
-
-	return pos;
+	if (pos < position){
+		position = pos;
+	}
+	//return the smallest position which is the end position of user task
+	return position;
 }
 
 void Parser::assignToday(boost::gregorian::date& d){
