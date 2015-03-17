@@ -29,18 +29,18 @@ vector<string> UndoTask::loadUndoTask(vector<CommandDetails*> CD, Storage& stora
 }
 
 vector<string> UndoTask::executeUndoAdd(vector<CommandDetails*> CD, Storage& storage) {
-	vector<string> displayMessage;
-//
+	CD.pop_back();
+	return storage.undoAdd();
 }
 
 vector<string> UndoTask::executeUndoDelete(vector<CommandDetails*> CD, Storage& storage) {
-	vector<string> displayMessage;
-//
+	CD.pop_back();
+	storage.undoDelete();
 }
 
 vector<string> UndoTask::executeUndoEdit(vector<CommandDetails*> CD, Storage& storage) {
-	vector<string> displayMessage;
-//
+	CD.pop_back();
+	storage.undoEdit();
 }
 
 UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*> CD) {
