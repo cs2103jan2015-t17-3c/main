@@ -19,6 +19,7 @@ private:
 	static const string MESSAGE_TOPFIVE;
 
 	void printToUser(string);
+	void printVectorToUser(vector<string>);
 
 public:
 	UI(void);

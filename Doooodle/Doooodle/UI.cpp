@@ -19,16 +19,20 @@ void UI::readMessage(){
 	while (true){
 		cout << MESSAGE_WELCOME << endl;
 		cout << MESSAGE_TOPFIVE;
-		displayMessage = logic.displayTopFive();
-		for (int i = 0; i<displayMessage.size(); i++){
-			displayMessage = logic.displayTopFive();
-			printToUser(displayMessage[i]);
+		if (logic.isSearch()){
+			displayMessage = logic.displaySearchResults();
 		}
+		else{
+			displayMessage = logic.displayTopFive();
+		}
+		printVectorToUser(displayMessage);
 		cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+		//The above is the top segment
 		printToUser(message);
-
+		//The above is the middle segment
 		cout << endl << endl << MESSAGE_DEFAULT;
 		getline(cin, command);
+		//The above is the bottom segment
 		cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
 		message = logic.receiveCommand(command);
 	}
@@ -37,4 +41,10 @@ void UI::readMessage(){
 
 void UI::printToUser(string message){
 	cout << message << endl;
+}
+
+void UI::printVectorToUser(vector<string> vec){
+	for (int i = 0; i<vec.size(); i++){
+		printToUser(vec[i]);
+	}
 }
