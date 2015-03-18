@@ -98,11 +98,7 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 			d = from_undelimited_string(input);
 		}
 		catch (...){
-<<<<<<< HEAD
-
-=======
 			cout << "wrong date format!" << endl;
->>>>>>> origin/master
 		}
 	}
 
