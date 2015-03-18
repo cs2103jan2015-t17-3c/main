@@ -19,7 +19,7 @@ Logic::~Logic(void) {
 
 vector<string> Logic::displayTopFive(void) {
 	vector<string> topFiveToDisplay = storage.retrieveTopFive();
-	assert(topFiveToDisplay.size()==5);
+	assert(topFiveToDisplay.size()<=5);
 	return topFiveToDisplay; 
 }
 
@@ -73,7 +73,12 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
 		break;
 	case DELETE:
-		displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+		if (lastCommandIsSearch) {
+			displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+		}
+		else{
+			displayMessageToUI = deleteSearchTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+		}
 		break;
 	case SEARCH:
 		displayMessageToUI = MESSAGE_INVALID;
@@ -83,7 +88,8 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		break;
 	case UNDO:
 		displayMessageToUI = undoTask.loadUndoTask(commandDetails, storage);
-		storage.writeToFile;
+		storage.sortStorage();
+		storage.writeToFile();
 		break;
 	case EDIT:
 		//displayMessageToUI = " ";
@@ -125,4 +131,9 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 		return EDIT;
 	}
 	else return INVALID;
+}
+
+bool Logic::lastCommandIsSearch(void) {
+	int index = commandDetails.size()-1;
+	return (commandDetails[index]->commandType==MESSAGE_SEARCH);
 }

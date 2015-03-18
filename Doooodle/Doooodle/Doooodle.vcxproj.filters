@@ -16,6 +16,7 @@
     <ClCompile Include="SearchTask.cpp" />
     <ClCompile Include="DeleteTask.cpp" />
     <ClCompile Include="EditTask.cpp" />
+    <ClCompile Include="DeleteSearchTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
@@ -33,5 +34,6 @@
     <ClInclude Include="SearchTask.h" />
     <ClInclude Include="DeleteTask.h" />
     <ClInclude Include="EditTask.h" />
+    <ClInclude Include="DeleteSearchTask.h" />
   </ItemGroup>
 </Project>

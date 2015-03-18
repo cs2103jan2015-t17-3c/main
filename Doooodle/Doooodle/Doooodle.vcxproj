@@ -69,6 +69,7 @@
     <ClCompile Include="CommandDetails.cpp" />
     <ClCompile Include="DateParser.cpp" />
     <ClCompile Include="DeadlineTask.cpp" />
+    <ClCompile Include="DeleteSearchTask.cpp" />
     <ClCompile Include="DeleteTask.cpp" />
     <ClCompile Include="EditTask.cpp" />
     <ClCompile Include="FloatingTask.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="CommandDetails.h" />
     <ClInclude Include="DateParser.h" />
     <ClInclude Include="DeadlineTask.h" />
+    <ClInclude Include="DeleteSearchTask.h" />
     <ClInclude Include="DeleteTask.h" />
     <ClInclude Include="EditTask.h" />
     <ClInclude Include="FloatingTask.h" />

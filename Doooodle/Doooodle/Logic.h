@@ -17,6 +17,7 @@
 #include "DeleteTask.h"
 #include "SearchTask.h"
 #include "EditTask.h"
+#include "DeleteSearchTask.h"
 
 using namespace std;
 
@@ -38,6 +39,7 @@ private:
 	FloatingTask floatingTask;
 	UndoTask undoTask;
 	DeleteTask deleteTask;
+	DeleteSearchTask deleteSearchTask;
 	SearchTask searchTask;
 	EditTask editTask;
 	static char buffer[300];
@@ -59,6 +61,7 @@ private:
 	string executeLogicCore(string);
 	string executeTask(TASK_TYPE, int);
 	TASK_TYPE determineSpecificTaskType(int);
+	bool lastCommandIsSearch(void);
 };
 
 
