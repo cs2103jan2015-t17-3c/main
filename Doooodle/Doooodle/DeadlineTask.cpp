@@ -14,7 +14,7 @@ vector<string> DeadlineTask::loadDeadlineTask(string task, boost::gregorian::dat
 	this->task = task;
 	this->dateEnd = dateEnd;
 	this->timeEnd = timeEnd;
-	string displayMessageToLogic = storage.addDeadlineTask(task, dateEnd, timeEnd);
+	vector<string> displayMessageToLogic = storage.addDeadlineTask(task, dateEnd, timeEnd);
 	storage.sortStorage();
 	storage.writeToFile();
 	return displayMessageToLogic;
