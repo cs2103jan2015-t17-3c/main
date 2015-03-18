@@ -61,7 +61,7 @@ private:
 	vector<Task> activeTask;
 	vector<History> commandHistory;
 	static const string MESSAGE_UNDO;
-	Task tempTask;
+	stack<Task> tempTask;
 	stack<string> taskDetailsHistory;
 	vector<vector<Task>::iterator> tempSearchIterator;
 };

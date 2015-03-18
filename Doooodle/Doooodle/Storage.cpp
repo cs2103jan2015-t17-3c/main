@@ -155,7 +155,7 @@ string Storage::deleteTask(int index){
 	ostringstream feedbackMessage;
 	vector<Task>::iterator iter = activeTask.begin();
 	string tempDisplay = activeTask[index - 1].taskDetails;
-	tempTask = activeTask[index - 1];
+	tempTask.push(activeTask[index - 1]);
 
 	activeTask.erase(iter + index - 1);
 	feedbackMessage << tempDisplay << " is successfully deleted.\n";
@@ -206,7 +206,8 @@ string Storage::undoAdd(){
 }
 
 string Storage::undoDelete(){
-	activeTask.push_back(tempTask);
+	activeTask.push_back(tempTask.top());
+	tempTask.pop();
 	sortStorage();
 	return MESSAGE_UNDO;
 }
@@ -221,7 +222,7 @@ string Storage::undoEdit(){
 string Storage::deleteSearchTask(int index){
 	ostringstream feedbackMessage;
 	string tempDisplay = (tempSearchIterator[index-1])->taskDetails;
-	tempTask = *tempSearchIterator[index - 1];
+	tempTask.push(*tempSearchIterator[index - 1]);
 	activeTask.erase(tempSearchIterator[index - 1]);
 	feedbackMessage << tempDisplay << " is successfully deleted.\n";
 	return feedbackMessage.str();

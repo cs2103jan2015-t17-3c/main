@@ -51,7 +51,15 @@ string UndoTask::executeUndoEdit(vector<CommandDetails*> CD, Storage& storage) {
 }
 
 UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*> CD) {
+	int memo = 0;
 	int index = CD.size()-1;
+	while (CD[index]->commandType == MESSAGE_UNDO){
+		memo++;
+		index--;
+	}
+	for (int i = 0; i < memo - 1; i++){
+		index--;
+	}
 	assert(index>=0);
 	if (index<0) {
 		return NIL;
