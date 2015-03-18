@@ -18,8 +18,13 @@ vector<string> NormalTask::loadNormalTask(string task, boost::gregorian::date da
 	this->dateEnd = dateEnd;
 	this->timeStart = timeStart;
 	this->timeEnd = timeEnd;
+<<<<<<< HEAD
 	vector<string> displayMessageToLogic = storage.addNormalTask(task, dateStart, dateEnd, timeStart, timeEnd);
 	storage.sortStorage();
+=======
+	string displayMessageToLogic = storage.addNormalTask(task, dateStart, dateEnd, timeStart, timeEnd);
+	//storage.sortStorage();
+>>>>>>> origin/master
 	storage.writeToFile();
 	return displayMessageToLogic;
 }
