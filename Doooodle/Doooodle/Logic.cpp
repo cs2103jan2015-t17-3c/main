@@ -13,6 +13,15 @@ vector<string> Logic::displayTopFive(void) {
 	return topFiveToDisplay; 
 }
 
+vector<string> Logic::displaySearchResult(string userInput) {
+	int indexToUpdate = commandDetails.size();
+	commandDetails.push_back(new CommandDetails());
+	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
+	assert(commandDetails[indexToUpdate]->commandType=="search");
+	return searchTask.loadSearchTask(commandDetails[indexToUpdate]->task, storage);
+}
+
+
 vector<string> Logic::receiveCommand(string userInput) {
 	vector<string> displayMessage = executeLogicCore(userInput);
 	return displayMessage;
@@ -24,9 +33,11 @@ bool Logic::isSearch(string userInput) {
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
 	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
 	if (taskType == SEARCH) {
+		commandDetails.pop_back();
 		return true;
 	}
 	else {
+		commandDetails.pop_back();
 		return false;
 	}
 }
