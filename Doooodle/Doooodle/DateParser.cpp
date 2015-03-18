@@ -4,7 +4,11 @@ const int DateParser::NO_OF_DELIMITERS = 2;
 const int DateParser::NO_OF_NEARFUTURE_IDENTIFIERS = 4;
 const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
 const int DateParser::NO_OF_TIME_IDENTIFIERS = 18;
-
+const int DateParser::NO_OF_MONTH_IDENTIFIERS=48;
+const string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December"
+                                                                       "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+																	   "january","february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december"
+																	   "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
 const string DateParser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
                                                                       "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
                                                                       "Tomorrow", "tomorrow", "today" ,"Today"};
@@ -94,7 +98,11 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 			d = from_undelimited_string(input);
 		}
 		catch (...){
+<<<<<<< HEAD
 
+=======
+			cout << "wrong date format!" << endl;
+>>>>>>> origin/master
 		}
 	}
 
