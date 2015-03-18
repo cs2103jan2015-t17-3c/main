@@ -1,6 +1,13 @@
 
 #include "UndoTask.h"
 
+const string UndoTask::MESSAGE_ADD = "add";
+const string UndoTask::MESSAGE_DELETE = "delete";
+const string UndoTask::MESSAGE_EDIT = "edit";
+const string UndoTask::MESSAGE_SEARCH = "search";
+const string UndoTask::MESSAGE_UNDO = "undo";
+const string UndoTask::MESSAGE_UNDO_FAILURE = "Nothing to undo!";
+
 UndoTask::UndoTask(void) {
 }
 
@@ -12,7 +19,7 @@ vector<string> UndoTask::loadUndoTask(vector<CommandDetails*> CD, Storage& stora
 	vector<string> displayMessage;
 	switch(taskType) {
 	case NIL:
-		displayMessage.push_back("Nothing to undo!");
+		displayMessage.push_back(MESSAGE_UNDO_FAILURE);
 		break;
 	case ADD:
 		displayMessage = executeUndoAdd(CD, storage);
@@ -49,21 +56,21 @@ UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*> CD)
 	if (index<0) {
 		return NIL;
 	} 
-	else if(CD[index]->commandType=="add") {
+	else if(CD[index]->commandType==MESSAGE_ADD) {
 		return ADD;
 	}
-	else if(CD[index]->commandType=="delete") {
+	else if(CD[index]->commandType==MESSAGE_DELETE) {
 		return DELETE;
 	}
-	else if(CD[index]->commandType=="search") {
+	else if(CD[index]->commandType==MESSAGE_SEARCH) {
 		CD.pop_back(); //search will not be undone, hence pop_back and recursion to retrieve next in line
 		return retrieveTaskTypeToUndo(CD);
 	}
-	else if(CD[index]->commandType=="undo") {
+	else if(CD[index]->commandType==MESSAGE_UNDO) {
 		CD.pop_back(); //get rid of undo in CD
 		return retrieveTaskTypeToUndo(CD);
 	}
-	else if(CD[index]->commandType=="edit") {
+	else if(CD[index]->commandType==MESSAGE_EDIT) {
 		return EDIT;
 	}
 	else { //for invalid cases

@@ -1,6 +1,16 @@
 
 #include "Logic.h"
 
+char Logic::buffer[300];
+const string Logic::MESSAGE_ADD = "add";
+const string Logic::MESSAGE_DELETE = "delete";
+const string Logic::MESSAGE_EDIT = "edit";
+const string Logic::MESSAGE_EXIT = "exit";
+const string Logic::MESSAGE_INVALID = "ERROR!";
+const string Logic::MESSAGE_REDO = "redo";
+const string Logic::MESSAGE_SEARCH = "search";
+const string Logic::MESSAGE_UNDO = "undo";
+
 Logic::Logic(void) {
 }
 
@@ -17,7 +27,7 @@ vector<string> Logic::displaySearchResult(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
-	assert(commandDetails[indexToUpdate]->commandType=="search");
+	assert(commandDetails[indexToUpdate]->commandType==MESSAGE_SEARCH);
 	return searchTask.loadSearchTask(commandDetails[indexToUpdate]->task, storage);
 }
 
@@ -53,7 +63,7 @@ vector<string> Logic::executeLogicCore(string userInput) {
 vector<string> Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	vector<string> displayMessageToUI;
 	vector<string> displayInvalidMessage;
-	displayInvalidMessage.push_back("ERROR!");
+	displayInvalidMessage.push_back(MESSAGE_INVALID);
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
@@ -90,7 +100,7 @@ vector<string> Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 
 Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 	boost::gregorian::date d(boost::date_time::not_a_date_time);
-	if(commandDetails[indexToUpdate]->commandType=="add") {
+	if(commandDetails[indexToUpdate]->commandType==MESSAGE_ADD) {
 		if((commandDetails[indexToUpdate]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateEnd==d)) {
 			return FLOATING;
 		}
@@ -101,19 +111,19 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 			return NORMAL;
 		}
 	}
-	else if(commandDetails[indexToUpdate]->commandType=="delete") {
+	else if(commandDetails[indexToUpdate]->commandType==MESSAGE_DELETE) {
 		return DELETE;
 	}
-	else if(commandDetails[indexToUpdate]->commandType=="search") {
+	else if(commandDetails[indexToUpdate]->commandType==MESSAGE_SEARCH) {
 		return SEARCH;
 	}
-	else if(commandDetails[indexToUpdate]->commandType=="exit") {
+	else if(commandDetails[indexToUpdate]->commandType==MESSAGE_EXIT) {
 		return EXIT;
 	}
-	else if(commandDetails[indexToUpdate]->commandType=="undo") {
+	else if(commandDetails[indexToUpdate]->commandType==MESSAGE_UNDO) {
 		return UNDO;
 	}
-	else if(commandDetails[indexToUpdate]->commandType=="edit") {
+	else if(commandDetails[indexToUpdate]->commandType==MESSAGE_EDIT) {
 		return EDIT;
 	}
 	else return INVALID;

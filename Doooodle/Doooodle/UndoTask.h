@@ -28,6 +28,12 @@ private:
 	boost::gregorian::date dateEnd;
 	boost::posix_time::ptime timeStart;
 	boost::posix_time::ptime timeEnd;
+	static const string MESSAGE_ADD;
+	static const string MESSAGE_DELETE;
+	static const string MESSAGE_EDIT;
+	static const string MESSAGE_UNDO_FAILURE;
+	static const string MESSAGE_SEARCH;
+	static const string MESSAGE_UNDO;
 
 	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>);
 	vector<string> executeUndoAdd(vector<CommandDetails*>, Storage&);
