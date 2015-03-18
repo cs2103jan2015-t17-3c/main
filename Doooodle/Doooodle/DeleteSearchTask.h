@@ -3,7 +3,6 @@
 #define DELETESEARCHTASK_H_
 
 #include <iostream>
-#include "DeleteTask.h"
 #include "Storage.h"
 
 using namespace std;
@@ -15,7 +14,7 @@ public:
 
 	~DeleteSearchTask(void);
 
-	string loadDeleteTask(int, Storage);
+	string loadDeleteTask(int, Storage&);
 
 
 private:

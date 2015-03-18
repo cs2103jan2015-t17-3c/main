@@ -221,6 +221,7 @@ string Storage::undoEdit(){
 string Storage::deleteSearchTask(int index){
 	ostringstream feedbackMessage;
 	string tempDisplay = (tempSearchIterator[index-1])->taskDetails;
+	tempTask = *tempSearchIterator[index - 1];
 	activeTask.erase(tempSearchIterator[index - 1]);
 	feedbackMessage << tempDisplay << " is successfully deleted.\n";
 	return feedbackMessage.str();

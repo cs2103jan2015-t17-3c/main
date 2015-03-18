@@ -74,10 +74,10 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		break;
 	case DELETE:
 		if (lastCommandIsSearch()) {
-			displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+			displayMessageToUI = deleteSearchTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
 		}
 		else{
-			displayMessageToUI = deleteSearchTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+			displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
 		}
 		break;
 	case SEARCH:
@@ -134,6 +134,7 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 }
 
 bool Logic::lastCommandIsSearch(void) {
-	int index = commandDetails.size()-1;
+	int index = commandDetails.size()-2;
+	cout << commandDetails[index]->commandType << "         " << MESSAGE_SEARCH << endl;
 	return (commandDetails[index]->commandType==MESSAGE_SEARCH);
 }
