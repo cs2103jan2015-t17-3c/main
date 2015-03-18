@@ -12,7 +12,7 @@ class EditTask {
 public:
 	EditTask(void);
 	~EditTask(void);
-	vector<string> loadEditTask(int, Storage&);
+	string loadEditTask(int, Storage&);
 
 private:
 

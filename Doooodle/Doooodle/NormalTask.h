@@ -13,7 +13,7 @@ class NormalTask {
 public:
 	NormalTask(void);
 	~NormalTask(void);
-	vector<string> loadNormalTask(string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
+	string loadNormalTask(string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
 
 private:
 	string task;

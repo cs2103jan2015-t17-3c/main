@@ -12,7 +12,7 @@ class DeleteTask {
 public:
 	DeleteTask(void);
 	~DeleteTask(void);
-	vector<string> loadDeleteTask(int, Storage&);
+	string loadDeleteTask(int, Storage&);
 
 private:
 

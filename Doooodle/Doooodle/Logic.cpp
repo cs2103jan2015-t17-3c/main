@@ -23,7 +23,7 @@ vector<string> Logic::displayTopFive(void) {
 	return topFiveToDisplay; 
 }
 
-vector<string> Logic::displaySearchResult(string userInput) {
+vector<string> Logic::displaySearchResults(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
@@ -32,8 +32,8 @@ vector<string> Logic::displaySearchResult(string userInput) {
 }
 
 
-vector<string> Logic::receiveCommand(string userInput) {
-	vector<string> displayMessage = executeLogicCore(userInput);
+string Logic::receiveCommand(string userInput) {
+	string displayMessage = executeLogicCore(userInput);
 	return displayMessage;
 }
 
@@ -52,7 +52,7 @@ bool Logic::isSearch(string userInput) {
 	}
 }
 
-vector<string> Logic::executeLogicCore(string userInput) {
+string Logic::executeLogicCore(string userInput) {
 	int indexToUpdate = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
@@ -60,10 +60,8 @@ vector<string> Logic::executeLogicCore(string userInput) {
 	return executeTask(taskType, indexToUpdate);
 }
 
-vector<string> Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
-	vector<string> displayMessageToUI;
-	vector<string> displayInvalidMessage;
-	displayInvalidMessage.push_back(MESSAGE_INVALID);
+string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
+	string displayMessageToUI=" ";
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
@@ -78,7 +76,7 @@ vector<string> Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
 		break;
 	case SEARCH:
-		displayMessageToUI = searchTask.loadSearchTask(commandDetails[indexToUpdate]->task, storage);
+		displayMessageToUI = MESSAGE_INVALID;
 		break;
 	case EXIT:
 		exit(0);
@@ -91,10 +89,10 @@ vector<string> Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		//displayMessageToUI = " ";
 		break;
 	case INVALID:
-		displayMessageToUI = displayInvalidMessage;
+		displayMessageToUI = MESSAGE_INVALID;
 		break;
 	} 
-	assert(displayMessageToUI.size()!=0);
+	assert(displayMessageToUI!=" ");
 	return displayMessageToUI;
 }
 
