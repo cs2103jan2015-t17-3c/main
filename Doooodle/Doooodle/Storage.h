@@ -44,7 +44,7 @@ public:
 	void sortStorage();
 	void writeToFile();
 	string deleteTask(int);
-	string searchTask(string);
+	vector<string> searchTask(string);
 
 private:
 	vector<Task> archivedTask;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <assert.h>
 #include <boost/date_time.hpp>
 #include "Parser.h"
 #include "Storage.h"
@@ -24,8 +25,10 @@ class Logic {
 public:
 	Logic(void);
 	~Logic(void);
-	string receiveCommand(string);
+	vector<string> receiveCommand(string);
 	vector<string> displayTopFive(void);
+	vector<string> displaySearchResult(string);
+	bool isSearch(string);
 
 private:
 	Storage storage;
@@ -37,6 +40,15 @@ private:
 	DeleteTask deleteTask;
 	SearchTask searchTask;
 	EditTask editTask;
+	static char buffer[300];
+	static const string MESSAGE_ADD;
+	static const string MESSAGE_DELETE;
+	static const string MESSAGE_EDIT;
+	static const string MESSAGE_EXIT;
+	static const string MESSAGE_INVALID;
+	static const string MESSAGE_REDO;
+	static const string MESSAGE_SEARCH;
+	static const string MESSAGE_UNDO;
 
 	vector<CommandDetails*> commandDetails;
 
@@ -44,8 +56,8 @@ private:
 		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
 	};
 
-	string executeLogicCore(string);
-	string executeTask(TASK_TYPE, int);
+	vector<string> executeLogicCore(string);
+	vector<string> executeTask(TASK_TYPE, int);
 	TASK_TYPE determineSpecificTaskType(int);
 };
 
