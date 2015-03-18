@@ -91,6 +91,11 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		storage.sortStorage();
 		storage.writeToFile();
 		break;
+	case REDO:
+		displayMessageToUI = redoTask.loadRedoTask(commandDetails, storage);
+		storage.sortStorage();
+		storage.writeToFile();	
+		break;
 	case EDIT:
 		//displayMessageToUI = " ";
 		break;
@@ -130,6 +135,10 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 	else if(commandDetails[indexToUpdate]->commandType==MESSAGE_EDIT) {
 		return EDIT;
 	}
+	else if(commandDetails[indexToUpdate]->commandType==MESSAGE_REDO) {
+		return REDO;
+	}
+
 	else return INVALID;
 }
 
