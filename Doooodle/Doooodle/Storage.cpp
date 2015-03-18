@@ -6,6 +6,7 @@ using namespace boost::posix_time;
 date nonDate(not_a_date_time);
 ptime nonTime(not_a_date_time);
 
+const string Storage::MESSAGE_UNDO = "Undo is successfully performed";
 Storage::Storage(void){
 };
 
@@ -149,7 +150,9 @@ void Storage::writeToFile(){
 string Storage::deleteTask(int index){
 	ostringstream feedbackMessage;
 	vector<Task>::iterator iter = activeTask.begin();
-	string tempDisplay = activeTask[index - 1].taskDetails;;	
+	string tempDisplay = activeTask[index - 1].taskDetails;
+	tempTask = activeTask[index - 1];
+
 	activeTask.erase(iter + index - 1);
 	feedbackMessage << tempDisplay << " is successfully deleted.\n";
 	return feedbackMessage.str();
@@ -182,7 +185,21 @@ vector<string> Storage::searchTask(string thingsToSearch){
 	//return searchedStuff;
 }
 
+string Storage::undoAdd(){
+	vector<Task>::iterator iter = activeTask.end()-1;
+	activeTask.erase(iter);
+	return MESSAGE_UNDO;
+}
 
+string Storage::undoDelete(){
+	activeTask.push_back(tempTask);
+	return MESSAGE_UNDO;
+}
 
+string Storage::undoEdit(){
+	undoAdd();
+	undoDelete();
+	return MESSAGE_UNDO;
+}
 
 

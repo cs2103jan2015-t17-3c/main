@@ -10,12 +10,15 @@
 #include <boost/date_time.hpp>
 #include <iomanip>
 
+
 using namespace std;
 using namespace boost;
+
 
 enum TYPE_OF_TASK{
 	DEADLINE, FLOAT, NORMAL
 };
+
 
 struct Task{
 	string taskDetails;
@@ -33,6 +36,8 @@ struct History{
 	Task commandDetails;
 };
 
+
+
 class Storage{
 public:
 	Storage(void);
@@ -45,11 +50,16 @@ public:
 	void writeToFile();
 	string deleteTask(int);
 	vector<string> searchTask(string);
+	string undoAdd();
+	string undoDelete();
+	string undoEdit();
 
 private:
 	vector<Task> archivedTask;
 	vector<Task> activeTask;
 	vector<History> commandHistory;
+	static const string MESSAGE_UNDO;
+	Task tempTask;
 };
 
 
