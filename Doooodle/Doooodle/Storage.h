@@ -9,7 +9,7 @@
 #include <fstream>
 #include <boost/date_time.hpp>
 #include <iomanip>
-
+#include <stack>
 
 using namespace std;
 using namespace boost;
@@ -60,6 +60,7 @@ private:
 	vector<History> commandHistory;
 	static const string MESSAGE_UNDO;
 	Task tempTask;
+	stack<string> taskDetailsHistory;
 };
 
 

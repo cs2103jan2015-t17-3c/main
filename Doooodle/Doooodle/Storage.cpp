@@ -16,6 +16,7 @@ Storage::~Storage(void){
 Task initializeNormalTask(string task, date startDate, date endDate, ptime startTime, ptime endTime){
 	int defaultWidth = 25;
 	Task temp;
+	
 	temp.taskDetails = task;
 	temp.startDate = startDate;
 	temp.endDate = endDate;
@@ -40,6 +41,7 @@ History registerHistory(Task temp){
 string Storage::addNormalTask(string task, date startDate, date endDate, ptime startTime, ptime endTime){
 	
 	Task temp = initializeNormalTask(task, startDate, endDate, startTime, endTime);
+	taskDetailsHistory.push(task);
 	activeTask.push_back(temp);
 	History trace = registerHistory(temp) ;
 	commandHistory.push_back(trace);
@@ -66,6 +68,7 @@ Task initializeDeadlineTask(string task, date endDate, ptime endTime){
 
 string Storage::addDeadlineTask(string task, date endDate, ptime endTime){
 	Task temp = initializeDeadlineTask(task,endDate,endTime);
+	taskDetailsHistory.push(task);
 	activeTask.push_back(temp);
 	History trace = registerHistory(temp);
 	commandHistory.push_back(trace);
@@ -91,6 +94,7 @@ Task initializeFloatTask(string task){
 
 string Storage::addFloatTask(string task){
 	Task temp = initializeFloatTask(task);
+	taskDetailsHistory.push(task);
 	activeTask.push_back(temp);
 	History trace = registerHistory(temp);
 	commandHistory.push_back(trace);
@@ -186,13 +190,22 @@ vector<string> Storage::searchTask(string thingsToSearch){
 }
 
 string Storage::undoAdd(){
-	vector<Task>::iterator iter = activeTask.end()-1;
-	activeTask.erase(iter);
+	string thingsToSearch = taskDetailsHistory.top();
+	vector<Task>::iterator iter;
+	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
+		string temp = iter->taskDetails;
+		if (temp == thingsToSearch){
+			activeTask.erase(iter);
+			break;
+		}
+	}
+	taskDetailsHistory.pop();
 	return MESSAGE_UNDO;
 }
 
 string Storage::undoDelete(){
 	activeTask.push_back(tempTask);
+	sortStorage();
 	return MESSAGE_UNDO;
 }
 

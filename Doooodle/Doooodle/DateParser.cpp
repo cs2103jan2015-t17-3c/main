@@ -90,7 +90,12 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 	}
 	removeSlash(input);
 	if (atoi(input.c_str()) > 20150000){
-		d=from_undelimited_string(input);
+		try{
+			d = from_undelimited_string(input);
+		}
+		catch (...){
+
+		}
 	}
 
 	return d;

@@ -11,17 +11,18 @@ UI::~UI(void) {
 }
 
 void UI::readMessage(){
-	string command;
+	string command = "Nothing";
 	string message = " ";
 	vector<string> displayMessage;
 
 	while (true){
 		cout << MESSAGE_WELCOME << endl;
-		cout << MESSAGE_TOPFIVE;
-		if (logic.isSearch()){
-			displayMessage = logic.displaySearchResults();
+		
+		if (logic.isSearch(command)){
+			displayMessage = logic.displaySearchResults(command);
 		}
 		else{
+			cout << MESSAGE_TOPFIVE;
 			displayMessage = logic.displayTopFive();
 		}
 		printVectorToUser(displayMessage);
