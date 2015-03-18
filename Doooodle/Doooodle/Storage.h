@@ -53,6 +53,8 @@ public:
 	string undoAdd();
 	string undoDelete();
 	string undoEdit();
+    string deleteSearchTask(int);
+	
 
 private:
 	vector<Task> archivedTask;
@@ -61,6 +63,7 @@ private:
 	static const string MESSAGE_UNDO;
 	Task tempTask;
 	stack<string> taskDetailsHistory;
+	vector<vector<Task>::iterator> tempSearchIterator;
 };
 
 

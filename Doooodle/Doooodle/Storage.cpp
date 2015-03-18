@@ -165,6 +165,7 @@ string Storage::deleteTask(int index){
 //vector<string> ususal
 vector<string> Storage::searchTask(string thingsToSearch){
 	vector<string> searchedStuff;
+	tempSearchIterator.clear();
 	bool findIt = false;
 	vector<Task>::iterator iter;
 	int count = 1;
@@ -172,6 +173,7 @@ vector<string> Storage::searchTask(string thingsToSearch){
 		string temp = iter->taskDetails;
 		size_t found = temp.find(thingsToSearch);
 		if (found != string::npos){
+			tempSearchIterator.push_back(iter);
 			findIt = true;
 			ostringstream oneTask;
 			oneTask << count << ". " << iter->taskDisplay << endl;		
@@ -216,3 +218,10 @@ string Storage::undoEdit(){
 }
 
 
+string Storage::deleteSearchTask(int index){
+	ostringstream feedbackMessage;
+	string tempDisplay = (tempSearchIterator[index-1])->taskDetails;
+	activeTask.erase(tempSearchIterator[index - 1]);
+	feedbackMessage << tempDisplay << " is successfully deleted.\n";
+	return feedbackMessage.str();
+}

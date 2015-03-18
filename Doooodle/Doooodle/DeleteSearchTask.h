@@ -8,9 +8,15 @@
 
 using namespace std;
 
-class DeleteSearchTask: public DeleteTask {
-
+class DeleteSearchTask{ 
 public:
+
+	DeleteSearchTask(void);
+
+	~DeleteSearchTask(void);
+
+	string loadDeleteTask(int, Storage);
+
 
 private:
 
