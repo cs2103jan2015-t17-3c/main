@@ -11,9 +11,7 @@ class DeleteSearchTask{
 public:
 
 	DeleteSearchTask(void);
-
 	~DeleteSearchTask(void);
-
 	string loadDeleteTask(int, Storage&);
 
 

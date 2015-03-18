@@ -14,7 +14,7 @@ UndoTask::UndoTask(void) {
 UndoTask::~UndoTask(void) {
 }
 
-string UndoTask::loadUndoTask(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::loadUndoTask(vector<CommandDetails*>& CD, Storage& storage) {
 	TASK_TYPE taskType = retrieveTaskTypeToUndo(CD);
 	string displayMessage;
 	switch(taskType) {
@@ -35,23 +35,24 @@ string UndoTask::loadUndoTask(vector<CommandDetails*> CD, Storage& storage) {
 	return displayMessage;
 }
 
-string UndoTask::executeUndoAdd(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::executeUndoAdd(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoAdd();
 }
 
-string UndoTask::executeUndoDelete(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::executeUndoDelete(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoDelete();
 }
 
-string UndoTask::executeUndoEdit(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::executeUndoEdit(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoEdit();
 }
 
-UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*> CD) {
-	int memo = 0;
+UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*>& CD) {
+	int index = CD.size()-1;
+	/*	int memo = 0;
 	int index = CD.size()-1;
 	while (CD[index]->commandType == MESSAGE_UNDO){
 		memo++;
@@ -59,7 +60,7 @@ UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*> CD)
 	}
 	for (int i = 0; i < memo - 1; i++){
 		index--;
-	}
+	}*/
 	assert(index>=0);
 	if (index<0) {
 		return NIL;

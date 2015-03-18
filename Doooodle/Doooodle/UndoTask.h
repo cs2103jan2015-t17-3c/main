@@ -17,7 +17,7 @@ class UndoTask {
 public:
 	UndoTask(void);
 	~UndoTask(void);
-	string loadUndoTask(vector<CommandDetails*>, Storage&);
+	string loadUndoTask(vector<CommandDetails*>&, Storage&);
 
 private:
 	enum TASK_TYPE {
@@ -30,10 +30,10 @@ private:
 	static const string MESSAGE_SEARCH;
 	static const string MESSAGE_UNDO;
 
-	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>);
-	string executeUndoAdd(vector<CommandDetails*>, Storage&);
-	string executeUndoDelete(vector<CommandDetails*>, Storage&);
-	string executeUndoEdit(vector<CommandDetails*>, Storage&);
+	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>&);
+	string executeUndoAdd(vector<CommandDetails*>&, Storage&);
+	string executeUndoDelete(vector<CommandDetails*>&, Storage&);
+	string executeUndoEdit(vector<CommandDetails*>&, Storage&);
 };
 
 #endif
