@@ -20,6 +20,8 @@ private:
 	static const string WEEKDAYS_IDENTIFIERS[];
 	static const int NO_OF_NEARFUTURE_IDENTIFIERS;
 	static const string NEARFUTURE_IDENTIFIERS[];
+	static const int NO_OF_MONTH_IDENTIFIERS;
+	static const string MONTH_IDENTIFIERS[];
 	static const int NO_OF_DELIMITERS;
 	static const string DELIMITERS[];
 	int weekdaysToNum(string);
