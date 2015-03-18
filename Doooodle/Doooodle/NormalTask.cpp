@@ -12,7 +12,7 @@ NormalTask::NormalTask(void) {
 NormalTask::~NormalTask(void) {
 }
 
-vector<string> NormalTask::loadNormalTask(string task, boost::gregorian::date dateStart, boost::gregorian::date dateEnd, boost::posix_time::ptime timeStart, boost::posix_time::ptime timeEnd, Storage& storage) {
+string NormalTask::loadNormalTask(string task, boost::gregorian::date dateStart, boost::gregorian::date dateEnd, boost::posix_time::ptime timeStart, boost::posix_time::ptime timeEnd, Storage& storage) {
 	this->task = task;
 	this->dateStart = dateStart;
 	this->dateEnd = dateEnd;

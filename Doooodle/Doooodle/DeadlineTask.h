@@ -13,7 +13,7 @@ class DeadlineTask {
 public:
 	DeadlineTask(void);
 	~DeadlineTask(void);
-	vector<string> loadDeadlineTask(string, boost::gregorian::date, boost::posix_time::ptime, Storage&);
+	string loadDeadlineTask(string, boost::gregorian::date, boost::posix_time::ptime, Storage&);
 
 private:
 	string task;

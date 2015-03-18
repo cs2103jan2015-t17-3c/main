@@ -17,17 +17,12 @@ class UndoTask {
 public:
 	UndoTask(void);
 	~UndoTask(void);
-	vector<string> loadUndoTask(vector<CommandDetails*>, Storage&);
+	string loadUndoTask(vector<CommandDetails*>, Storage&);
 
 private:
 	enum TASK_TYPE {
 		ADD, DELETE, EDIT, NIL
 	};
-	string task;
-	boost::gregorian::date dateStart;
-	boost::gregorian::date dateEnd;
-	boost::posix_time::ptime timeStart;
-	boost::posix_time::ptime timeEnd;
 	static const string MESSAGE_ADD;
 	static const string MESSAGE_DELETE;
 	static const string MESSAGE_EDIT;
@@ -36,9 +31,9 @@ private:
 	static const string MESSAGE_UNDO;
 
 	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>);
-	vector<string> executeUndoAdd(vector<CommandDetails*>, Storage&);
-	vector<string> executeUndoDelete(vector<CommandDetails*>, Storage&);
-	vector<string> executeUndoEdit(vector<CommandDetails*>, Storage&);
+	string executeUndoAdd(vector<CommandDetails*>, Storage&);
+	string executeUndoDelete(vector<CommandDetails*>, Storage&);
+	string executeUndoEdit(vector<CommandDetails*>, Storage&);
 };
 
 #endif

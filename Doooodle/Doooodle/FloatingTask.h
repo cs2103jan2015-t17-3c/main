@@ -12,7 +12,7 @@ class FloatingTask {
 public:
 	FloatingTask(void);
 	~FloatingTask(void);
-	vector<string> loadFloatingTask(string, Storage&);
+	string loadFloatingTask(string, Storage&);
 
 private:
 	string task;

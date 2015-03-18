@@ -14,12 +14,12 @@ UndoTask::UndoTask(void) {
 UndoTask::~UndoTask(void) {
 }
 
-vector<string> UndoTask::loadUndoTask(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::loadUndoTask(vector<CommandDetails*> CD, Storage& storage) {
 	TASK_TYPE taskType = retrieveTaskTypeToUndo(CD);
-	vector<string> displayMessage;
+	string displayMessage;
 	switch(taskType) {
 	case NIL:
-		displayMessage.push_back(MESSAGE_UNDO_FAILURE);
+		displayMessage = MESSAGE_UNDO_FAILURE;
 		break;
 	case ADD:
 		displayMessage = executeUndoAdd(CD, storage);
@@ -35,19 +35,19 @@ vector<string> UndoTask::loadUndoTask(vector<CommandDetails*> CD, Storage& stora
 	return displayMessage;
 }
 
-vector<string> UndoTask::executeUndoAdd(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::executeUndoAdd(vector<CommandDetails*> CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoAdd();
 }
 
-vector<string> UndoTask::executeUndoDelete(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::executeUndoDelete(vector<CommandDetails*> CD, Storage& storage) {
 	CD.pop_back();
-	storage.undoDelete();
+	return storage.undoDelete();
 }
 
-vector<string> UndoTask::executeUndoEdit(vector<CommandDetails*> CD, Storage& storage) {
+string UndoTask::executeUndoEdit(vector<CommandDetails*> CD, Storage& storage) {
 	CD.pop_back();
-	storage.undoEdit();
+	return storage.undoEdit();
 }
 
 UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*> CD) {

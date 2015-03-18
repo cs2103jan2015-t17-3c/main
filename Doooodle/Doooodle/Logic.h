@@ -25,9 +25,9 @@ class Logic {
 public:
 	Logic(void);
 	~Logic(void);
-	vector<string> receiveCommand(string);
+	string receiveCommand(string);
 	vector<string> displayTopFive(void);
-	vector<string> displaySearchResult(string);
+	vector<string> displaySearchResults(string);
 	bool isSearch(string);
 
 private:
@@ -56,8 +56,8 @@ private:
 		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
 	};
 
-	vector<string> executeLogicCore(string);
-	vector<string> executeTask(TASK_TYPE, int);
+	string executeLogicCore(string);
+	string executeTask(TASK_TYPE, int);
 	TASK_TYPE determineSpecificTaskType(int);
 };
 
