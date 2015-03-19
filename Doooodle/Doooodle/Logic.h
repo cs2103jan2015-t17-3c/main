@@ -17,6 +17,7 @@
 #include "DeleteTask.h"
 #include "SearchTask.h"
 #include "EditTask.h"
+#include "RedoTask.h"
 #include "DeleteSearchTask.h"
 
 using namespace std;
@@ -38,6 +39,7 @@ private:
 	DeadlineTask deadlineTask;
 	FloatingTask floatingTask;
 	UndoTask undoTask;
+	RedoTask redoTask;
 	DeleteTask deleteTask;
 	DeleteSearchTask deleteSearchTask;
 	SearchTask searchTask;
@@ -55,7 +57,7 @@ private:
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT, REDO
 	};
 
 	string executeLogicCore(string);

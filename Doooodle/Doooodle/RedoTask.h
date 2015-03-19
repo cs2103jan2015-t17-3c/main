@@ -1,6 +1,6 @@
 
-#ifndef UNDOTASK_H_
-#define UNDOTASK_H_
+#ifndef REDOTASK_H_
+#define REDOTASK_H_
 
 #include <iostream>
 #include <vector>
@@ -12,12 +12,12 @@
 
 using namespace std;
 
-class UndoTask {
+class RedoTask {
 
 public:
-	UndoTask(void);
-	~UndoTask(void);
-	string loadUndoTask(vector<CommandDetails*>&, Storage&);
+	RedoTask(void);
+	~RedoTask(void);
+	string loadRedoTask(vector<CommandDetails*>&, Storage&);
 
 private:
 	enum TASK_TYPE {
@@ -30,10 +30,10 @@ private:
 	static const string MESSAGE_SEARCH;
 	static const string MESSAGE_UNDO;
 
-	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>&);
-	string executeUndoAdd(vector<CommandDetails*>&, Storage&);
-	string executeUndoDelete(vector<CommandDetails*>&, Storage&);
-	string executeUndoEdit(vector<CommandDetails*>&, Storage&);
+	TASK_TYPE retrieveTaskTypeToRedo(vector<CommandDetails*>&);
+	string executeRedoAdd(vector<CommandDetails*>&, Storage&);
+	string executeRedoDelete(vector<CommandDetails*>&, Storage&);
+	string executeRedoEdit(vector<CommandDetails*>&, Storage&);
 };
 
 #endif
