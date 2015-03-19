@@ -5,12 +5,20 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <assert.h>
+#include <boost/date_time.hpp>
 #include "Parser.h"
 #include "Storage.h"
 #include "CommandDetails.h"
 #include "NormalTask.h"
 #include "DeadlineTask.h"
 #include "FloatingTask.h"
+#include "UndoTask.h"
+#include "DeleteTask.h"
+#include "SearchTask.h"
+#include "EditTask.h"
+#include "RedoTask.h"
+#include "DeleteSearchTask.h"
 
 using namespace std;
 
@@ -21,6 +29,8 @@ public:
 	~Logic(void);
 	string receiveCommand(string);
 	vector<string> displayTopFive(void);
+	vector<string> displaySearchResults(string);
+	bool isSearch(string);
 
 private:
 	Storage storage;
@@ -28,15 +38,32 @@ private:
 	NormalTask normTask;
 	DeadlineTask deadlineTask;
 	FloatingTask floatingTask;
+	UndoTask undoTask;
+	RedoTask redoTask;
+	DeleteTask deleteTask;
+	DeleteSearchTask deleteSearchTask;
+	SearchTask searchTask;
+	EditTask editTask;
+	static char buffer[300];
+	static const string MESSAGE_ADD;
+	static const string MESSAGE_DELETE;
+	static const string MESSAGE_EDIT;
+	static const string MESSAGE_EXIT;
+	static const string MESSAGE_INVALID;
+	static const string MESSAGE_REDO;
+	static const string MESSAGE_SEARCH;
+	static const string MESSAGE_UNDO;
+
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT, REDO
 	};
 
 	string executeLogicCore(string);
 	string executeTask(TASK_TYPE, int);
 	TASK_TYPE determineSpecificTaskType(int);
+	bool lastCommandIsSearch(void);
 };
 
 

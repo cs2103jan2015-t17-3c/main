@@ -2,43 +2,70 @@
 #define STORAGE_H_
 
 #include <iostream>
-#include <ctime>
-#include <chrono>
 #include <string>
 #include <vector>
 #include <sstream>
 #include <algorithm>
 #include <fstream>
+#include <boost/date_time.hpp>
+#include <iomanip>
+#include <stack>
+#include <fstream>
 
 using namespace std;
+using namespace boost;
+
+
+enum TYPE_OF_TASK{
+	DEADLINE, FLOAT, NORMAL
+};
+
 
 struct Task{
 	string taskDetails;
-	string startTime;
-	string endTime;
+	boost::gregorian::date startDate;
+	boost::gregorian::date endDate;
+
+	posix_time::ptime endTime;
+	posix_time::ptime startTime;
+	TYPE_OF_TASK taskType;
+	string taskDisplay;
 };
 struct History{
-	string requestTime;
+	gregorian::date requestDate;
+	posix_time::ptime requestTime;
 	Task commandDetails;
+	string commandDisplay;
 };
+
+
 
 class Storage{
 public:
 	Storage(void);
 	~Storage(void);
-	string addNormalTask(string, string, string);
-	string addDeadlineTask(string, string);
+	string addNormalTask(string, boost::gregorian::date, boost::gregorian::date,boost::posix_time::ptime,boost::posix_time::ptime);
+	string addDeadlineTask(string, gregorian::date, posix_time::ptime);
 	string addFloatTask(string);
 	vector<string> retrieveTopFive();
 	void sortStorage();
-	string writeToFile(string);
+	void writeToFile();
 	string deleteTask(int);
 	vector<string> searchTask(string);
+	string undoAdd();
+	string undoDelete();
+	string undoEdit();
+    string deleteSearchTask(int);
+	
 
 private:
 	vector<Task> archivedTask;
 	vector<Task> activeTask;
 	vector<History> commandHistory;
+	static const string MESSAGE_UNDO;
+	stack<Task> tempTask;
+	stack<string> taskDetailsHistory;
+	vector<vector<Task>::iterator> tempSearchIterator;
 };
 
 

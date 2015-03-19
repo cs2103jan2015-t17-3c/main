@@ -44,9 +44,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\boost\boost_1_57_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\boost\boost_1_57_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -65,25 +67,41 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CommandDetails.cpp" />
+    <ClCompile Include="DateParser.cpp" />
     <ClCompile Include="DeadlineTask.cpp" />
+    <ClCompile Include="DeleteSearchTask.cpp" />
+    <ClCompile Include="DeleteTask.cpp" />
+    <ClCompile Include="EditTask.cpp" />
     <ClCompile Include="FloatingTask.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NormalTask.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="RedoTask.cpp" />
+    <ClCompile Include="SearchTask.cpp" />
     <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="TimeParser.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UndoTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
+    <ClInclude Include="DateParser.h" />
     <ClInclude Include="DeadlineTask.h" />
+    <ClInclude Include="DeleteSearchTask.h" />
+    <ClInclude Include="DeleteTask.h" />
+    <ClInclude Include="EditTask.h" />
     <ClInclude Include="FloatingTask.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="NormalTask.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="RedoTask.h" />
+    <ClInclude Include="SearchTask.h" />
     <ClInclude Include="standardForm.h" />
     <ClInclude Include="Storage.h" />
+    <ClInclude Include="TimeParser.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="UndoTask.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
