@@ -8,7 +8,7 @@ const string Logic::MESSAGE_EDIT = "edit";
 const string Logic::MESSAGE_EXIT = "exit";
 const string Logic::MESSAGE_INVALID = "ERROR!";
 const string Logic::MESSAGE_REDO = "redo";
-const string Logic::MESSAGE_SEARCH = "search";
+const string Logic::MESSAGE_SEARCH = "search completed";
 const string Logic::MESSAGE_UNDO = "undo";
 
 Logic::Logic(void) {
@@ -81,7 +81,7 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		}
 		break;
 	case SEARCH:
-		displayMessageToUI = MESSAGE_INVALID;
+		displayMessageToUI = MESSAGE_SEARCH;
 		break;
 	case EXIT:
 		exit(0);

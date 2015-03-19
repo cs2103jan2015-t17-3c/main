@@ -20,6 +20,7 @@ class Parser {
 
 private:
 	static const int POSITION_COMMAND_TYPE;
+	static const string INVALID_DATE;
 	static const string DELIMITERS;
 	static const string START_TIME_INDICATORS[];
 	static const string END_TIME_INDICATORS[];

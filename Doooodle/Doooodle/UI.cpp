@@ -17,7 +17,8 @@ void UI::readMessage(){
 
 	while (true){
 		cout << MESSAGE_WELCOME << endl;
-		
+		//assertion added by cindy
+		assert(command != "");
 		if (logic.isSearch(command)){
 			displayMessage = logic.displaySearchResults(command);
 		}

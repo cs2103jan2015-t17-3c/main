@@ -50,7 +50,7 @@ string Storage::addNormalTask(string task, date startDate, date endDate, ptime s
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Normal task: " << temp.taskDisplay << " successfully added.\n";
-	logging(trace.commandDisplay);
+//	logging(trace.commandDisplay);
 	return feedback.str();
 };
 
@@ -78,7 +78,7 @@ string Storage::addDeadlineTask(string task, date endDate, ptime endTime){
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Deadline task: " << temp.taskDisplay << " successfully added.\n";
-	logging(trace.commandDisplay);
+//	logging(trace.commandDisplay);
 
 	return feedback.str();
 };
@@ -107,7 +107,7 @@ string Storage::addFloatTask(string task){
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Float task: " << temp.taskDisplay << " successfully added.\n";
-	logging(trace.commandDisplay);
+//	logging(trace.commandDisplay);
 
 	return feedback.str();
 };

@@ -5,6 +5,7 @@ const string Parser::DELIMITERS = " ";
 const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
 const int Parser :: NO_OF_TIME_IDENTIFIERS = 18;
+const string Parser::INVALID_DATE = "Invalid Date!";
 const string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
 const string Parser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
@@ -20,15 +21,20 @@ Parser::~Parser(){
 void Parser::processCommand(string input, string& commandType, string& userTask, boost::gregorian::date& startDate, boost::gregorian::date& endDate, 
 	boost::posix_time::ptime& startTime, boost::posix_time::ptime& endTime){
 	boost::gregorian::date d1(boost::date_time::not_a_date_time);
+	boost::gregorian::date dmax(boost::date_time::max_date_time);
 	boost::posix_time::ptime d2(boost::date_time::not_a_date_time);
 	int pos;
 	tokenizeInput(input);    //tokenize string by white space
+	
 	commandType = getCommandType(input);
 	userTask = getUserTask(input);
 	startDate = getStartDate(pos);
 	endDate = getEndDate(pos);
 	startTime = getStartTime(pos);
 	endTime = getEndTime(pos);
+	if (startDate == dmax || endDate == dmax){
+		commandType = INVALID_DATE;
+	}
 	if (startDate == endDate && startTime == endTime){
 		startDate = d1;
 		startTime = d2;

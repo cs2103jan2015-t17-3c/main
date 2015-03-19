@@ -98,7 +98,9 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 			d = from_undelimited_string(input);
 		}
 		catch (...){
-			cout << "wrong date format!" << endl;
+			date temp(max_date_time);
+			d =temp;
+//			cout << "wrong date format!" << endl;
 		}
 	}
 
