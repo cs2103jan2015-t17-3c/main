@@ -8,7 +8,7 @@ const string Logic::MESSAGE_EDIT = "edit";
 const string Logic::MESSAGE_EXIT = "exit";
 const string Logic::MESSAGE_INVALID = "ERROR!";
 const string Logic::MESSAGE_REDO = "redo";
-const string Logic::MESSAGE_SEARCH = "search completed";
+const string Logic::MESSAGE_SEARCH = "search";
 const string Logic::MESSAGE_UNDO = "undo";
 
 Logic::Logic(void) {
@@ -81,7 +81,6 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		}
 		break;
 	case SEARCH:
-		displayMessageToUI = MESSAGE_SEARCH;
 		break;
 	case EXIT:
 		exit(0);
@@ -144,6 +143,5 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
 
 bool Logic::lastCommandIsSearch(void) {
 	int index = commandDetails.size()-2;
-	cout << commandDetails[index]->commandType << "         " << MESSAGE_SEARCH << endl;
 	return (commandDetails[index]->commandType==MESSAGE_SEARCH);
 }
