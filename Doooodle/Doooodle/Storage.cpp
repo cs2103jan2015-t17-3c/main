@@ -35,6 +35,9 @@ History registerHistory(Task temp){
 	currentTime = second_clock::local_time();
 	trace.requestTime = currentTime;
 	trace.commandDetails = temp;
+	ostringstream addCommandDisplay;
+	addCommandDisplay << temp.taskDisplay << " " << currentTime << endl;
+	trace.commandDisplay = addCommandDisplay.str();
 	return trace;
 }
 
@@ -47,6 +50,7 @@ string Storage::addNormalTask(string task, date startDate, date endDate, ptime s
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Normal task: " << temp.taskDisplay << " successfully added.\n";
+	logging(trace.commandDisplay);
 	return feedback.str();
 };
 
@@ -74,6 +78,8 @@ string Storage::addDeadlineTask(string task, date endDate, ptime endTime){
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Deadline task: " << temp.taskDisplay << " successfully added.\n";
+	logging(trace.commandDisplay);
+
 	return feedback.str();
 };
 
@@ -89,6 +95,7 @@ Task initializeFloatTask(string task){
 	ostringstream outputTask;
 	outputTask << left << setw(defaultWidth) << task;
 	temp.taskDisplay = outputTask.str();
+	
 	return temp;
 }
 
@@ -100,6 +107,8 @@ string Storage::addFloatTask(string task){
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Float task: " << temp.taskDisplay << " successfully added.\n";
+	logging(trace.commandDisplay);
+
 	return feedback.str();
 };
 
@@ -226,4 +235,11 @@ string Storage::deleteSearchTask(int index){
 	activeTask.erase(tempSearchIterator[index - 1]);
 	feedbackMessage << tempDisplay << " is successfully deleted.\n";
 	return feedbackMessage.str();
+}
+
+void logging(string actionDetails){
+	ofstream myfile;
+myfile.open("actionLog.txt");
+myfile << actionDetails;
+myfile.close();
 }

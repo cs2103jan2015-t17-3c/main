@@ -10,6 +10,7 @@
 #include <boost/date_time.hpp>
 #include <iomanip>
 #include <stack>
+#include <fstream>
 
 using namespace std;
 using namespace boost;
@@ -34,6 +35,7 @@ struct History{
 	gregorian::date requestDate;
 	posix_time::ptime requestTime;
 	Task commandDetails;
+	string commandDisplay;
 };
 
 
