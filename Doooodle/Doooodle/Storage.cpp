@@ -107,7 +107,7 @@ string Storage::addFloatTask(string task){
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Float task: " << temp.taskDisplay << " successfully added.\n";
-//	logging(trace.commandDisplay);
+	logging(trace.commandDisplay);
 
 	return feedback.str();
 };

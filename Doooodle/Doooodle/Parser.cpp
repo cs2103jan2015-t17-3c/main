@@ -39,7 +39,7 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 		startDate = d1;
 		startTime = d2;
 	}
-	if (startDate == d1&&startTime != d2){
+	if (startDate == d1 && startTime != d2){
 		assignToday(startDate);
 	}
 	if (endDate == d1&&endTime != d2){

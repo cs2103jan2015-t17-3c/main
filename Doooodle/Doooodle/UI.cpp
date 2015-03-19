@@ -21,8 +21,7 @@ void UI::readMessage(){
 		assert(command != "");
 		if (logic.isSearch(command)){
 			displayMessage = logic.displaySearchResults(command);
-		}
-		else{
+		}else{
 			cout << MESSAGE_TOPFIVE;
 			displayMessage = logic.displayTopFive();
 		}
