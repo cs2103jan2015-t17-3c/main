@@ -23,12 +23,10 @@ private:
 	enum TASK_TYPE {
 		ADD, DELETE, EDIT, NIL
 	};
-	static const string MESSAGE_ADD;
-	static const string MESSAGE_DELETE;
-	static const string MESSAGE_EDIT;
-	static const string MESSAGE_UNDO_FAILURE;
-	static const string MESSAGE_SEARCH;
-	static const string MESSAGE_UNDO;
+	static const string STRING_ADD;
+	static const string STRING_DELETE;
+	static const string STRING_EDIT;
+	static const string STRING_UNDO_FAILURE;
 
 	TASK_TYPE retrieveTaskTypeToRedo(vector<CommandDetails*>&);
 	string executeRedoAdd(vector<CommandDetails*>&, Storage&);

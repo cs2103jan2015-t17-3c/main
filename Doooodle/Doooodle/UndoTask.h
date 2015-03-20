@@ -17,23 +17,23 @@ class UndoTask {
 public:
 	UndoTask(void);
 	~UndoTask(void);
-	string loadUndoTask(vector<CommandDetails*>&, Storage&);
+	string loadUndoTask(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
 
 private:
 	enum TASK_TYPE {
 		ADD, DELETE, EDIT, NIL
 	};
-	static const string MESSAGE_ADD;
-	static const string MESSAGE_DELETE;
-	static const string MESSAGE_EDIT;
-	static const string MESSAGE_UNDO_FAILURE;
-	static const string MESSAGE_SEARCH;
-	static const string MESSAGE_UNDO;
+	static const string STRING_ADD;
+	static const string STRING_DELETE;
+	static const string STRING_EDIT;
+	static const string STRING_UNDO_FAILURE;
+	static const string STRING_SEARCH;
+	static const string STRING_UNDO;
 
 	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>&);
-	string executeUndoAdd(vector<CommandDetails*>&, Storage&);
-	string executeUndoDelete(vector<CommandDetails*>&, Storage&);
-	string executeUndoEdit(vector<CommandDetails*>&, Storage&);
+	string executeUndoAdd(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
+	string executeUndoDelete(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
+	string executeUndoEdit(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
 };
 
 #endif

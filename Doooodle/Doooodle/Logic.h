@@ -44,17 +44,17 @@ private:
 	DeleteSearchTask deleteSearchTask;
 	SearchTask searchTask;
 	EditTask editTask;
-	static char buffer[300];
-	static const string MESSAGE_ADD;
-	static const string MESSAGE_DELETE;
-	static const string MESSAGE_EDIT;
-	static const string MESSAGE_EXIT;
-	static const string MESSAGE_INVALID;
-	static const string MESSAGE_REDO;
-	static const string MESSAGE_SEARCH;
-	static const string MESSAGE_UNDO;
+	static const string STRING_ADD;
+	static const string STRING_DELETE;
+	static const string STRING_EDIT;
+	static const string STRING_EXIT;
+	static const string STRING_INVALID;
+	static const string STRING_REDO;
+	static const string STRING_SEARCH;
+	static const string STRING_UNDO;
 
 	vector<CommandDetails*> commandDetails;
+	vector<CommandDetails*> commandDetailsForRedo;
 
 	enum TASK_TYPE {
 		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT, REDO

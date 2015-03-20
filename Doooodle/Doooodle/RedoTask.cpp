@@ -1,12 +1,10 @@
 
 #include "RedoTask.h"
 
-const string RedoTask::MESSAGE_ADD = "add";
-const string RedoTask::MESSAGE_DELETE = "delete";
-const string RedoTask::MESSAGE_EDIT = "edit";
-const string RedoTask::MESSAGE_SEARCH = "search";
-const string RedoTask::MESSAGE_UNDO = "undo";
-const string RedoTask::MESSAGE_UNDO_FAILURE = "Nothing to redo!";
+const string RedoTask::STRING_ADD = "add";
+const string RedoTask::STRING_DELETE = "delete";
+const string RedoTask::STRING_EDIT = "edit";
+const string RedoTask::STRING_UNDO_FAILURE = "Nothing to redo!";
 
 RedoTask::RedoTask(void) {
 }
@@ -19,7 +17,7 @@ string RedoTask::loadRedoTask(vector<CommandDetails*>& CD, Storage& storage) {
 	string displayMessage;
 	switch(taskType) {
 	case NIL:
-		displayMessage = MESSAGE_UNDO_FAILURE;
+		displayMessage = STRING_UNDO_FAILURE;
 		break;
 	case ADD:
 		displayMessage = executeRedoAdd(CD, storage);
@@ -37,44 +35,35 @@ string RedoTask::loadRedoTask(vector<CommandDetails*>& CD, Storage& storage) {
 
 string RedoTask::executeRedoAdd(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
-	return storage.undoAdd();
+	return storage.redoAdd();
 }
 
 string RedoTask::executeRedoDelete(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
-	return storage.undoDelete();
+	return storage.redoDelete();
 }
 
 string RedoTask::executeRedoEdit(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
-	return storage.undoEdit();
+	return storage.redoEdit();
 }
 
 RedoTask::TASK_TYPE RedoTask::retrieveTaskTypeToRedo(vector<CommandDetails*>& CD) {
 	int index = CD.size()-1;
-	assert(index>=0);
+	//use exception
 	if (index<0) {
 		return NIL;
 	} 
-	else if(CD[index]->commandType==MESSAGE_ADD) {
+	else if(CD[index]->commandType==STRING_ADD) {
 		return ADD;
 	}
-	else if(CD[index]->commandType==MESSAGE_DELETE) {
+	else if(CD[index]->commandType==STRING_DELETE) {
 		return DELETE;
 	}
-	else if(CD[index]->commandType==MESSAGE_SEARCH) {
-		CD.pop_back(); //search will not be undone, hence pop_back and recursion to retrieve next in line
-		return retrieveTaskTypeToRedo(CD);
-	}
-	else if(CD[index]->commandType==MESSAGE_UNDO) {
-		CD.pop_back(); //get rid of undo in CD
-		return retrieveTaskTypeToRedo(CD);
-	}
-	else if(CD[index]->commandType==MESSAGE_EDIT) {
+	else if(CD[index]->commandType==STRING_EDIT) {
 		return EDIT;
 	}
-	else { //for invalid cases
-		CD.pop_back();
-		return retrieveTaskTypeToRedo(CD);
+	else { //should not come here
+		assert(false);
 	};
 }
