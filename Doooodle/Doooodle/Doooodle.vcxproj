@@ -80,6 +80,7 @@
     <ClCompile Include="RedoTask.cpp" />
     <ClCompile Include="SearchTask.cpp" />
     <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="Task.cpp" />
     <ClCompile Include="TimeParser.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UndoTask.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="SearchTask.h" />
     <ClInclude Include="standardForm.h" />
     <ClInclude Include="Storage.h" />
+    <ClInclude Include="Task.h" />
     <ClInclude Include="TimeParser.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UndoTask.h" />
