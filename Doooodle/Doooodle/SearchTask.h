@@ -3,17 +3,16 @@
 #define SEARCHTASK_H_
 
 #include <iostream>
-#include <assert.h>
-#include "Storage.h"
+#include "Task.h"
 
 using namespace std;
 
-class SearchTask {
+class SearchTask : public Task {
 
 public:
 	SearchTask(void);
 	~SearchTask(void);
-	vector<string> loadSearchTask(string, Storage&);
+	vector<string> loadTask(string, Storage&);
 
 private:
 

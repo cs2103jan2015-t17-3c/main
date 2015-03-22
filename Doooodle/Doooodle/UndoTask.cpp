@@ -14,7 +14,7 @@ UndoTask::UndoTask(void) {
 UndoTask::~UndoTask(void) {
 }
 
-string UndoTask::loadUndoTask(vector<CommandDetails*>& CD, vector<CommandDetails*>& CDforRedo, Storage& storage) {
+string UndoTask::loadTask(vector<CommandDetails*>& CD, vector<CommandDetails*>& CDforRedo, Storage& storage) {
 	TASK_TYPE taskType = retrieveTaskTypeToUndo(CD);
 	string displayMessage;
 	switch(taskType) {

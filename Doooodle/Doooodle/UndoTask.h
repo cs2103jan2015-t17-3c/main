@@ -3,21 +3,17 @@
 #define UNDOTASK_H_
 
 #include <iostream>
-#include <vector>
-#include <string>
-#include <assert.h>
-#include <boost/date_time.hpp>
-#include "Storage.h"
+#include "Task.h"
 #include "CommandDetails.h"
 
 using namespace std;
 
-class UndoTask {
+class UndoTask : public Task {
 
 public:
 	UndoTask(void);
 	~UndoTask(void);
-	string loadUndoTask(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
+	string loadTask(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
 
 private:
 	enum TASK_TYPE {

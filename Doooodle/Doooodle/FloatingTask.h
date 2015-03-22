@@ -3,19 +3,18 @@
 #define FLOATINGTASK_H_
 
 #include <iostream>
-#include "Storage.h"
+#include "Task.h"
 
 using namespace std;
 
-class FloatingTask {
+class FloatingTask : public Task {
 
 public:
 	FloatingTask(void);
 	~FloatingTask(void);
-	string loadFloatingTask(string, Storage&);
+	string loadTask(string, Storage&);
 
 private:
-	string task;
 
 };
 

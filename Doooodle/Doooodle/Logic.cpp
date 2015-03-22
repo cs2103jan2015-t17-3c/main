@@ -27,7 +27,7 @@ vector<string> Logic::displaySearchResults(string userInput) {
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
 	assert(commandDetails[indexToUpdate]->commandType==STRING_SEARCH);
-	return searchTask.loadSearchTask(commandDetails[indexToUpdate]->task, storage);
+	return searchTask.loadTask(commandDetails[indexToUpdate]->task, storage);
 }
 
 
@@ -63,20 +63,20 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 	string displayMessageToUI=" ";
 	switch(taskType) {
 	case NORMAL:
-		displayMessageToUI = normTask.loadNormalTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
+		displayMessageToUI = normTask.loadTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
 		break;
 	case DEADLINE:
-		displayMessageToUI = deadlineTask.loadDeadlineTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeEnd, storage);
+		displayMessageToUI = deadlineTask.loadTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeEnd, storage);
 		break;
 	case FLOATING:
-		displayMessageToUI = floatingTask.loadFloatingTask(commandDetails[indexToUpdate]->task, storage);
+		displayMessageToUI = floatingTask.loadTask(commandDetails[indexToUpdate]->task, storage);
 		break;
 	case DELETE:
 		if (lastCommandIsSearch()) {
-			displayMessageToUI = deleteSearchTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+			displayMessageToUI = deleteSearchTask.loadTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
 		}
 		else{
-			displayMessageToUI = deleteTask.loadDeleteTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+			displayMessageToUI = deleteTask.loadTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
 		}
 		break;
 	case SEARCH:
@@ -85,12 +85,12 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		exit(0);
 		break;
 	case UNDO:
-		displayMessageToUI = undoTask.loadUndoTask(commandDetails, commandDetailsForRedo, storage);
+		displayMessageToUI = undoTask.loadTask(commandDetails, commandDetailsForRedo, storage);
 		storage.sortStorage();
 		storage.writeToFile();
 		break;
 	case REDO:
-		displayMessageToUI = redoTask.loadRedoTask(commandDetailsForRedo, storage);
+		displayMessageToUI = redoTask.loadTask(commandDetailsForRedo, storage);
 		storage.sortStorage();
 		storage.writeToFile();	
 		break;

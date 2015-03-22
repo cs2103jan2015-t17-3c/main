@@ -12,7 +12,7 @@ RedoTask::RedoTask(void) {
 RedoTask::~RedoTask(void) {
 }
 
-string RedoTask::loadRedoTask(vector<CommandDetails*>& CD, Storage& storage) {
+string RedoTask::loadTask(vector<CommandDetails*>& CD, Storage& storage) {
 	TASK_TYPE taskType = retrieveTaskTypeToRedo(CD);
 	string displayMessage;
 	switch(taskType) {

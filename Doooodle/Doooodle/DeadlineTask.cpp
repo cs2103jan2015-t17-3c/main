@@ -10,7 +10,7 @@ DeadlineTask::DeadlineTask(void) {
 DeadlineTask::~DeadlineTask(void) {
 }
 
-string DeadlineTask::loadDeadlineTask(string task, boost::gregorian::date dateEnd, boost::posix_time::ptime timeEnd, Storage& storage) {
+string DeadlineTask::loadTask(string task, boost::gregorian::date dateEnd, boost::posix_time::ptime timeEnd, Storage& storage) {
 	this->task = task;
 	this->dateEnd = dateEnd;
 	this->timeEnd = timeEnd;

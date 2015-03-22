@@ -3,24 +3,19 @@
 #define NORMALTASK_H_
 
 #include <iostream>
-#include <boost/date_time.hpp>
-#include "Storage.h"
+#include "Task.h"
+
 
 using namespace std;
 
-class NormalTask {
+class NormalTask : public Task {
 
 public:
 	NormalTask(void);
 	~NormalTask(void);
-	string loadNormalTask(string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
+	string loadTask(string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
 
 private:
-	string task;
-	boost::gregorian::date dateStart;
-	boost::gregorian::date dateEnd;
-	boost::posix_time::ptime timeStart;
-	boost::posix_time::ptime timeEnd;
 
 };
 

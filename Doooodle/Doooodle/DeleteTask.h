@@ -3,16 +3,16 @@
 #define DELETETASK_H_
 
 #include <iostream>
-#include "Storage.h"
+#include "Task.h"
 
 using namespace std;
 
-class DeleteTask {
+class DeleteTask : public Task {
 
 public:
 	DeleteTask(void);
 	~DeleteTask(void);
-	string loadDeleteTask(int, Storage&);
+	string loadTask(int, Storage&);
 
 private:
 

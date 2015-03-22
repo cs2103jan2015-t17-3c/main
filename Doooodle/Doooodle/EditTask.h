@@ -3,16 +3,16 @@
 #define EDITTASK_H_
 
 #include <iostream>
-#include "Storage.h"
+#include "Task.h"
 
 using namespace std;
 
-class EditTask {
+class EditTask : public Task {
 
 public:
 	EditTask(void);
 	~EditTask(void);
-	string loadEditTask(int, Storage&);
+	string loadTask(int, Storage&);
 
 private:
 

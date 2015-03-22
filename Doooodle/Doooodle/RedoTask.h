@@ -3,21 +3,17 @@
 #define REDOTASK_H_
 
 #include <iostream>
-#include <vector>
-#include <string>
-#include <assert.h>
-#include <boost/date_time.hpp>
-#include "Storage.h"
+#include "Task.h"
 #include "CommandDetails.h"
 
 using namespace std;
 
-class RedoTask {
+class RedoTask : public Task {
 
 public:
 	RedoTask(void);
 	~RedoTask(void);
-	string loadRedoTask(vector<CommandDetails*>&, Storage&);
+	string loadTask(vector<CommandDetails*>&, Storage&);
 
 private:
 	enum TASK_TYPE {
