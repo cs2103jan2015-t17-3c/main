@@ -47,7 +47,7 @@ public:
 	string addNormalTask(string, boost::gregorian::date, boost::gregorian::date,boost::posix_time::ptime,boost::posix_time::ptime);
 	string addDeadlineTask(string, gregorian::date, posix_time::ptime);
 	string addFloatTask(string);
-	vector<string> retrieveTopFive();
+	vector<string> retrieveTopTen();
 	void sortStorage();
 	void writeToFile();
 	string deleteTask(int);
@@ -56,16 +56,22 @@ public:
 	string undoDelete();
 	string undoEdit();
     string deleteSearchTask(int);
+	string redoDelete();
+	string redoAdd();
 	
 
 private:
 	vector<Task> archivedTask;
 	vector<Task> activeTask;
 	vector<History> commandHistory;
+	
 	static const string MESSAGE_UNDO;
+	static const string MESSAGE_REDO;
 	stack<Task> tempTask;
 	stack<string> taskDetailsHistory;
 	vector<vector<Task>::iterator> tempSearchIterator;
+	stack<Task> redoAddTask;
+	stack<Task> redoDeleteTask;
 };
 
 

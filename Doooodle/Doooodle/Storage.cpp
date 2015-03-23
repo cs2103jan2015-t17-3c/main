@@ -7,6 +7,7 @@ date nonDate(not_a_date_time);
 ptime nonTime(not_a_date_time);
 
 const string Storage::MESSAGE_UNDO = "Undo is successfully performed";
+const string Storage::MESSAGE_REDO = "Redo is successfully performed";
 Storage::Storage(void){
 };
 
@@ -24,7 +25,7 @@ Task initializeNormalTask(string task, date startDate, date endDate, ptime start
 	temp.endTime = endTime;
 	temp.taskType = NORMAL;
 	ostringstream outputTask;
-	outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day() << " to " << endDate << " " << endTime.time_of_day();
+	outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
 	temp.taskDisplay = outputTask.str();
 	return temp;
 }
@@ -64,7 +65,7 @@ Task initializeDeadlineTask(string task, date endDate, ptime endTime){
 	temp.endTime = endTime;
 	temp.taskType = DEADLINE;
 	ostringstream outputTask;
-	outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day();
+	outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
 	temp.taskDisplay = outputTask.str();
 
 	return temp;
@@ -112,10 +113,10 @@ string Storage::addFloatTask(string task){
 	return feedback.str();
 };
 
-vector<string> Storage::retrieveTopFive(){
+vector<string> Storage::retrieveTopTen(){
 	vector<string> TopTasks;
 	int defaultWidth = 25;
-	int numberOfDisplay = 5;
+	int numberOfDisplay = 10;
 	for (int i = 0; i < numberOfDisplay && i < activeTask.size(); i++){
 			Task dummy = activeTask[i];
 			ostringstream oneTask;
@@ -179,7 +180,7 @@ vector<string> Storage::searchTask(string thingsToSearch){
 	vector<Task>::iterator iter;
 	int count = 1;
 	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
-		string temp = iter->taskDetails;
+		string temp = iter->taskDisplay;
 		size_t found = temp.find(thingsToSearch);
 		if (found != string::npos){
 			tempSearchIterator.push_back(iter);
@@ -206,6 +207,7 @@ string Storage::undoAdd(){
 	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
 		string temp = iter->taskDetails;
 		if (temp == thingsToSearch){
+			redoAddTask.push(*iter);
 			activeTask.erase(iter);
 			break;
 		}
@@ -216,10 +218,33 @@ string Storage::undoAdd(){
 
 string Storage::undoDelete(){
 	activeTask.push_back(tempTask.top());
+	redoDeleteTask.push(tempTask.top());
 	tempTask.pop();
 	sortStorage();
 	return MESSAGE_UNDO;
 }
+
+string Storage::redoDelete(){
+
+	string thingsToSearch = redoDeleteTask.top().taskDetails;
+	vector<Task>::iterator iter;
+	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
+		string temp = iter->taskDetails;
+		if (temp == thingsToSearch){
+			activeTask.erase(iter);
+			break;
+		}
+	}
+	redoDeleteTask.pop();
+	return MESSAGE_REDO;
+}
+
+string Storage::redoAdd(){
+	activeTask.push_back(redoAddTask.top());
+	sortStorage();
+	redoAddTask.pop();
+}
+
 
 string Storage::undoEdit(){
 	undoAdd();
