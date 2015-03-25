@@ -19,7 +19,7 @@ Parser::~Parser(){
 }
 
 void Parser::processCommand(string input, string& commandType, string& userTask, boost::gregorian::date& startDate, boost::gregorian::date& endDate, 
-	boost::posix_time::ptime& startTime, boost::posix_time::ptime& endTime){
+	boost::posix_time::ptime& startTime, boost::posix_time::ptime& endTime, int& indexReference){
 	boost::gregorian::date d1(boost::date_time::not_a_date_time);
 	boost::gregorian::date dmax(boost::date_time::max_date_time);
 	boost::posix_time::ptime d2(boost::date_time::not_a_date_time);
