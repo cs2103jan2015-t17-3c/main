@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -9,59 +8,29 @@ namespace TestLibrary
 	{
 	public:
 		
-		TEST_METHOD(testGetCommandType)
+		TEST_METHOD(testProcessCommand)
 		{
 			Parser parser;
-			string A, B, C, D;
-			parser.processCommand("add abc", A, B, C, D);
-			string expected = "add";
-			Assert::AreEqual(expected,A);
+			boost::gregorian::date d1,d2;
+			boost::posix_time::ptime t1, t2;
+			string A="add meeting from 10pm to 11pm", B, C;
+			int D;
+			parser.processCommand(A, B, C, d1, d2, t1, t2, D);
+			string expectedB = "add";
+			string expectedC = "meeting";
+			boost::gregorian::date expectedD1(not_a_date_time);
+			boost::gregorian::date expectedD2(day_clock::local_day());
+			int expectedD = -1;
+			boost::posix_time::ptime expectedT1(boost::gregorian::date(boost::gregorian::day_clock::local_day()), boost::posix_time::hours(22) + boost::posix_time::minutes(0));
+			boost::posix_time::ptime expectedT2(boost::gregorian::date(boost::gregorian::day_clock::local_day()), boost::posix_time::hours(23) + boost::posix_time::minutes(0));
+			Assert::AreEqual(expectedB,B);
+			Assert::AreEqual(expectedC, C);
+			Assert::AreEqual(expectedD1, d1);
+			Assert::AreEqual(expectedD2, d2);
+			Assert::AreEqual(expectedT1, t1);
+			Assert::AreEqual(expectedT2, t2);
+			Assert::AreEqual(expectedD, d);
 		}
 
-		TEST_METHOD(testGetUserTask)
-		{
-			Parser parser;
-			string A, B, C, D;
-			parser.processCommand("add meeting at 14:00", A, B, C, D);
-			string expected = "meeting";
-			Assert::AreEqual(expected,B);
-		}
-
-		TEST_METHOD(testGetStartDetail1)
-		{
-			Parser parser;
-			string A, B, C, D;
-			parser.processCommand("add meeting from 14:00 to 15:00", A, B, C, D);
-			string expected = "14:00";
-			Assert::AreEqual(expected, C);
-		}
-
-
-		TEST_METHOD(testGetStartDetail2)
-		{
-			Parser parser;
-			string A, B, C, D;
-			parser.processCommand("add meeting by today", A, B, C, D);
-			string expected = "";
-			Assert::AreEqual(expected, C);
-		}
-
-		TEST_METHOD(testGetEndDetail1)
-		{
-			Parser parser;
-			string A, B, C, D;
-			parser.processCommand("add submit work by today", A, B, C, D);
-			string expected = "today";
-			Assert::AreEqual(expected, D);
-		}
-
-		TEST_METHOD(testGetEndDetail2)
-		{
-			Parser parser;
-			string A, B, C, D;
-			parser.processCommand("add meeting with bob from 14:00 to 15:00", A, B, C, D);
-			string expected = "15:00";
-			Assert::AreEqual(expected, D);
-		}
 	};
 }

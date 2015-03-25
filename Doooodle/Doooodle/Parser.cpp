@@ -75,6 +75,7 @@ int Parser::getIndexReference(string input){
 			}
 		}
 	}
+	return -1;
 }
 
 string Parser::getUserTask(string input){
