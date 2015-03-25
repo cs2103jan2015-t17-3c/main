@@ -12,6 +12,7 @@
 #include <boost/date_time.hpp>
 #include <sstream>
 
+
 using namespace std;
 using namespace boost::gregorian;
 using namespace boost::posix_time;
@@ -32,6 +33,7 @@ private:
 
 	void tokenizeInput(string);
 	string getCommandType(string);
+	int getIndexReference(string);
 	string getUserTask(string);
 	boost::gregorian::date getStartDate(int&);
 	boost::gregorian::date getEndDate(int&);
@@ -41,6 +43,7 @@ private:
 	size_t getEndOfUserTask(string);
 	size_t getStartOfUserTask(string);
 	void assignToday(boost::gregorian::date&);
+	bool isDeadline(string);
 
 public:
 	Parser();
