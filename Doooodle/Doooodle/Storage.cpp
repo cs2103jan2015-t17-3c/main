@@ -231,7 +231,7 @@ vector<string> Storage::searchTask(string thingsToSearch,date dateToSearch, ptim
 			tempSearchIterator.push_back(iter);
 			findIt = true;
 			ostringstream oneTask;
-			oneTask << count << ". " << iter->taskDisplay << endl;		
+			oneTask << count << ". " << iter->taskDisplay;		
 			searchedStuff.push_back(oneTask.str());
 			count++;
 		}
