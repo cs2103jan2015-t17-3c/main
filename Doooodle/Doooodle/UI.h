@@ -2,6 +2,7 @@
 #define UI_H_
 
 #include "Logic.h"
+#include <boost/date_time.hpp>
 #include <iostream>
 #include <vector>
 #include <string>

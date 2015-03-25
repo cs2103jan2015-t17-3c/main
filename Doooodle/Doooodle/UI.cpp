@@ -2,7 +2,7 @@
 
 const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search\nEnter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
-*        Doooodle       *\n*************************\n";
+*        Doooodle       *\n*************************                                     ";
 const string UI::MESSAGE_TOPFIVE = "Below is the list of top five items in your scheduler for now\n\n";
 
 UI::UI(void) {
@@ -13,8 +13,10 @@ UI::~UI(void) {
 void UI::readMessage(){
 	string command = "Nothing";
 	string message = " ";
+	date today(day_clock::local_day());
 	vector<string> displayMessage;
-	cout << MESSAGE_WELCOME << endl;
+	cout << MESSAGE_WELCOME;
+	cout << today << endl;
 
 	while (true){
 		//assertion added by cindy
