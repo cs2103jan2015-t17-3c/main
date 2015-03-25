@@ -49,17 +49,17 @@ public:
 	string addFloatTask(string);
 	vector<string> retrieveTopTen();
 	void sortStorage();
-	void writeToFile();
+	void writeToFile(string);
 	string deleteTask(int);
-	vector<string> searchTask(string);
+	vector<string> searchTask(string,boost::gregorian::date,boost::posix_time::ptime);
 	string undoAdd();
 	string undoDelete();
 	string undoEdit();
     string deleteSearchTask(int);
 	string redoDelete();
 	string redoAdd();
-	
-
+	string editTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime);
+	vector<string> displayFloatingTask();
 private:
 	vector<Task> archivedTask;
 	vector<Task> activeTask;

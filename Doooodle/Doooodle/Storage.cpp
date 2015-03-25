@@ -125,6 +125,19 @@ vector<string> Storage::retrieveTopTen(){
 		} 	
 	return TopTasks;
 }
+vector<string> Storage::displayFloatingTask(){
+	vector<string> TopTasks;
+	int numberOfDisplay = 5;
+	int count = 0;
+	for (int i = 0; i < activeTask.size() && count < 5; i++){
+		if (activeTask[i].taskType == FLOAT){
+			TopTasks.push_back(activeTask[i].taskDisplay);
+			count++;
+		}
+	}
+	return TopTasks;
+}
+
 
 
 bool task_sorter(Task const& lhs, Task const& rhs){
@@ -152,12 +165,13 @@ void Storage::sortStorage(){
 	sort(activeTask.begin(), activeTask.end(), &task_sorter);
 }
 
-void Storage::writeToFile(){
+void Storage::writeToFile(string specificFileName){
 	ofstream outputFile;
-	outputFile.open("Doooodle.txt");
+	outputFile.open(specificFileName);
 	for (int index = 0; index < activeTask.size(); index++){
 		outputFile << index + 1 << ". " << activeTask[index].taskDisplay << endl;
 	}
+	
 	outputFile.close();	
 }
 
@@ -173,16 +187,17 @@ string Storage::deleteTask(int index){
 }
 
 //vector<string> ususal
-vector<string> Storage::searchTask(string thingsToSearch){
+vector<string> Storage::searchTask(string thingsToSearch,date dateToSearch, ptime timeToSearch ){
 	vector<string> searchedStuff;
 	tempSearchIterator.clear();
 	bool findIt = false;
 	vector<Task>::iterator iter;
 	int count = 1;
 	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
+		
 		string temp = iter->taskDisplay;
 		size_t found = temp.find(thingsToSearch);
-		if (found != string::npos){
+		if (found != string::npos || dateToSearch == iter->startDate || dateToSearch == iter->endDate || timeToSearch == iter->startTime || timeToSearch == iter->endTime){
 			tempSearchIterator.push_back(iter);
 			findIt = true;
 			ostringstream oneTask;
@@ -267,4 +282,27 @@ void logging(string actionDetails){
 myfile.open("actionLog.txt");
 myfile << actionDetails;
 myfile.close();
+}
+
+string Storage::editTask(int index, string information, date tempStartDate, date tempEndDate, ptime tempStartTime, ptime tempEndTime){
+	Task temporaryTask = *tempSearchIterator[index - 1];
+	deleteSearchTask(index);
+
+	if (!information.empty()){
+		temporaryTask.taskDetails = information;
+	}
+	if (tempStartDate != temporaryTask.startDate && tempStartDate != nonDate){
+		temporaryTask.startDate = tempStartDate;
+	}
+	if (tempEndDate != temporaryTask.endDate && tempEndDate != nonDate){
+		temporaryTask.endDate = tempEndDate;
+	}
+	if (tempStartTime != temporaryTask.startTime && tempStartTime != nonTime){
+		temporaryTask.startTime = tempStartTime;
+	}
+	if (tempEndTime != temporaryTask.endTime && tempEndTime != nonTime){
+		temporaryTask.endTime = tempEndTime;
+	}
+	activeTask.push_back(temporaryTask);
+	taskDetailsHistory.push(temporaryTask.taskDetails);
 }
