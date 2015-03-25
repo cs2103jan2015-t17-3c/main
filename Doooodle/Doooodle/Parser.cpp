@@ -164,7 +164,7 @@ size_t Parser::getStartOfUserTask(string input){
 size_t Parser::getEndOfUserTask(string input){
 	size_t pos;
 	size_t position;
-	int num;
+	int num=-1;
 	//check for start time indicators
 	for (int i = 0; i < NO_OF_START_TIME_INDICATORS; i++){
 		pos = input.find(START_TIME_INDICATORS[i]);
@@ -195,6 +195,9 @@ size_t Parser::getEndOfUserTask(string input){
 	}
 	//check for date
 	getStartDate(num);
+	if (num == -1){
+		getStartTime(num);
+	}
 	pos = intToPos(num, input);
 	pos++;
 	if (pos < position){
