@@ -3,7 +3,7 @@
 const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search\nEnter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
 *        Doooodle       *\n*************************                                     ";
-const string UI::MESSAGE_TOPFIVE = "Below is the list of top five items in your scheduler for now\n\n";
+const string UI::MESSAGE_TOPFIVE = "Below is the list of top ten items in your scheduler for now\n\n";
 
 UI::UI(void) {
 }

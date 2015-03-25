@@ -7,4 +7,5 @@ ITask::~ITask(void) {
 }
 
 string ITask::loadTask() {
+	return "";
 }

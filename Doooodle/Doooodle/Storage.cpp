@@ -7,7 +7,6 @@ date nonDate(not_a_date_time);
 ptime nonTime(not_a_date_time);
 
 const string Storage::MESSAGE_UNDO = "Undo is successfully performed";
-const string Storage::MESSAGE_REDO = "Redo is successfully performed";
 const string Storage::DEFAULT_DIRECTORY = "dooodle.txt";
 Storage::Storage(void){
 };
@@ -133,7 +132,7 @@ string Storage::addFloatTask(string task){
 	commandHistory.push_back(trace);
 	ostringstream feedback;
 	feedback << "Float task: " << temp.taskDisplay << " successfully added.\n";
-	logging(trace.commandDisplay);
+//	logging(trace.commandDisplay);
 
 	return feedback.str();
 };
@@ -150,7 +149,7 @@ vector<string> Storage::retrieveTopTen(){
 		} 	
 	return TopTasks;
 }
-vector<string> Storage::displayFloatingTask(){
+vector<string> Storage::retrieveFloatingTask(){
 	vector<string> TopTasks;
 	int numberOfDisplay = 5;
 	int count = 0;
@@ -253,7 +252,6 @@ string Storage::undoAdd(){
 	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
 		string temp = iter->taskDetails;
 		if (temp == thingsToSearch){
-			redoAddTask.push(*iter);
 			activeTask.erase(iter);
 			break;
 		}
@@ -264,31 +262,9 @@ string Storage::undoAdd(){
 
 string Storage::undoDelete(){
 	activeTask.push_back(tempTask.top());
-	redoDeleteTask.push(tempTask.top());
 	tempTask.pop();
 	sortStorage();
 	return MESSAGE_UNDO;
-}
-
-string Storage::redoDelete(){
-
-	string thingsToSearch = redoDeleteTask.top().taskDetails;
-	vector<Task>::iterator iter;
-	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
-		string temp = iter->taskDetails;
-		if (temp == thingsToSearch){
-			activeTask.erase(iter);
-			break;
-		}
-	}
-	redoDeleteTask.pop();
-	return MESSAGE_REDO;
-}
-
-string Storage::redoAdd(){
-	activeTask.push_back(redoAddTask.top());
-	sortStorage();
-	redoAddTask.pop();
 }
 
 
@@ -336,4 +312,5 @@ string Storage::editTask(int index, string information, date tempStartDate, date
 	}
 	activeTask.push_back(temporaryTask);
 	taskDetailsHistory.push(temporaryTask.taskDetails);
+	return "successfuly edited";
 }

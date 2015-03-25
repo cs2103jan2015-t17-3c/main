@@ -29,7 +29,7 @@ namespace TestLibrary
 			Assert::AreEqual(expectedD2, d2);
 			Assert::AreEqual(expectedT1, t1);
 			Assert::AreEqual(expectedT2, t2);
-			Assert::AreEqual(expectedD, d);
+			Assert::AreEqual(expectedD, D);
 		}
 
 	};

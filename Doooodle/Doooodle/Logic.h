@@ -17,7 +17,6 @@
 #include "DeleteTask.h"
 #include "SearchTask.h"
 #include "EditTask.h"
-#include "RedoTask.h"
 #include "DeleteSearchTask.h"
 
 using namespace std;
@@ -40,7 +39,6 @@ private:
 	DeadlineTask deadlineTask;
 	FloatingTask floatingTask;
 	UndoTask undoTask;
-	RedoTask redoTask;
 	DeleteTask deleteTask;
 	DeleteSearchTask deleteSearchTask;
 	SearchTask searchTask;

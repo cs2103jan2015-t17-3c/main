@@ -56,10 +56,8 @@ public:
 	string undoDelete();
 	string undoEdit();
     string deleteSearchTask(int);
-	string redoDelete();
-	string redoAdd();
 	string editTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime);
-	vector<string> displayFloatingTask();
+	vector<string> retrieveFloatingTask();
 	void changeDirectory(string);
 private:
 	vector<Task> archivedTask;
@@ -67,13 +65,10 @@ private:
 	vector<History> commandHistory;
 	
 	static const string MESSAGE_UNDO;
-	static const string MESSAGE_REDO;
 	static const string DEFAULT_DIRECTORY;
 	stack<Task> tempTask;
 	stack<string> taskDetailsHistory;
 	vector<vector<Task>::iterator> tempSearchIterator;
-	stack<Task> redoAddTask;
-	stack<Task> redoDeleteTask;
 	string directoryName;
 };
 
