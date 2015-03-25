@@ -70,7 +70,7 @@ string Parser::getCommandType(string input){
 int Parser::getIndexReference(string input){
 	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"){
 		for (int i = 0; i < tokens.size(); i++){
-			if (isdigit(atoi(tokens[i].c_str()))){
+			if (isdigit(tokens[i][0])){
 				return atoi(tokens[i].c_str());
 			}
 		}

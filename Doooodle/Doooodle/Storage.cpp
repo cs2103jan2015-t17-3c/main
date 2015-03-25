@@ -28,20 +28,20 @@ Task initializeNormalTask(string task, date startDate, date endDate, ptime start
 	if (startDate != nonDate){
 		if (startTime != nonTime){
 			if (endTime != nonTime){
-				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << setw(2) << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << setfill('0') << setw(2) << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
 			} else{
-				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate;
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << startTime.time_of_day().minutes() << " to " << endDate;
 			}
 		} else{
 			if (endTime != nonTime){
-				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << endTime.time_of_day().minutes();
 			} else{
 				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate;
 			}
 		}
 	} else{
 		if (startTime != nonTime && endTime != nonTime){
-			outputTask << left << setw(defaultWidth) << task << " from " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
+			outputTask << left << setw(defaultWidth) << task << " from " << startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << endTime.time_of_day().minutes();
 		}
 	}
     //outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
@@ -88,7 +88,7 @@ Task initializeDeadlineTask(string task, date endDate, ptime endTime){
 		outputTask << left << setw(defaultWidth) << task << " by " << endDate;
 
 	} else{
-		outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
+		outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << endTime.time_of_day().minutes();
 	}
 	temp.taskDisplay = outputTask.str();
 
@@ -299,6 +299,7 @@ myfile.close();
 
 string Storage::editTask(int index, string information, date tempStartDate, date tempEndDate, ptime tempStartTime, ptime tempEndTime){
 	Task temporaryTask = *tempSearchIterator[index - 1];
+	
 	deleteSearchTask(index);
 
 	if (!information.empty()){
