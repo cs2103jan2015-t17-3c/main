@@ -29,6 +29,7 @@ public:
 	~Logic(void);
 	string receiveCommand(string);
 	vector<string> displayTopTen(void);
+	vector<string> displayFloatingTask(void);
 	vector<string> displaySearchResults(string);
 	bool isSearch(string);
 
@@ -49,15 +50,15 @@ private:
 	static const string STRING_EDIT;
 	static const string STRING_EXIT;
 	static const string STRING_INVALID;
-	static const string STRING_REDO;
 	static const string STRING_SEARCH;
 	static const string STRING_UNDO;
+	static const int TOP10MAX;
+	static const int FLOATMAX;
 
 	vector<CommandDetails*> commandDetails;
-	vector<CommandDetails*> commandDetailsForRedo;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT, REDO
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
 	};
 
 	string executeLogicCore(string);

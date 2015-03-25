@@ -18,8 +18,8 @@ string NormalTask::loadTask(string task, boost::gregorian::date dateStart, boost
 	this->dateEnd = dateEnd;
 	this->timeStart = timeStart;
 	this->timeEnd = timeEnd;
-	string displayMessageToLogic = storage.addNormalTask(task, dateStart, dateEnd, timeStart, timeEnd);
+	displayMessage = storage.addNormalTask(task, dateStart, dateEnd, timeStart, timeEnd);
 	storage.sortStorage();
 	storage.writeToFile();
-	return displayMessageToLogic;
+	return displayMessage;
 }

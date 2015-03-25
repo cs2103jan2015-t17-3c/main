@@ -13,7 +13,7 @@ class SearchTask {
 public:
 	SearchTask(void);
 	~SearchTask(void);
-	vector<string> loadTask(string, Storage&);
+	vector<string> loadTask(string, boost::gregorian::date, boost::posix_time::ptime, Storage&);
 
 private:
 

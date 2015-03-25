@@ -14,8 +14,8 @@ string DeadlineTask::loadTask(string task, boost::gregorian::date dateEnd, boost
 	this->task = task;
 	this->dateEnd = dateEnd;
 	this->timeEnd = timeEnd;
-	string displayMessageToLogic = storage.addDeadlineTask(task, dateEnd, timeEnd);
+	displayMessage = storage.addDeadlineTask(task, dateEnd, timeEnd);
 	storage.sortStorage();
 	storage.writeToFile();
-	return displayMessageToLogic;
+	return displayMessage;
 }

@@ -12,6 +12,7 @@ class CommandDetails {
 public:
 	string commandType;
 	string task;
+	int indexReference;
 	boost::gregorian::date dateStart;
 	boost::gregorian::date dateEnd;
 	boost::posix_time::ptime timeStart;

@@ -8,7 +8,7 @@ DeleteSearchTask::~DeleteSearchTask(void) {
 }
 
 string DeleteSearchTask::loadTask(int intToDelete, Storage& storage){
-	string displayMessage =  storage.deleteSearchTask(intToDelete);
+	displayMessage =  storage.deleteSearchTask(intToDelete);
 	storage.writeToFile();
 	return displayMessage;
 }

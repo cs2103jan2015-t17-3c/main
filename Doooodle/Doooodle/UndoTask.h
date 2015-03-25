@@ -13,7 +13,7 @@ class UndoTask : public ITask {
 public:
 	UndoTask(void);
 	~UndoTask(void);
-	string loadTask(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
+	string loadTask(vector<CommandDetails*>&, Storage&);
 
 private:
 	enum TASK_TYPE {
@@ -27,9 +27,9 @@ private:
 	static const string STRING_UNDO;
 
 	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>&);
-	string executeUndoAdd(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
-	string executeUndoDelete(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
-	string executeUndoEdit(vector<CommandDetails*>&, vector<CommandDetails*>&, Storage&);
+	string executeUndoAdd(vector<CommandDetails*>&, Storage&);
+	string executeUndoDelete(vector<CommandDetails*>&, Storage&);
+	string executeUndoEdit(vector<CommandDetails*>&, Storage&);
 };
 
 #endif

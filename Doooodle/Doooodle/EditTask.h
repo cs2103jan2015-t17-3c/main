@@ -12,7 +12,7 @@ class EditTask : public ITask {
 public:
 	EditTask(void);
 	~EditTask(void);
-	string loadTask(int, Storage&);
+	string loadTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
 
 private:
 

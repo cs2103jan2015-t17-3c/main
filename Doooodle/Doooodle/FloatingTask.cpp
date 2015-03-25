@@ -10,8 +10,8 @@ FloatingTask::~FloatingTask(void) {
 
 string FloatingTask::loadTask(string task, Storage& storage) {
 	this->task = task;
-	string displayMessageToLogic = storage.addFloatTask(task);
+	displayMessage = storage.addFloatTask(task);
 	storage.sortStorage();
 	storage.writeToFile();
-	return displayMessageToLogic;
+	return displayMessage;
 }

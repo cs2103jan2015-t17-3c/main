@@ -6,9 +6,10 @@ const string Logic::STRING_DELETE = "delete";
 const string Logic::STRING_EDIT = "edit";
 const string Logic::STRING_EXIT = "exit";
 const string Logic::STRING_INVALID = "ERROR!";
-const string Logic::STRING_REDO = "redo";
 const string Logic::STRING_SEARCH = "search";
 const string Logic::STRING_UNDO = "undo";
+const int Logic::TOP10MAX = 10;
+const int Logic::FLOATMAX = 5;
 
 Logic::Logic(void) {
 }
@@ -18,16 +19,22 @@ Logic::~Logic(void) {
 
 vector<string> Logic::displayTopTen(void) {
 	vector<string> topTenToDisplay = storage.retrieveTopTen();
-	assert(topTenToDisplay.size()<=10);
+	assert(topTenToDisplay.size()<=TOP10MAX);
 	return topTenToDisplay; 
 }
 
+vector<string> Logic::displayFloatingTask(void) {
+	vector<string> floatingTask = storage.retrieveFloatingTask();
+	assert(floatingTask.size()<=FLOATMAX);
+	return floatingTask; 
+}
+
 vector<string> Logic::displaySearchResults(string userInput) {
-	int indexToUpdate = commandDetails.size();
+	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
-	assert(commandDetails[indexToUpdate]->commandType==STRING_SEARCH);
-	return searchTask.loadTask(commandDetails[indexToUpdate]->task, storage);
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd);
+	assert(commandDetails[index]->commandType==STRING_SEARCH);
+	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
 }
 
 
@@ -37,10 +44,10 @@ string Logic::receiveCommand(string userInput) {
 }
 
 bool Logic::isSearch(string userInput) {
-	int indexToUpdate = commandDetails.size();
+	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
-	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd);
+	TASK_TYPE taskType = determineSpecificTaskType(index);
 	if (taskType == SEARCH) {
 		commandDetails.pop_back();
 		return true;
@@ -52,31 +59,31 @@ bool Logic::isSearch(string userInput) {
 }
 
 string Logic::executeLogicCore(string userInput) {
-	int indexToUpdate = commandDetails.size();
+	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[indexToUpdate]->commandType, commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart, commandDetails[indexToUpdate]->timeEnd);
-	TASK_TYPE taskType = determineSpecificTaskType(indexToUpdate);
-	return executeTask(taskType, indexToUpdate);
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+	TASK_TYPE taskType = determineSpecificTaskType(index);
+	return executeTask(taskType, index);
 }
 
-string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
-	string displayMessageToUI=" ";
+string Logic::executeTask(TASK_TYPE taskType, int index) {
+	string displayMessageToUI;
 	switch(taskType) {
 	case NORMAL:
-		displayMessageToUI = normTask.loadTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateStart ,commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeStart ,commandDetails[indexToUpdate]->timeEnd, storage);
+		displayMessageToUI = normTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart ,commandDetails[index]->timeEnd, storage);
 		break;
 	case DEADLINE:
-		displayMessageToUI = deadlineTask.loadTask(commandDetails[indexToUpdate]->task, commandDetails[indexToUpdate]->dateEnd, commandDetails[indexToUpdate]->timeEnd, storage);
+		displayMessageToUI = deadlineTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
 		break;
 	case FLOATING:
-		displayMessageToUI = floatingTask.loadTask(commandDetails[indexToUpdate]->task, storage);
+		displayMessageToUI = floatingTask.loadTask(commandDetails[index]->task, storage);
 		break;
 	case DELETE:
 		if (lastCommandIsSearch()) {
-			displayMessageToUI = deleteSearchTask.loadTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+			displayMessageToUI = deleteSearchTask.loadTask(commandDetails[index]->indexReference, storage);
 		}
 		else{
-			displayMessageToUI = deleteTask.loadTask(atoi((commandDetails[indexToUpdate]->task).c_str()), storage);
+			displayMessageToUI = deleteTask.loadTask(commandDetails[index]->indexReference, storage);
 		}
 		break;
 	case SEARCH:
@@ -85,58 +92,47 @@ string Logic::executeTask(TASK_TYPE taskType, int indexToUpdate) {
 		exit(0);
 		break;
 	case UNDO:
-		displayMessageToUI = undoTask.loadTask(commandDetails, commandDetailsForRedo, storage);
-		storage.sortStorage();
-		storage.writeToFile();
-		break;
-	case REDO:
-		displayMessageToUI = redoTask.loadTask(commandDetailsForRedo, storage);
-		storage.sortStorage();
-		storage.writeToFile();	
+		displayMessageToUI = undoTask.loadTask(commandDetails, storage);
 		break;
 	case EDIT:
-		//displayMessageToUI = " ";
+		displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart ,commandDetails[index]->timeEnd, storage);
 		break;
 	case INVALID:
 		displayMessageToUI = STRING_INVALID;
 		break;
 	} 
-	assert(displayMessageToUI!=" ");
+	assert(!displayMessageToUI.empty());
 	return displayMessageToUI;
 }
 
-Logic::TASK_TYPE Logic::determineSpecificTaskType(int indexToUpdate) {
-	boost::gregorian::date d(boost::date_time::not_a_date_time);
-	if(commandDetails[indexToUpdate]->commandType==STRING_ADD) {
-		if((commandDetails[indexToUpdate]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateEnd==d)) {
+Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
+	boost::gregorian::date dateNull(boost::date_time::not_a_date_time);
+	if(commandDetails[index]->commandType==STRING_ADD) {
+		if((commandDetails[index]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[index]->dateEnd==dateNull)) {
 			return FLOATING;
 		}
-		else if((commandDetails[indexToUpdate]->timeStart==boost::posix_time::not_a_date_time) && (commandDetails[indexToUpdate]->dateStart==d)) {
+		else if((commandDetails[index]->timeStart==boost::posix_time::not_a_date_time) && (commandDetails[index]->dateStart==dateNull)) {
 			return DEADLINE;
 		}
 		else {
 			return NORMAL;
 		}
 	}
-	else if(commandDetails[indexToUpdate]->commandType==STRING_DELETE) {
+	else if(commandDetails[index]->commandType==STRING_DELETE) {
 		return DELETE;
 	}
-	else if(commandDetails[indexToUpdate]->commandType==STRING_SEARCH) {
+	else if(commandDetails[index]->commandType==STRING_SEARCH) {
 		return SEARCH;
 	}
-	else if(commandDetails[indexToUpdate]->commandType==STRING_EXIT) {
+	else if(commandDetails[index]->commandType==STRING_EXIT) {
 		return EXIT;
 	}
-	else if(commandDetails[indexToUpdate]->commandType==STRING_UNDO) {
+	else if(commandDetails[index]->commandType==STRING_UNDO) {
 		return UNDO;
 	}
-	else if(commandDetails[indexToUpdate]->commandType==STRING_EDIT) {
+	else if(commandDetails[index]->commandType==STRING_EDIT) {
 		return EDIT;
 	}
-	else if(commandDetails[indexToUpdate]->commandType==STRING_REDO) {
-		return REDO;
-	}
-
 	else return INVALID;
 }
 

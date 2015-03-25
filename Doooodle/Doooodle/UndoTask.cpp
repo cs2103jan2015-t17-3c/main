@@ -14,41 +14,38 @@ UndoTask::UndoTask(void) {
 UndoTask::~UndoTask(void) {
 }
 
-string UndoTask::loadTask(vector<CommandDetails*>& CD, vector<CommandDetails*>& CDforRedo, Storage& storage) {
+string UndoTask::loadTask(vector<CommandDetails*>& CD, Storage& storage) {
 	TASK_TYPE taskType = retrieveTaskTypeToUndo(CD);
-	string displayMessage;
 	switch(taskType) {
 	case NIL:
 		displayMessage = STRING_UNDO_FAILURE;
 		break;
 	case ADD:
-		displayMessage = executeUndoAdd(CD, CDforRedo, storage);
+		displayMessage = executeUndoAdd(CD, storage);
 		break;
 	case DELETE:
-		displayMessage = executeUndoDelete(CD, CDforRedo, storage);
+		displayMessage = executeUndoDelete(CD, storage);
 		break;
 	case EDIT:
-		displayMessage = executeUndoEdit(CD, CDforRedo, storage);
+		displayMessage = executeUndoEdit(CD, storage);
 		break;
 	}
-
+	storage.sortStorage();
+	storage.writeToFile();
 	return displayMessage;
 }
 
-string UndoTask::executeUndoAdd(vector<CommandDetails*>& CD, vector<CommandDetails*>& CDforRedo, Storage& storage) {
-	CDforRedo.push_back(CD[CD.size()-1]);
+string UndoTask::executeUndoAdd(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoAdd();
 }
 
-string UndoTask::executeUndoDelete(vector<CommandDetails*>& CD, vector<CommandDetails*>& CDforRedo, Storage& storage) {
-	CDforRedo.push_back(CD[CD.size()-1]);
+string UndoTask::executeUndoDelete(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoDelete();
 }
 
-string UndoTask::executeUndoEdit(vector<CommandDetails*>& CD, vector<CommandDetails*>& CDforRedo, Storage& storage) {
-	CDforRedo.push_back(CD[CD.size()-1]);
+string UndoTask::executeUndoEdit(vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoEdit();
 }
