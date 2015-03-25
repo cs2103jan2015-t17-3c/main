@@ -49,7 +49,7 @@ public:
 	string addFloatTask(string);
 	vector<string> retrieveTopTen();
 	void sortStorage();
-	void writeToFile(string);
+	void writeToFile();
 	string deleteTask(int);
 	vector<string> searchTask(string,boost::gregorian::date,boost::posix_time::ptime);
 	string undoAdd();
@@ -60,6 +60,7 @@ public:
 	string redoAdd();
 	string editTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime);
 	vector<string> displayFloatingTask();
+	void changeDirectory(string);
 private:
 	vector<Task> archivedTask;
 	vector<Task> activeTask;
@@ -67,11 +68,13 @@ private:
 	
 	static const string MESSAGE_UNDO;
 	static const string MESSAGE_REDO;
+	static const string DEFAULT_DIRECTORY;
 	stack<Task> tempTask;
 	stack<string> taskDetailsHistory;
 	vector<vector<Task>::iterator> tempSearchIterator;
 	stack<Task> redoAddTask;
 	stack<Task> redoDeleteTask;
+	string directoryName;
 };
 
 

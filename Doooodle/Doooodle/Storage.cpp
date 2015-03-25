@@ -8,6 +8,7 @@ ptime nonTime(not_a_date_time);
 
 const string Storage::MESSAGE_UNDO = "Undo is successfully performed";
 const string Storage::MESSAGE_REDO = "Redo is successfully performed";
+const string Storage::DEFAULT_DIRECTORY = "dooodle.txt";
 Storage::Storage(void){
 };
 
@@ -25,7 +26,26 @@ Task initializeNormalTask(string task, date startDate, date endDate, ptime start
 	temp.endTime = endTime;
 	temp.taskType = NORMAL;
 	ostringstream outputTask;
-	outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+	if (startDate != nonDate){
+		if (startTime != nonTime){
+			if (endTime != nonTime){
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+			} else{
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate;
+			}
+		} else{
+			if (endTime != nonTime){
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+			} else{
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate;
+			}
+		}
+	} else{
+		if (startTime != nonTime && endTime != nonTime){
+			outputTask << left << setw(defaultWidth) << task << " from " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+		}
+	}
+    //outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
 	temp.taskDisplay = outputTask.str();
 	return temp;
 }
@@ -65,7 +85,12 @@ Task initializeDeadlineTask(string task, date endDate, ptime endTime){
 	temp.endTime = endTime;
 	temp.taskType = DEADLINE;
 	ostringstream outputTask;
-	outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+	if (endTime == nonTime){
+		outputTask << left << setw(defaultWidth) << task << " by " << endDate;
+
+	} else{
+		outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+	}
 	temp.taskDisplay = outputTask.str();
 
 	return temp;
@@ -165,14 +190,20 @@ void Storage::sortStorage(){
 	sort(activeTask.begin(), activeTask.end(), &task_sorter);
 }
 
-void Storage::writeToFile(string specificFileName){
+void Storage::writeToFile(){
 	ofstream outputFile;
-	outputFile.open(specificFileName);
+	outputFile.open(directoryName);
 	for (int index = 0; index < activeTask.size(); index++){
 		outputFile << index + 1 << ". " << activeTask[index].taskDisplay << endl;
 	}
 	
 	outputFile.close();	
+}
+
+void Storage::changeDirectory(string newDirectory){
+	
+	directoryName = newDirectory + DEFAULT_DIRECTORY;
+	return;
 }
 
 string Storage::deleteTask(int index){
