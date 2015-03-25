@@ -7,7 +7,18 @@ namespace TestLibrary
 {
 	TEST_CLASS(testLogic) {
 	public:
-		
+
+		TEST_METHOD(TestIsSearch_1) {
+			Logic logic;
+			Assert::IsFalse(logic.isSearch("add meeting from 3pm to 5pm"));
+		}
+
+		TEST_METHOD(TestIsSearch_2) {
+			Logic logic;
+			Assert::IsTrue(logic.isSearch("search swimming"));
+		}
+
+		/*
 		TEST_METHOD(TestLastCommandIsSearch_1) {
 			Logic logic;
 			logic.commandDetails.push_back(new CommandDetails());
@@ -26,7 +37,7 @@ namespace TestLibrary
 			logic.commandDetails[6]->commandType = "delete";
 			Assert::IsFalse(logic.lastCommandIsSearch());
 		}
-
+		
 		TEST_METHOD(TestLastCommandIsSearch_2) {
 			Logic logic;
 			logic.commandDetails.push_back(new CommandDetails());
@@ -45,16 +56,7 @@ namespace TestLibrary
 			logic.commandDetails[6]->commandType = "search";
 			Assert::IsTrue(logic.lastCommandIsSearch());
 		}
-
-		TEST_METHOD(TestIsSearch_1) {
-			Logic logic;
-			Assert::IsFalse(logic.isSearch("add meeting from 3pm to 5pm"));
-		}
-
-		TEST_METHOD(TestIsSearch_2) {
-			Logic logic;
-			Assert::IsFalse(logic.isSearch("search swimming"));
-		}
+		*/
 
 	};
 }*/
