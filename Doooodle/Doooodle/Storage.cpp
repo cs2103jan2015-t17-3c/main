@@ -28,23 +28,23 @@ Task initializeNormalTask(string task, date startDate, date endDate, ptime start
 	if (startDate != nonDate){
 		if (startTime != nonTime){
 			if (endTime != nonTime){
-				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << setw(2) << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
 			} else{
-				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate;
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate;
 			}
 		} else{
 			if (endTime != nonTime){
-				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
 			} else{
 				outputTask << left << setw(defaultWidth) << task << " from " << startDate << " to " << endDate;
 			}
 		}
 	} else{
 		if (startTime != nonTime && endTime != nonTime){
-			outputTask << left << setw(defaultWidth) << task << " from " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+			outputTask << left << setw(defaultWidth) << task << " from " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
 		}
 	}
-    //outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+    //outputTask << left << setw(defaultWidth) << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
 	temp.taskDisplay = outputTask.str();
 	return temp;
 }
@@ -88,7 +88,7 @@ Task initializeDeadlineTask(string task, date endDate, ptime endTime){
 		outputTask << left << setw(defaultWidth) << task << " by " << endDate;
 
 	} else{
-		outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << endTime.time_of_day().minutes();
+		outputTask << left << setw(defaultWidth) << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes();
 	}
 	temp.taskDisplay = outputTask.str();
 
@@ -142,10 +142,13 @@ vector<string> Storage::retrieveTopTen(){
 	int defaultWidth = 25;
 	int numberOfDisplay = 10;
 	for (int i = 0; i < numberOfDisplay && i < activeTask.size(); i++){
-			Task dummy = activeTask[i];
+			
+		Task dummy = activeTask[i];
+		if (dummy.taskType != FLOAT){
 			ostringstream oneTask;
 			oneTask << i + 1 << ". " << dummy.taskDisplay;
-		    TopTasks.push_back(oneTask.str());
+			TopTasks.push_back(oneTask.str());
+		}
 		} 	
 	return TopTasks;
 }
@@ -227,7 +230,7 @@ vector<string> Storage::searchTask(string thingsToSearch,date dateToSearch, ptim
 		
 		string temp = iter->taskDisplay;
 		size_t found = temp.find(thingsToSearch);
-		if (found != string::npos || dateToSearch == iter->startDate || dateToSearch == iter->endDate || timeToSearch == iter->startTime || timeToSearch == iter->endTime){
+		if (found != string::npos || (dateToSearch == iter->startDate && iter->startDate != nonDate) || (dateToSearch == iter->endDate && iter->endDate != nonDate) || (timeToSearch == iter->startTime && iter->startTime != nonTime) || (timeToSearch == iter->endTime && iter->endTime != nonTime)){
 			tempSearchIterator.push_back(iter);
 			findIt = true;
 			ostringstream oneTask;
