@@ -17,7 +17,8 @@ private:
 	static const string MESSAGE_ADD;
 	static const string MESSAGE_DEFAULT;
 	static const string MESSAGE_WELCOME;
-	static const string MESSAGE_TOPFIVE;
+	static const string MESSAGE_TOPTEN;
+	static const string MESSAGE_FLOAT;
 
 	void printToUser(string);
 	void printVectorToUser(vector<string>);

@@ -222,6 +222,7 @@ string Storage::deleteTask(int index){
 //vector<string> ususal
 vector<string> Storage::searchTask(string thingsToSearch,date dateToSearch, ptime timeToSearch ){
 	vector<string> searchedStuff;
+	size_t found = string::npos;
 	tempSearchIterator.clear();
 	bool findIt = false;
 	vector<Task>::iterator iter;
@@ -229,7 +230,9 @@ vector<string> Storage::searchTask(string thingsToSearch,date dateToSearch, ptim
 	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
 		
 		string temp = iter->taskDisplay;
-		size_t found = temp.find(thingsToSearch);
+		if (thingsToSearch != ""){
+			found = temp.find(thingsToSearch);
+		}
 		if (found != string::npos || (dateToSearch == iter->startDate && iter->startDate != nonDate) || (dateToSearch == iter->endDate && iter->endDate != nonDate) || (timeToSearch == iter->startTime && iter->startTime != nonTime) || (timeToSearch == iter->endTime && iter->endTime != nonTime)){
 			tempSearchIterator.push_back(iter);
 			findIt = true;

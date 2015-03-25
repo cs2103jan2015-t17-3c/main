@@ -5,6 +5,7 @@ const int DateParser::NO_OF_NEARFUTURE_IDENTIFIERS = 4;
 const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
 const int DateParser::NO_OF_TIME_IDENTIFIERS = 18;
 const int DateParser::NO_OF_MONTH_IDENTIFIERS=48;
+const string DateParser::DEFAULT_YEAR = "2015";
 const string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December"
                                                                        "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 																	   "january","february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december"
@@ -60,16 +61,14 @@ int DateParser::nearfutureToNum(string input){
 }
 
 bool DateParser::isDate(string input){
+	removeSlash(input);
 	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++)
 		if (input == TIME_IDENTIFIERS[i]){
 			return true;
 		}
-		else if (atoi(input.c_str())>=2015){
-			removeSlash(input);
-			if (atoi(input.c_str()) > 20150000){
-				return true;
+		else if (((atoi(input.c_str()) >= 101 && input.length() == 4)) || ((atoi(input.c_str()) >= 20150101 && input.length() == 8))){
+			return true;
 			}
-		}
 	return false;
 }
 
@@ -93,20 +92,27 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 		}
 	}
 	removeSlash(input);
-	if (atoi(input.c_str()) > 20150000){
+	if (atoi(input.c_str()) > 20150101){
 		try{
 			d = from_undelimited_string(input);
 		}
 		catch (...){
 			date temp(max_date_time);
 			d =temp;
-//			cout << "wrong date format!" << endl;
+		}
+	}
+	else if (input.length() == 4){
+		string modified = DEFAULT_YEAR + input;
+		try{
+			d = from_undelimited_string(modified);
+		}
+		catch (...){
+			date temp(max_date_time);
+			d = temp;
 		}
 	}
 
 	return d;
-	//std::cout << to_iso_extended_string(d1) << std::endl;
-
 }
 
 void DateParser::removeSlash(string& input){

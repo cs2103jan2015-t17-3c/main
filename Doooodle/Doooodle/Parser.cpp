@@ -221,3 +221,7 @@ bool Parser::isDeadline(string input){
 	}
 	return false;
 }
+
+string Parser::getToken(int num){
+	return tokens[num];
+}

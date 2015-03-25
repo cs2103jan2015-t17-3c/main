@@ -3,7 +3,8 @@
 const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search\nEnter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
 *        Doooodle       *\n*************************                                     ";
-const string UI::MESSAGE_TOPFIVE = "Below is the list of top ten items in your scheduler for now\n\n";
+const string UI::MESSAGE_TOPTEN = "Below is the list of top ten items in your scheduler for now\n\n";
+const string UI::MESSAGE_FLOAT = "Below is the tasks without specific date or time\n";
 
 UI::UI(void) {
 }
@@ -23,11 +24,15 @@ void UI::readMessage(){
 		assert(command != "");
 		if (logic.isSearch(command)){
 			displayMessage = logic.displaySearchResults(command);
+			printVectorToUser(displayMessage);
 		}else{
-			cout << MESSAGE_TOPFIVE;
+			cout << MESSAGE_TOPTEN;
 			displayMessage = logic.displayTopTen();
+			printVectorToUser(displayMessage);
+			cout << MESSAGE_FLOAT;
+			displayMessage = logic.displayFloatingTask();
+			printVectorToUser(displayMessage);
 		}
-		printVectorToUser(displayMessage);
 		cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
 		//The above is the top segment
 		printToUser(message);
