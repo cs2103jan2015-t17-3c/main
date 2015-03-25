@@ -3,11 +3,11 @@
 #define DELETETASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 
 using namespace std;
 
-class DeleteTask : public Task {
+class DeleteTask : public ITask {
 
 public:
 	DeleteTask(void);

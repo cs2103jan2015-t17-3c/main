@@ -3,11 +3,11 @@
 #define EDITTASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 
 using namespace std;
 
-class EditTask : public Task {
+class EditTask : public ITask {
 
 public:
 	EditTask(void);

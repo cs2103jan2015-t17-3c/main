@@ -3,12 +3,12 @@
 #define UNDOTASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 #include "CommandDetails.h"
 
 using namespace std;
 
-class UndoTask : public Task {
+class UndoTask : public ITask {
 
 public:
 	UndoTask(void);

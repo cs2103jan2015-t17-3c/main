@@ -3,12 +3,12 @@
 #define REDOTASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 #include "CommandDetails.h"
 
 using namespace std;
 
-class RedoTask : public Task {
+class RedoTask : public ITask {
 
 public:
 	RedoTask(void);

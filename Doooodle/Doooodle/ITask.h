@@ -1,6 +1,6 @@
 
-#ifndef TASK_H_
-#define TASK_H_
+#ifndef ITASK_H_
+#define ITASK_H_
 
 #include <iostream>
 #include <boost/date_time.hpp>
@@ -8,12 +8,11 @@
 
 using namespace std;
 
-class Task {
+class ITask {
 
 public:
-	Task(void);
-	~Task(void);
-	string loadTask(string, Storage&);
+	virtual ~ITask(void) = 0;
+	virtual string loadTask(string, Storage&);
 
 protected:
 	string task;

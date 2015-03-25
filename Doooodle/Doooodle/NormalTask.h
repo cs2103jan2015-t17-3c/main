@@ -3,12 +3,12 @@
 #define NORMALTASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 
 
 using namespace std;
 
-class NormalTask : public Task {
+class NormalTask : public ITask {
 
 public:
 	NormalTask(void);

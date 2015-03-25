@@ -16,10 +16,10 @@ Logic::Logic(void) {
 Logic::~Logic(void) {
 }
 
-vector<string> Logic::displayTopFive(void) {
-	vector<string> topFiveToDisplay = storage.retrieveTopFive();
-	assert(topFiveToDisplay.size()<=5);
-	return topFiveToDisplay; 
+vector<string> Logic::displayTopTen(void) {
+	vector<string> topTenToDisplay = storage.retrieveTopTen();
+	assert(topTenToDisplay.size()<=10);
+	return topTenToDisplay; 
 }
 
 vector<string> Logic::displaySearchResults(string userInput) {

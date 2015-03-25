@@ -3,11 +3,11 @@
 #define DEADLINETASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 
 using namespace std;
 
-class DeadlineTask : public Task {
+class DeadlineTask : public ITask {
 
 public:
 	DeadlineTask(void);

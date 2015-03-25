@@ -28,7 +28,7 @@ public:
 	Logic(void);
 	~Logic(void);
 	string receiveCommand(string);
-	vector<string> displayTopFive(void);
+	vector<string> displayTopTen(void);
 	vector<string> displaySearchResults(string);
 	bool isSearch(string);
 

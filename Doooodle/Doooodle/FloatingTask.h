@@ -3,11 +3,11 @@
 #define FLOATINGTASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 
 using namespace std;
 
-class FloatingTask : public Task {
+class FloatingTask : public ITask {
 
 public:
 	FloatingTask(void);

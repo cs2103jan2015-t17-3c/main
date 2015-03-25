@@ -3,11 +3,11 @@
 #define DELETESEARCHTASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "ITask.h"
 
 using namespace std;
 
-class DeleteSearchTask : public Task{ 
+class DeleteSearchTask : public ITask{ 
 public:
 
 	DeleteSearchTask(void);

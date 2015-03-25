@@ -3,11 +3,12 @@
 #define SEARCHTASK_H_
 
 #include <iostream>
-#include "Task.h"
+#include "assert.h"
+#include "ITask.h"
 
 using namespace std;
 
-class SearchTask : public Task {
+class SearchTask {
 
 public:
 	SearchTask(void);
