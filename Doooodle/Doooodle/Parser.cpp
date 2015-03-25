@@ -8,9 +8,9 @@ const int Parser :: NO_OF_TIME_IDENTIFIERS = 18;
 const string Parser::INVALID_DATE = "Invalid Date";
 const string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
-const string Parser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
-                                                                  "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
-                                                                  "Today","today","Tomorrow", "tomorrow" };
+const string Parser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { " Monday", " Tuesday", " Wednesday", " Thursday", " Friday", " Saturday", " Sunday",
+                                                                  " monday", " tuesday", " wednesday", " thursday", " friday", " saturday", " sunday",
+                                                                  " Today"," today"," Tomorrow", " tomorrow" };
 Parser::Parser(){
 
 }
@@ -85,7 +85,6 @@ string Parser::getUserTask(string input){
 	positionA = getStartOfUserTask(input);
 	positionB = getEndOfUserTask(input);
 	task = input.substr(positionA, positionB - positionA);
-
 	return task;
 }
 
@@ -194,6 +193,7 @@ size_t Parser::getEndOfUserTask(string input){
 		position = pos;
 	}
 	//check for date
+	position++;
 	getStartDate(num);
 	if (num == -1){
 		getStartTime(num);
