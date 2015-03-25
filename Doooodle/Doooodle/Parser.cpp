@@ -5,7 +5,7 @@ const string Parser::DELIMITERS = " ";
 const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
 const int Parser :: NO_OF_TIME_IDENTIFIERS = 18;
-const string Parser::INVALID_DATE = "Invalid Date!";
+const string Parser::INVALID_DATE = "Invalid Date";
 const string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
 const string Parser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
@@ -27,6 +27,7 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	tokenizeInput(input);    //tokenize string by white space
 	
 	commandType = getCommandType(input);
+	indexReference = getIndexReference(input);
 	userTask = getUserTask(input);
 	startDate = getStartDate(pos);
 	endDate = getEndDate(pos);
@@ -39,13 +40,13 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 		startDate = d1;
 		startTime = d2;
 	}
-	if (startDate == d1 && startTime != d2){
+	if (startDate == d1 && startTime != d2 && getCommandType(input)!="edit"){
 		assignToday(startDate);
 	}
-	if (endDate == d1&&endTime != d2){
+	if (endDate == d1 && endTime != d2 && getCommandType(input)!="edit"){
 		assignToday(endDate);
 	}
-	if (endDate != d1&&endTime == d2){
+	if (endDate != d1 && endTime == d2 && !isDeadline(input)){
 		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59)+boost::posix_time::seconds(59));
 		endTime = t;
 	}
@@ -64,6 +65,16 @@ string Parser::getCommandType(string input){
 	string task;
 	task = tokens[POSITION_COMMAND_TYPE];
 	return task;
+}
+
+int Parser::getIndexReference(string input){
+	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"){
+		for (int i = 0; i < tokens.size(); i++){
+			if (isdigit(atoi(tokens[i].c_str()))){
+				return atoi(tokens[i].c_str());
+			}
+		}
+	}
 }
 
 string Parser::getUserTask(string input){
@@ -142,6 +153,10 @@ size_t Parser::getStartOfUserTask(string input){
 	size_t pos;
 	pos=input.find_first_of(DELIMITERS);
 	pos++;
+	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"){
+		pos = input.find_first_of(DELIMITERS,pos);
+		pos++;
+	}
 	return pos;
 }
 
@@ -192,4 +207,13 @@ void Parser::assignToday(boost::gregorian::date& d){
 	boost::gregorian::date today(day_clock::local_day());
 	d = today;
 	return;
+}
+
+bool Parser::isDeadline(string input){
+	for (int i = 0; i < tokens.size(); i++){
+		if (tokens[i]=="by"){
+			return true;
+		}
+	}
+	return false;
 }
