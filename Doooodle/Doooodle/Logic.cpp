@@ -32,7 +32,7 @@ vector<string> Logic::displayFloatingTask(void) {
 vector<string> Logic::displaySearchResults(string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd);
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
 	assert(commandDetails[index]->commandType==STRING_SEARCH);
 	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
 }
@@ -46,7 +46,7 @@ string Logic::receiveCommand(string userInput) {
 bool Logic::isSearch(string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd);
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
 	TASK_TYPE taskType = determineSpecificTaskType(index);
 	if (taskType == SEARCH) {
 		commandDetails.pop_back();
