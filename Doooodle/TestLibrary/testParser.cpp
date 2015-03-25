@@ -17,7 +17,7 @@ namespace TestLibrary
 			int D;
 			parser.processCommand(A, B, C, d1, d2, t1, t2, D);
 			string expectedB = "add";
-			string expectedC = "meeting";
+			string expectedC = "meeting ";
 			boost::gregorian::date expectedD1(not_a_date_time);
 			boost::gregorian::date expectedD2(day_clock::local_day());
 			int expectedD = -1;
