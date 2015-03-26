@@ -87,6 +87,7 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 		}
 		break;
 	case SEARCH:
+		displayMessageToUI = " ";
 		break;
 	case EXIT:
 		exit(0);
