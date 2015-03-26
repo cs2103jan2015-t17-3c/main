@@ -92,6 +92,7 @@
     </ClCompile>
     <ClCompile Include="testLogic.cpp" />
     <ClCompile Include="testParser.cpp" />
+    <ClCompile Include="testStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Doooodle\Doooodle.vcxproj">

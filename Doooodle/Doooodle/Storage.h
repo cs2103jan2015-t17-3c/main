@@ -56,6 +56,7 @@ public:
 	string undoDelete();
 	string undoEdit();
     string deleteSearchTask(int);
+	string editSearchTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime);
 	string editTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime);
 	vector<string> retrieveFloatingTask();
 	void changeDirectory(string);

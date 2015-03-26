@@ -17,6 +17,7 @@
 #include "DeleteTask.h"
 #include "SearchTask.h"
 #include "EditTask.h"
+#include "EditSearchTask.h"""
 #include "DeleteSearchTask.h"
 
 using namespace std;
@@ -43,6 +44,7 @@ private:
 	DeleteSearchTask deleteSearchTask;
 	SearchTask searchTask;
 	EditTask editTask;
+	EditSearchTask editSearchTask;
 	static const string STRING_ADD;
 	static const string STRING_DELETE;
 	static const string STRING_EDIT;

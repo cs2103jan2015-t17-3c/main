@@ -11,22 +11,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A902DACC-09AD-427E-8B49-59319E1764D0}</ProjectGuid>
-    <RootNamespace>Doooodle</RootNamespace>
+    <ProjectGuid>{43156B0F-982A-48DF-9EDE-B7086C4755E4}</ProjectGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>UI</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -38,72 +41,65 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\boost\boost_1_57_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\A0108562\Documents\GitHub\main\Doooodle;C:\Users\A0108562\Documents\GitHub\main\Doooodle\Doooodle;..\Library;C:\boost\boost_1_57_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\boost\boost_1_57_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
+      <AdditionalDependencies>"C:\boost\boost_1_57_0\stage\lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CommandDetails.cpp" />
-    <ClCompile Include="DateParser.cpp" />
-    <ClCompile Include="DeadlineTask.cpp" />
-    <ClCompile Include="DeleteSearchTask.cpp" />
-    <ClCompile Include="DeleteTask.cpp" />
-    <ClCompile Include="EditSearchTask.cpp" />
-    <ClCompile Include="EditTask.cpp" />
-    <ClCompile Include="FloatingTask.cpp" />
-    <ClCompile Include="ITask.cpp" />
-    <ClCompile Include="Logic.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="NormalTask.cpp" />
-    <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="SearchTask.cpp" />
-    <ClCompile Include="Storage.cpp" />
-    <ClCompile Include="TimeParser.cpp" />
-    <ClCompile Include="UI.cpp" />
-    <ClCompile Include="UndoTask.cpp" />
+    <ProjectReference Include="..\Doooodle\Doooodle.vcxproj">
+      <Project>{a902dacc-09ad-427e-8b49-59319e1764d0}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommandDetails.h" />
-    <ClInclude Include="DateParser.h" />
-    <ClInclude Include="DeadlineTask.h" />
-    <ClInclude Include="DeleteSearchTask.h" />
-    <ClInclude Include="DeleteTask.h" />
-    <ClInclude Include="EditSearchTask.h" />
-    <ClInclude Include="EditTask.h" />
-    <ClInclude Include="FloatingTask.h" />
-    <ClInclude Include="ITask.h" />
-    <ClInclude Include="Logic.h" />
-    <ClInclude Include="NormalTask.h" />
-    <ClInclude Include="Parser.h" />
-    <ClInclude Include="SearchTask.h" />
-    <ClInclude Include="standardForm.h" />
-    <ClInclude Include="Storage.h" />
-    <ClInclude Include="TimeParser.h" />
-    <ClInclude Include="UI.h" />
-    <ClInclude Include="UndoTask.h" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DoooodleGUI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DoooodleGUI.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DoooodleGUI.resx">
+      <DependentUpon>DoooodleGUI.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
