@@ -193,7 +193,9 @@ size_t Parser::getEndOfUserTask(string input){
 		position = pos;
 	}
 	//check for date
-	position++;
+	if (position != string::npos){
+		position++;
+	}
 	getStartDate(num);
 	if (num == -1){
 		getStartTime(num);
