@@ -96,7 +96,12 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 		displayMessageToUI = undoTask.loadTask(commandDetails, storage);
 		break;
 	case EDIT:
-		displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart ,commandDetails[index]->timeEnd, storage);
+		if (lastCommandIsSearch()) {
+			displayMessageToUI = editSearchTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
+		}
+		else{
+			displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
+		}
 		break;
 	case INVALID:
 		displayMessageToUI = STRING_INVALID;
