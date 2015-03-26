@@ -17,6 +17,15 @@ namespace TestLibrary
 			Assert::IsTrue(logic.isSearch("search swimming"));
 		}
 
+		TEST_METHOD(TestLastCommandIsSearch) {
+			Logic logic;
+			logic.commandDetails.push_back(new CommandDetails());
+			logic.commandDetails[0]->commandType = "search";
+			logic.commandDetails.push_back(new CommandDetails());
+			logic.commandDetails[1]->commandType = "add";
+			Assert::IsFalse(logic.lastCommandIsSearch());
+		}
+
 		/*
 		TEST_METHOD(TestLastCommandIsSearch_1) {
 			Logic logic;

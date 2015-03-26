@@ -71,6 +71,7 @@
     <ClCompile Include="DeadlineTask.cpp" />
     <ClCompile Include="DeleteSearchTask.cpp" />
     <ClCompile Include="DeleteTask.cpp" />
+    <ClCompile Include="EditSearchTask.cpp" />
     <ClCompile Include="EditTask.cpp" />
     <ClCompile Include="FloatingTask.cpp" />
     <ClCompile Include="ITask.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="DeadlineTask.h" />
     <ClInclude Include="DeleteSearchTask.h" />
     <ClInclude Include="DeleteTask.h" />
+    <ClInclude Include="EditSearchTask.h" />
     <ClInclude Include="EditTask.h" />
     <ClInclude Include="FloatingTask.h" />
     <ClInclude Include="ITask.h" />
