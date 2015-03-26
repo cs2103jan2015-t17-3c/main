@@ -69,7 +69,37 @@ string Storage::addNormalTask(string task, date startDate, date endDate, ptime s
 	History trace = registerHistory(temp) ;
 	commandHistory.push_back(trace);
 	ostringstream feedback;
-	feedback << "Normal task: " << temp.taskDisplay << " successfully added.\n";
+	//feedback << "Normal task: " << temp.taskDisplay << " successfully added.\n";
+
+	if (startDate != nonDate){
+		if (startTime != nonTime){
+			if (endTime != nonTime){
+				feedback << "Normal task: " << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << setfill('0') << setw(2) << endTime.time_of_day().hours() << ":" << setw(2) << endTime.time_of_day().minutes() << " successfully added.\n";
+			}
+			else{
+				feedback << "Normal task: " << task << " from " << startDate << " " << startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " successfully added.\n";
+			}
+		}
+		else{
+			if (endTime != nonTime){
+				feedback << "Normal task: " << task << " from " << startDate << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << endTime.time_of_day().minutes() << " successfully added.\n";
+			}
+			else{
+				feedback << "Normal task: " << task << " from " << startDate << " to " << endDate << " successfully added.\n";
+			}
+		}
+	}
+	else{
+		if (startTime != nonTime && endTime != nonTime){
+			feedback << "Normal task: " << task << " from " << startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << startTime.time_of_day().minutes() << " to " << endDate << " " << endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << endTime.time_of_day().minutes() << " successfully added.\n";
+		}
+	}
+
+
+
+
+
+
 //	logging(trace.commandDisplay);
 	return feedback.str();
 };
@@ -102,7 +132,15 @@ string Storage::addDeadlineTask(string task, date endDate, ptime endTime){
 	History trace = registerHistory(temp);
 	commandHistory.push_back(trace);
 	ostringstream feedback;
-	feedback << "Deadline task: " << temp.taskDisplay << " successfully added.\n";
+
+	if (endTime == nonTime){
+		feedback << "Deadline task: " << task << " by " << endDate << " successfully added.\n";
+
+	}
+	else{
+		feedback << "Deadline task: " << task << " by " << endDate << " " << endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << endTime.time_of_day().minutes() << " successfully added.\n";
+	}
+	
 //	logging(trace.commandDisplay);
 
 	return feedback.str();
@@ -131,7 +169,7 @@ string Storage::addFloatTask(string task){
 	History trace = registerHistory(temp);
 	commandHistory.push_back(trace);
 	ostringstream feedback;
-	feedback << "Float task: " << temp.taskDisplay << " successfully added.\n";
+	feedback << "Float task: " << temp.taskDetails << " successfully added.\n";
 //	logging(trace.commandDisplay);
 
 	return feedback.str();
