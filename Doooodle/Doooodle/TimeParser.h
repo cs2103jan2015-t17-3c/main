@@ -19,7 +19,7 @@ private:
 	static const string TYPE2_INDICATORS[];
 	static const string TYPE3_INDICATORS[];
 	static const int DIFFERENCE_BETWEEN_12HRS_24HRS;
-
+	static const boost::posix_time::ptime INVALID_TIME;
 public:
 	TimeParser();
 	~TimeParser();

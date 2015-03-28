@@ -49,7 +49,6 @@ public:
 	Parser();
 	~Parser();
 	void processCommand(string, string&, string&, boost::gregorian::date&, boost::gregorian::date&, boost::posix_time::ptime&, boost::posix_time::ptime&, int& indexReference);
-	string getToken(int);
 };
 
 #endif

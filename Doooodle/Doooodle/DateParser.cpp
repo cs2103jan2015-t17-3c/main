@@ -1,18 +1,24 @@
 #include "DateParser.h"
 using namespace boost::gregorian;
+const int DateParser::NUM_IN_FRONT = -1;
 const int DateParser::NO_OF_DELIMITERS = 2;
 const int DateParser::NO_OF_NEARFUTURE_IDENTIFIERS = 4;
 const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
-const int DateParser::NO_OF_TIME_IDENTIFIERS = 18;
+const int DateParser::NO_OF_TIME_IDENTIFIERS = 66;
 const int DateParser::NO_OF_MONTH_IDENTIFIERS=48;
 const string DateParser::DEFAULT_YEAR = "2015";
-const string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December"
-                                                                       "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-																	   "january","february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december"
+const int DateParser::DEFAULT_DAY=1;
+const string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December",
+                                                                       "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",
+																	   "january","february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december",
 																	   "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
 const string DateParser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
-                                                                      "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
-                                                                      "Tomorrow", "tomorrow", "today" ,"Today"};
+                                                                      "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+                                                                      "Tomorrow", "tomorrow", "today" ,"Today",
+																	  "January", "February", "March", "April", "May", "June", "July", "August", "Septemper", "October", "November", "December",
+																	  "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+																	  "january", "february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december",
+																	  "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
 
 const string DateParser::WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
 "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
@@ -51,6 +57,45 @@ int DateParser::weekdaysToNum(string input){
 	}
 }
 
+int DateParser::monthToNum(string input){
+	if (input == "January" || input == "Jan" || input == "january" || input == "jan"){
+		return Jan;
+	}
+	if (input == "February" || input == "Feb" || input == "february" || input == "feb"){
+		return Feb;
+	}
+	if (input == "March" || input == "Mar" || input == "march" || input == "mar"){
+		return Mar;
+	}
+	if (input == "April" || input == "Apr" || input == "april" || input == "apr"){
+		return Apr;
+	}
+	if (input == "May" || input == "may"){
+		return May;
+	}
+	if (input == "June" || input == "Jun" || input == "june" || input == "jun"){
+		return Jun;
+	}
+	if (input == "July" || input == "Jul" || input == "july" || input == "jul"){
+		return Jul;
+	}
+	if (input == "August" || input == "Aug" || input == "august" || input == "aug"){
+		return Aug;
+	}
+	if (input == "September" || input == "Sep" || input == "september" || input == "sep"){
+		return Sep;
+	}
+	if (input == "October" || input == "Oct" || input == "october" || input == "oct"){
+		return Oct;
+	}
+	if (input == "November" || input == "Nov" || input == "november" || input == "nov"){
+		return Nov;
+	}
+	if (input == "December" || input == "Dec" || input == "december" || input == "dec"){
+		return Dec;
+	}
+}
+
 int DateParser::nearfutureToNum(string input){
 	if (input == "Today" || input=="today"){
 		return Today;
@@ -72,12 +117,46 @@ bool DateParser::isDate(string input){
 	return false;
 }
 
-boost::gregorian::date DateParser::standardiseDate(string input){
-	//date d(2002, Jan, 10);
-	//return d;
-	//string ud = "20141202";
+boost::gregorian::date DateParser::standardiseDate(string before,string input,string after,int& num,int reference){
+	date d1;
 	date d;
+	greg_day day=DEFAULT_DAY;
+	date temp(max_date_time);
 	date today(day_clock::local_day());
+	num = reference;
+	for (int i = 0; i < NO_OF_MONTH_IDENTIFIERS; i++){
+		if (input == MONTH_IDENTIFIERS[i]){
+			greg_month m = monthToNum(MONTH_IDENTIFIERS[i]);
+			if (isdigit(before[0])){
+				num = NUM_IN_FRONT + reference;
+				try{
+					greg_day day = atoi(before.c_str());
+				}
+				catch (...){
+					return temp;
+				}
+				day = atoi(before.c_str());
+			}
+			else if (isdigit(after[0])){
+				try{
+					greg_day day = atoi(after.c_str());
+				}
+				catch (...){
+					return temp;
+				}
+				day = atoi(after.c_str());
+			}
+			try{
+				date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
+			}
+			catch (...){
+				return temp;
+			}
+			date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
+			return d1;
+		}
+	}
+
 	for (int i = 0; i < NO_OF_WEEKDAYS_IDENTIFIERS; i++){
 		if (input == WEEKDAYS_IDENTIFIERS[i]){
 			greg_weekday wd = weekdaysToNum(WEEKDAYS_IDENTIFIERS[i]);
@@ -97,8 +176,7 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 			d = from_undelimited_string(input);
 		}
 		catch (...){
-			date temp(max_date_time);
-			d =temp;
+			return temp;
 		}
 	}
 	else if (input.length() == 4){
@@ -107,11 +185,10 @@ boost::gregorian::date DateParser::standardiseDate(string input){
 			d = from_undelimited_string(modified);
 		}
 		catch (...){
-			date temp(max_date_time);
-			d = temp;
+			return temp;
 		}
 	}
-
+	
 	return d;
 }
 

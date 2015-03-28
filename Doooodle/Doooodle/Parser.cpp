@@ -23,6 +23,7 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	boost::gregorian::date d1(boost::date_time::not_a_date_time);
 	boost::gregorian::date dmax(boost::date_time::max_date_time);
 	boost::posix_time::ptime d2(boost::date_time::not_a_date_time);
+	boost::posix_time::ptime pmax(boost::posix_time::max_date_time);
 	int pos;
 	tokenizeInput(input);    //tokenize string by white space
 	
@@ -33,20 +34,25 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	endDate = getEndDate(pos);
 	startTime = getStartTime(pos);
 	endTime = getEndTime(pos);
-	if (startDate == dmax || endDate == dmax){
+	//date or time is identifed but not correct date format
+	if (startDate == dmax || endDate == dmax || startTime==pmax || endTime==pmax){
 		commandType = INVALID_DATE;
 	}
+	//if start date time and end date time are the same, only keep the end date time
 	if (startDate == endDate && startTime == endTime){
 		startDate = d1;
 		startTime = d2;
 	}
+	//if only have time, the default date is today
 	if (startDate == d1 && startTime != d2 && getCommandType(input)!="edit"){
 		assignToday(startDate);
 	}
+	//if only have time, the default date is today
 	if (endDate == d1 && endTime != d2 && getCommandType(input)!="edit"){
 		assignToday(endDate);
 	}
-	if (endDate != d1 && endTime == d2 && !isDeadline(input)){
+	//if only have date and it is a deadlin task, a default time of 2359 will be assigned
+	if (endDate != d1 && endTime == d2 && isDeadline(input)){
 		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59)+boost::posix_time::seconds(59));
 		endTime = t;
 	}
@@ -97,9 +103,16 @@ boost::gregorian::date Parser::getStartDate(int& num){
 	for (int i = 0; i < tokens.size(); i++){
 		if (dateparser.isDate(tokens[i])){
 			num = i;
-			return dateparser.standardiseDate(tokens[i]);
+			if (i == 0){
+				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
+			}else if (i == tokens.size() - 1){
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i],num,i);
+			}else{
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i + 1],num,i);
+			}
 		}
 	}
+	num = tokens.size();
 	return d;
 }
 
@@ -109,10 +122,16 @@ boost::gregorian::date Parser::getEndDate(int& num){
 	string task;
 	for (int i = tokens.size()-1; i > 0; i--){
 		if (dateparser.isDate(tokens[i])){
-			num = i;
-			return dateparser.standardiseDate(tokens[i]);
+			if (i == 0){
+				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
+			}else if (i == tokens.size() - 1){
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i],num,i);
+			}else{
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i + 1],num,i);
+			}
 		}
 	}
+	num = tokens.size();
 	return d;
 }
 boost::posix_time::ptime Parser::getStartTime(int& num){
@@ -125,7 +144,8 @@ boost::posix_time::ptime Parser::getStartTime(int& num){
 			return timeparser.standardTime(tokens[i]);	
 		}
 	}
-		return d;
+	num = tokens.size();
+	return d;
 }
 
 boost::posix_time::ptime Parser::getEndTime(int& num){
@@ -138,15 +158,16 @@ boost::posix_time::ptime Parser::getEndTime(int& num){
 			num = i;
 		}
 	}
+	num = tokens.size();
 	return d;
 }
 
 size_t Parser::intToPos(int num,string input){
-	size_t positionA=0;
+	size_t position=0;
 	for (int i = 0; i < num; i++){
-		positionA = input.find(" ", positionA+1);
+		position = input.find(" ", position+1);
 	}
-	return positionA;
+	return position;
 }
 
 size_t Parser::getStartOfUserTask(string input){
@@ -161,9 +182,9 @@ size_t Parser::getStartOfUserTask(string input){
 }
 
 size_t Parser::getEndOfUserTask(string input){
-	size_t pos;
-	size_t position;
-	int num=-1;
+	size_t pos=string::npos;
+	size_t position=string::npos;
+	int num;
 	//check for start time indicators
 	for (int i = 0; i < NO_OF_START_TIME_INDICATORS; i++){
 		pos = input.find(START_TIME_INDICATORS[i]);
@@ -171,7 +192,8 @@ size_t Parser::getEndOfUserTask(string input){
 			break;
 		}
 	}
-	position = pos;
+	position = min(position, pos);
+
 	//check for time indentidiers
 	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++){
 		pos = input.find(TIME_IDENTIFIERS[i]);
@@ -179,9 +201,8 @@ size_t Parser::getEndOfUserTask(string input){
 			break;
 		}
 	}
-	if (pos < position){
-		position = pos;
-	}
+	position = min(position, pos);
+
 	//check for end time indicators
 	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
 		pos = input.find(END_TIME_INDICATORS[i]);
@@ -189,23 +210,20 @@ size_t Parser::getEndOfUserTask(string input){
 			break;
 		}
 	}
-	if (pos < position){
-		position = pos;
-	}
+	position = min(position, pos);
+
 	//check for date
-	if (position != string::npos){
-		position++;
-	}
 	getStartDate(num);
-	if (num == -1){
-		getStartTime(num);
-	}
 	pos = intToPos(num, input);
-	pos++;
-	if (pos < position){
-		position = pos;
-	}
-	//return the smallest position which is the end position of user task
+	position = min(position, pos);
+
+	//check for time;
+	getStartTime(num);
+	pos = intToPos(num, input);
+	position = min(position, pos);
+	
+	position++;
+	//return the smallest position of a time or date which is the end position of user task
 	return position;
 }
 
@@ -222,8 +240,4 @@ bool Parser::isDeadline(string input){
 		}
 	}
 	return false;
-}
-
-string Parser::getToken(int num){
-	return tokens[num];
 }
