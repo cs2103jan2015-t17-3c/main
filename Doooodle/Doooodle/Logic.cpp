@@ -35,7 +35,7 @@ vector<string> Logic::displayFloatingTask(void) {
 	return floatingTask; 
 }
 
-vector<string> displayOverdue(void) {
+vector<string> Logic::displayOverdue(void) {
 	vector<string> overdue = storage.retrieveOverdue();
 	return overdue;
 }

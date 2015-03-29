@@ -67,9 +67,11 @@ public:
 	void registerSearchedStuff(vector<Task>::iterator, bool&, vector<string>&,int&);
 	vector<string> retrieveArchive();
 	vector<string> retrieveOverdue();
-	void completeAll();
+	string completeAll();
 	string reschedule(int, date, date, ptime, ptime);
 	vector<string> retrieveCategoricalTask(string);
+	string completeTask(int);
+	string completeSearchTask(int);
 
 
 

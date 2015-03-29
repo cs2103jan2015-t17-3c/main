@@ -28,7 +28,7 @@ string Storage::initializeTaskDetails(Task temp){
 				}
 			} else{
 				if (temp.endTime != nonTime){
-					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << temp.startDate.day() << " " << temp.startDate.month()<<setfill(" ") << setw(6) << "]-[" << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << temp.startDate.day() << " " << temp.startDate.month()<<setfill(' ') << setw(6) << "]-[" << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
 				} else{
 					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << temp.startDate.day() << " " << temp.startDate.month() << "      ]-[" << temp.endDate.day() << " " << temp.endDate.month() << "      ]";
 				}
@@ -177,7 +177,7 @@ vector<string> Storage::retrieveTopTen(){
 		deadlineIndex++;
 	}
 	int normalIndex = 0;
-	while (count < 5 && deadlineIndex + normalIndex < activeTask.size()){
+	while (count < 5 &&  normalIndex < activeTask.size()){
 		Task dummy = activeTask[normalIndex];
 		if (dummy.taskType == NORMAL){
 			ostringstream oneTask;
@@ -189,7 +189,7 @@ vector<string> Storage::retrieveTopTen(){
 	}
 	int diffIndex;
 	if (deadlineIndex < normalIndex){
-		for (diffIndex = deadlineIndex + 1; diffIndex <= normalIndex; diffIndex++){
+		for (diffIndex = deadlineIndex + 1; diffIndex < normalIndex; diffIndex++){
 			if (activeTask[diffIndex].taskType == DEADLINE){
 				ostringstream oneTask;
 				oneTask << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
@@ -199,7 +199,7 @@ vector<string> Storage::retrieveTopTen(){
 		}
 	}
 	else {
-		for (diffIndex = normalIndex + 1; diffIndex <= deadlineIndex; diffIndex++){
+		for (diffIndex = normalIndex + 1; diffIndex < deadlineIndex; diffIndex++){
 			if (activeTask[diffIndex].taskType == NORMAL){				
 				ostringstream oneTask;
 				oneTask << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
@@ -244,13 +244,13 @@ vector<string> Storage::retrieveOverdue(){
 }
 
 //new 3
-void Storage::completeAll(){
+string Storage::completeAll(){
 	int index;
 	for (index = 0; index < tempOverdueTaskIterator.size(); index++){
 		archivedTask.push_back(*tempOverdueTaskIterator[index]);
 		activeTask.erase(tempOverdueTaskIterator[index]);
 	}
-	return;
+	return "all overdue tasks completed";
 }
 
 //new 4
@@ -290,7 +290,7 @@ vector<string> Storage::retrieveCategoricalTask(string typeTask){
 		}
 			return displayedTasks;
 	}
-		if (typeTask == "float"){
+		if (typeTask == "floating"){
 			for (int i = 0; i < activeTask.size(); i++){
 				if (activeTask[i].taskType == FLOAT){
 					ostringstream oneTask;
@@ -314,7 +314,7 @@ vector<string> Storage::retrieveCategoricalTask(string typeTask){
 		if (typeTask == "archive"){
 			for (int i = 0; i < archivedTask.size() && i < NUMBER_OF_ARCHIVED_DISPLAY; i++){
 				ostringstream oneTask;
-				oneTask << i + 1 << ". " << activeTask[i].taskDisplay;
+				oneTask << i + 1 << ". " << archivedTask[i].taskDisplay;
 				displayedTasks.push_back(oneTask.str());
 			}
 			return displayedTasks;
@@ -381,6 +381,18 @@ string Storage::deleteTask(int index){
 	feedbackMessage << tempDisplay << " is successfully deleted.\n";
 	return feedbackMessage.str();
 }
+
+string Storage::completeTask(int index){
+	ostringstream feedbackMessage;
+	vector<Task>::iterator iter = activeTask.begin();
+	string tempDisplay = activeTask[index - 1].taskDetails;
+	archivedTask.push_back(activeTask[index - 1]);
+	activeTask.erase(iter + index - 1);
+	feedbackMessage << tempDisplay << " is successfully archived.\n";
+	return feedbackMessage.str();
+}
+
+
 
 void Storage::registerSearchedStuff(vector<Task>::iterator iter, bool& findIt, vector<string>& searchedStuff,int& count){
 	tempSearchIterator.push_back(iter);
@@ -468,6 +480,15 @@ string Storage::deleteSearchTask(int index){
 	tempTask.push(*tempSearchIterator[index - 1]);
 	activeTask.erase(tempSearchIterator[index - 1]);
 	feedbackMessage << tempDisplay << " is successfully deleted.\n";
+	return feedbackMessage.str();
+}
+
+string Storage::completeSearchTask(int index){
+	ostringstream feedbackMessage;
+	string tempDisplay = (tempSearchIterator[index - 1])->taskDetails;
+	archivedTask.push_back(*tempSearchIterator[index - 1]);
+	activeTask.erase(tempSearchIterator[index - 1]);
+	feedbackMessage << tempDisplay << " is successfully archived.\n";
 	return feedbackMessage.str();
 }
 

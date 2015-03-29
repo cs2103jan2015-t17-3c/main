@@ -40,9 +40,9 @@ void UI::readMessage(){
 			printVectorToUser(displayMessage);
 		} else if (logic.getCommandType(command)=="display"){
 			displayMessage = logic.displayCategoricalTask(command,cat);
-			printToUser(MESSAGE_CATEGORICAL_TASK1);
-			printToUser(cat);
-			printToUser(MESSAGE_CATEGORICAL_TASK2)
+			cout<<MESSAGE_CATEGORICAL_TASK1;
+			cout << cat;
+			cout<<MESSAGE_CATEGORICAL_TASK2<<endl;
 			printVectorToUser(displayMessage);
 		} else {
 			cout << MESSAGE_TOPTEN;

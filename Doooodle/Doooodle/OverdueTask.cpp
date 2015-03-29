@@ -15,7 +15,7 @@ string OverdueTask::loadTask(Storage& storage){
 	return displayMessage;
 }
 
-string completeTask(int intToComplete, Storage& storage) {
+string OverdueTask::completeTask(int intToComplete, Storage& storage) {
 	displayMessage = storage.completeTask(intToComplete);
 	storage.sortStorage();
 	storage.writeToFile();
@@ -23,7 +23,7 @@ string completeTask(int intToComplete, Storage& storage) {
 	return displayMessage;
 }
 
-string completeSearchTask(int intToComplete, Storage& storage) {
+string OverdueTask::completeSearchTask(int intToComplete, Storage& storage) {
 	displayMessage = storage.completeSearchTask(intToComplete);
 	storage.sortStorage();
 	storage.writeToFile();

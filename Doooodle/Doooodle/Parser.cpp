@@ -83,7 +83,7 @@ string Parser::getCommandType(string input){
 }
 
 int Parser::getIndexReference(string input){
-	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"){
+	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"|| getCommandType(input)=="complete"){
 		for (int i = 0; i < tokens.size(); i++){
 			if (isdigit(tokens[i][0])){
 				return atoi(tokens[i].c_str());
@@ -99,7 +99,7 @@ string Parser::getUserTask(string input){
 	string task;
 	positionA = getStartOfUserTask(input);
 	positionB = getEndOfUserTask(input);
-	if (positionA <= positionB){
+	if (positionB <= positionA){
 		return EMPTY;
 	}
 	task = input.substr(positionA, positionB - positionA);
@@ -233,8 +233,12 @@ size_t Parser::getEndOfUserTask(string input){
 	getStartTime(num);
 	pos = intToPos(num, input);
 	position = min(position, pos);
-	
-	position++;
+	if (position == string::npos){
+		position = input.length();
+	}
+	else{
+		position++;
+	}
 	//return the smallest position of a time or date which is the end position of user task
 	return position;
 }
