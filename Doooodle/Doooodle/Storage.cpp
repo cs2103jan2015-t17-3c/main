@@ -312,7 +312,7 @@ vector<string> Storage::retrieveCategoricalTask(string typeTask){
 			return displayedTasks;
 		}
 		if (typeTask == "archive"){
-			for (int i = 0; i < archivedTask.size(); i++){
+			for (int i = 0; i < archivedTask.size() && i < NUMBER_OF_ARCHIVED_DISPLAY; i++){
 				ostringstream oneTask;
 				oneTask << i + 1 << ". " << activeTask[i].taskDisplay;
 				displayedTasks.push_back(oneTask.str());
