@@ -4,13 +4,14 @@
 const string Logic::STRING_ADD = "add";
 const string Logic::STRING_ARCHIVE = "archive";
 const string Logic::STRING_CHECK = "check";
-const string Logic::STRING_COMPLETED = "complete";
+const string Logic::STRING_COMPLETE = "complete";
 const string Logic::STRING_COMPLETED = "completed";
+const string Logic::STRING_DISPLAY = "display";
 const string Logic::STRING_DELETE = "delete";
 const string Logic::STRING_EDIT = "edit";
 const string Logic::STRING_EXIT = "exit";
 const string Logic::STRING_INVALID = "ERROR!";
-const string Logic::STRING_INVALID = "reschedule";
+const string Logic::STRING_RESCHEDULE = "reschedule";
 const string Logic::STRING_SEARCH = "search";
 const string Logic::STRING_UNDO = "undo";
 const int Logic::TOP10MAX = 10;
@@ -34,10 +35,6 @@ vector<string> Logic::displayFloatingTask(void) {
 	return floatingTask; 
 }
 
-vector<string> displayArchive(void) {
-	vector<string> archive = storage.retrieveArchive();
-	return archive;
-}
 vector<string> displayOverdue(void) {
 	vector<string> overdue = storage.retrieveOverdue();
 	return overdue;
@@ -49,6 +46,16 @@ vector<string> Logic::displaySearchResults(string userInput) {
 	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
 	assert(commandDetails[index]->commandType==STRING_SEARCH);
 	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
+}
+
+vector<string> Logic::displayCategoricalTask(string userInput, string& taskType) {
+	int index = commandDetails.size();
+	vector<string> categoricalTask;
+	commandDetails.push_back(new CommandDetails());
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+	taskType = commandDetails[index]->task;
+	categoricalTask = storage.retrieveCategoricalTask(taskType);
+	return categoricalTask;
 }
 
 string Logic::getCommandType(string userInput) {
@@ -111,9 +118,6 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 			displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
 		}
 		break;
-	case ARCHIVE:
-		displayMessageToUI = " ";
-		break;
 	case RESCHEDULE:
 		displayMessageToUI = rescheduleTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
 		break;
@@ -166,9 +170,6 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	}
 	else if(commandDetails[index]->commandType==STRING_EDIT) {
 		return EDIT;
-	}
-	else if (commandDetails[index]->commandType == STRING_ARCHIVE) {
-		return ARCHIVE;
 	}
 	else if (commandDetails[index]->commandType == STRING_CHECK) {
 		return CHECK;

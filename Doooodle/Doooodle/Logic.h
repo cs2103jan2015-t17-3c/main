@@ -31,8 +31,8 @@ public:
 	vector<string> displayTopTen(void);
 	vector<string> displayFloatingTask(void);
 	vector<string> displaySearchResults(string);
-	vector<string> displayArchive(void);
 	vector<string> displayOverdue(void);
+	vector<string> displayCategoricalTask(string, string&);
 	string getCommandType(string);
 
 private:
@@ -52,6 +52,7 @@ private:
 	static const string STRING_CHECK;
 	static const string STRING_COMPLETE;
 	static const string STRING_COMPLETED;
+	static const string STRING_DISPLAY;
 	static const string STRING_DELETE;
 	static const string STRING_EDIT;
 	static const string STRING_EXIT;
@@ -65,7 +66,7 @@ private:
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT, ARCHIVE, CHECK, RESCHEDULE, COMPLETE, COMPLETED
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED
 	};
 
 	string executeLogicCore(string);
