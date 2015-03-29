@@ -39,10 +39,6 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	if (commandType == "display"){
 		userTaskParsing(userTask);
 	}
-
-	if (userTask == EMPTY){
-		commandType = EMPTY;
-	}
 	//date or time is identifed but not correct date format
 	if (startDate == dmax || endDate == dmax || startTime==pmax || endTime==pmax){
 		commandType = INVALID_DATE;
@@ -99,9 +95,6 @@ string Parser::getUserTask(string input){
 	string task;
 	positionA = getStartOfUserTask(input);
 	positionB = getEndOfUserTask(input);
-	if (positionB <= positionA){
-		return EMPTY;
-	}
 	task = input.substr(positionA, positionB - positionA);
 	return task;
 }

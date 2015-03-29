@@ -55,6 +55,7 @@ void UI::readMessage(){
 			cout << "  [" << displayMessage.size() << ']' << endl;
 			printVectorToUser(displayMessage);
 		}
+		cout << endl;
 		//The above is the top segment
 		printToUser(message);
 		//The above is the middle segment
