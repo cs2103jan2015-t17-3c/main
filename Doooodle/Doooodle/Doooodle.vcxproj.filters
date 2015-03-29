@@ -19,6 +19,8 @@
     <ClCompile Include="DeleteSearchTask.cpp" />
     <ClCompile Include="ITask.cpp" />
     <ClCompile Include="EditSearchTask.cpp" />
+    <ClCompile Include="RescheduleTask.cpp" />
+    <ClCompile Include="OverdueTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandDetails.h" />
@@ -39,5 +41,7 @@
     <ClInclude Include="DeleteSearchTask.h" />
     <ClInclude Include="ITask.h" />
     <ClInclude Include="EditSearchTask.h" />
+    <ClInclude Include="RescheduleTask.h" />
+    <ClInclude Include="OverdueTask.h" />
   </ItemGroup>
 </Project>

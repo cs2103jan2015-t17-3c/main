@@ -78,7 +78,9 @@
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NormalTask.cpp" />
+    <ClCompile Include="OverdueTask.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="RescheduleTask.cpp" />
     <ClCompile Include="SearchTask.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="TimeParser.cpp" />
@@ -97,7 +99,9 @@
     <ClInclude Include="ITask.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="NormalTask.h" />
+    <ClInclude Include="OverdueTask.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="RescheduleTask.h" />
     <ClInclude Include="SearchTask.h" />
     <ClInclude Include="standardForm.h" />
     <ClInclude Include="Storage.h" />
