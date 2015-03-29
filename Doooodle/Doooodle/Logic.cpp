@@ -51,7 +51,7 @@ vector<string> Logic::displaySearchResults(string userInput) {
 	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
 }
 
-string Logic::getLastCommand(string userInput) {
+string Logic::getCommandType(string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
@@ -88,7 +88,7 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 		break;
 	case DELETE:
 		if (lastCommandIsSearch()) {
-			displayMessageToUI = deleteSearchTask.loadTask(commandDetails[index]->indexReference, storage);
+			displayMessageToUI = deleteTask.deleteSearchTask(commandDetails[index]->indexReference, storage);
 		}
 		else{
 			displayMessageToUI = deleteTask.loadTask(commandDetails[index]->indexReference, storage);
@@ -105,7 +105,7 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 		break;
 	case EDIT:
 		if (lastCommandIsSearch()) {
-			displayMessageToUI = editSearchTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
+			displayMessageToUI = editTask.editSearchTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
 		}
 		else{
 			displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);

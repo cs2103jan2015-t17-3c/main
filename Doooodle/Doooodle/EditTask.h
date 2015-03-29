@@ -13,6 +13,7 @@ public:
 	EditTask(void);
 	~EditTask(void);
 	string loadTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
+	string editSearchTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
 
 private:
 

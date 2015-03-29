@@ -17,8 +17,6 @@
 #include "DeleteTask.h"
 #include "SearchTask.h"
 #include "EditTask.h"
-#include "EditSearchTask.h"""
-#include "DeleteSearchTask.h"
 #include "RescheduleTask.h"
 #include "OverdueTask.h"
 
@@ -35,7 +33,7 @@ public:
 	vector<string> displaySearchResults(string);
 	vector<string> displayArchive(void);
 	vector<string> displayOverdue(void);
-	string getLastCommand(string);
+	string getCommandType(string);
 
 private:
 	Storage storage;
@@ -45,10 +43,8 @@ private:
 	FloatingTask floatingTask;
 	UndoTask undoTask;
 	DeleteTask deleteTask;
-	DeleteSearchTask deleteSearchTask;
 	SearchTask searchTask;
 	EditTask editTask;
-	EditSearchTask editSearchTask;
 	RescheduleTask rescheduleTask;
 	OverdueTask overdueTask;
 	static const string STRING_ADD;
