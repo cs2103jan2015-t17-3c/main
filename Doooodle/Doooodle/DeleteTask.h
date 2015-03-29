@@ -13,6 +13,7 @@ public:
 	DeleteTask(void);
 	~DeleteTask(void);
 	string loadTask(int, Storage&);
+	string deleteSearchTask(int, Storage&);
 
 private:
 

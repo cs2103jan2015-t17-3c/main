@@ -12,3 +12,9 @@ string DeleteTask::loadTask(int intToDelete, Storage& storage){
 	storage.writeToFile();
 	return displayMessage;
 }
+
+string DeleteTask::deleteSearchTask(int intToDelete, Storage& storage){
+	displayMessage = storage.deleteSearchTask(intToDelete);
+	storage.writeToFile();
+	return displayMessage;
+}

@@ -16,9 +16,7 @@
     <ClCompile Include="SearchTask.cpp" />
     <ClCompile Include="DeleteTask.cpp" />
     <ClCompile Include="EditTask.cpp" />
-    <ClCompile Include="DeleteSearchTask.cpp" />
     <ClCompile Include="ITask.cpp" />
-    <ClCompile Include="EditSearchTask.cpp" />
     <ClCompile Include="RescheduleTask.cpp" />
     <ClCompile Include="OverdueTask.cpp" />
   </ItemGroup>
@@ -38,9 +36,7 @@
     <ClInclude Include="SearchTask.h" />
     <ClInclude Include="DeleteTask.h" />
     <ClInclude Include="EditTask.h" />
-    <ClInclude Include="DeleteSearchTask.h" />
     <ClInclude Include="ITask.h" />
-    <ClInclude Include="EditSearchTask.h" />
     <ClInclude Include="RescheduleTask.h" />
     <ClInclude Include="OverdueTask.h" />
   </ItemGroup>
