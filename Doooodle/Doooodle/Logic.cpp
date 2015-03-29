@@ -4,13 +4,17 @@
 const string Logic::STRING_ADD = "add";
 const string Logic::STRING_ARCHIVE = "archive";
 const string Logic::STRING_CHECK = "check";
-const string Logic::STRING_COMPLETED = "complete";
+const string Logic::STRING_COMPLETE = "complete";
 const string Logic::STRING_COMPLETED = "completed";
+const string Logic::STRING_DISPLAY = "display";
+const string Logic::STRING_DEADLINE = "deadline";
 const string Logic::STRING_DELETE = "delete";
 const string Logic::STRING_EDIT = "edit";
 const string Logic::STRING_EXIT = "exit";
+const string Logic::STRING_FLOATING = "floating";
 const string Logic::STRING_INVALID = "ERROR!";
-const string Logic::STRING_INVALID = "reschedule";
+const string Logic::STRING_NORMAL = "normal";
+const string Logic::STRING_RESCHEDULE = "reschedule";
 const string Logic::STRING_SEARCH = "search";
 const string Logic::STRING_UNDO = "undo";
 const int Logic::TOP10MAX = 10;
@@ -34,10 +38,6 @@ vector<string> Logic::displayFloatingTask(void) {
 	return floatingTask; 
 }
 
-vector<string> displayArchive(void) {
-	vector<string> archive = storage.retrieveArchive();
-	return archive;
-}
 vector<string> displayOverdue(void) {
 	vector<string> overdue = storage.retrieveOverdue();
 	return overdue;
@@ -49,6 +49,16 @@ vector<string> Logic::displaySearchResults(string userInput) {
 	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
 	assert(commandDetails[index]->commandType==STRING_SEARCH);
 	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
+}
+
+vector<string> Logic::displayCategoricalTask(string userInput, string& taskType) {
+	int index = commandDetails.size();
+	vector<string> categoricalTask;
+	commandDetails.push_back(new CommandDetails());
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+	taskType = commandDetails[index]->task;
+	categoricalTask = storage.retrieveCategoricalTask(taskType);
+	return categoricalTask;
 }
 
 string Logic::getCommandType(string userInput) {
