@@ -4,8 +4,8 @@ const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search
 const string UI::MESSAGE_DEFAULT_CHECK = "Commands available:completed, reschedule\nEnter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
 *        Doooodle       *\n*************************\n";
-const string UI::MESSAGE_TOPTEN = "Below is the list of top ten items in your scheduler\n\n";
-const string UI::MESSAGE_FLOAT = "Below are the tasks without specific date or time\n";
+const string UI::MESSAGE_TOPTEN = "Below is the list of upcoming events in your calendar";
+const string UI::MESSAGE_FLOAT = "Below are the floating tasks";
 const string UI::MESSAGE_SEARCH = "Below is the search result\n";
 const string UI::MESSAGE_CATEGORICAL_TASK1 = "Below is the whole list of the ";
 const string UI::MESSAGE_CATEGORICAL_TASK2 = " tasks\n";
@@ -47,23 +47,27 @@ void UI::readMessage(){
 		} else {
 			cout << MESSAGE_TOPTEN;
 			displayMessage = logic.displayTopTen();
+			cout << "  [" << displayMessage.size() << ']'<<endl;
 			printVectorToUser(displayMessage);
-			cout << MESSAGE_FLOAT;
+			cout << endl;
+			cout<<MESSAGE_FLOAT;
 			displayMessage = logic.displayFloatingTask();
+			cout << "  [" << displayMessage.size() << ']' << endl;
 			printVectorToUser(displayMessage);
 		}
 		//The above is the top segment
 		printToUser(message);
 		//The above is the middle segment
-		cout << endl << endl << MESSAGE_DEFAULT;
+		cout << MESSAGE_DEFAULT;
 		getline(cin, command);
 		//The above is the bottom segment
 		std::system("CLS");
-		checkOverdue(command);
+		
 		//continue with the execution if the command is not check
 		if (command != "check"){
 			message = logic.receiveCommand(command);
 		}
+		checkOverdue(command);
 	}
 }
 
@@ -91,7 +95,6 @@ void UI::printSearchLine(int num){
 }
 
 bool UI::checkOverdue(string command){
-	Logic logic;
 	string message=" ";
 	if (logic.displayOverdue().empty()){
 		return false;
@@ -116,7 +119,7 @@ bool UI::checkOverdue(string command){
 		printToUser(message);
 		//middle
 		cout << endl;
-		printToUser(MESSAGE_DEFAULT_CHECK);
+		cout<<MESSAGE_DEFAULT_CHECK;
 		//bottom
 		getline(cin, command);
 		message = logic.receiveCommand(command);
