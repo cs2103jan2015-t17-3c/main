@@ -7,13 +7,10 @@ const string Logic::STRING_CHECK = "check";
 const string Logic::STRING_COMPLETE = "complete";
 const string Logic::STRING_COMPLETED = "completed";
 const string Logic::STRING_DISPLAY = "display";
-const string Logic::STRING_DEADLINE = "deadline";
 const string Logic::STRING_DELETE = "delete";
 const string Logic::STRING_EDIT = "edit";
 const string Logic::STRING_EXIT = "exit";
-const string Logic::STRING_FLOATING = "floating";
 const string Logic::STRING_INVALID = "ERROR!";
-const string Logic::STRING_NORMAL = "normal";
 const string Logic::STRING_RESCHEDULE = "reschedule";
 const string Logic::STRING_SEARCH = "search";
 const string Logic::STRING_UNDO = "undo";
@@ -121,9 +118,6 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 			displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
 		}
 		break;
-	case ARCHIVE:
-		displayMessageToUI = " ";
-		break;
 	case RESCHEDULE:
 		displayMessageToUI = rescheduleTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
 		break;
@@ -176,9 +170,6 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	}
 	else if(commandDetails[index]->commandType==STRING_EDIT) {
 		return EDIT;
-	}
-	else if (commandDetails[index]->commandType == STRING_ARCHIVE) {
-		return ARCHIVE;
 	}
 	else if (commandDetails[index]->commandType == STRING_CHECK) {
 		return CHECK;
