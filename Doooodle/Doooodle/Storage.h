@@ -65,9 +65,17 @@ public:
 	Task initializeDeadlineTask(string, date, ptime);
 	Task initializeFloatTask(string);
 	void registerSearchedStuff(vector<Task>::iterator, bool&, vector<string>&,int&);
+	vector<string> retrieveArchive();
+	vector<string> retrieveOverdue();
+	void completeAll();
+	string reschedule(int, date, date, ptime, ptime);
+	vector<string> retrieveCategoricalTask(string);
+
+
+
 
 private:
-	//vector<Task> archivedTask;
+	vector<Task> archivedTask;
 	vector<Task> activeTask;
 	vector<History> commandHistory;
 	static const string MESSAGE_UNDO;
@@ -75,10 +83,14 @@ private:
 	static const int DEFAULT_WIDTH;
     static const int NUMBER_OF_DISPLAY;
 	static const int NUMBER_OF_FLOAT_DISPLAY;
+	static const int NUMBER_OF_ARCHIVED_DISPLAY;
+
 
 	stack<Task> tempTask;
 	stack<string> taskDetailsHistory;
 	vector<vector<Task>::iterator> tempSearchIterator;
+	vector<vector<Task>::iterator> tempOverdueTaskIterator;
+
 	string directoryName;
 };
 
