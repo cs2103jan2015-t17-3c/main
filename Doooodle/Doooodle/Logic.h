@@ -19,6 +19,8 @@
 #include "EditTask.h"
 #include "EditSearchTask.h"""
 #include "DeleteSearchTask.h"
+#include "RescheduleTask.h"
+#include "OverdueTask.h"
 
 using namespace std;
 
@@ -31,7 +33,9 @@ public:
 	vector<string> displayTopTen(void);
 	vector<string> displayFloatingTask(void);
 	vector<string> displaySearchResults(string);
-	bool isSearch(string);
+	vector<string> displayArchive(void);
+	vector<string> displayOverdue(void);
+	string getLastCommand(string);
 
 private:
 	Storage storage;
@@ -45,11 +49,18 @@ private:
 	SearchTask searchTask;
 	EditTask editTask;
 	EditSearchTask editSearchTask;
+	RescheduleTask rescheduleTask;
+	OverdueTask overdueTask;
 	static const string STRING_ADD;
+	static const string STRING_ARCHIVE;
+	static const string STRING_CHECK;
+	static const string STRING_COMPLETE;
+	static const string STRING_COMPLETED;
 	static const string STRING_DELETE;
 	static const string STRING_EDIT;
 	static const string STRING_EXIT;
 	static const string STRING_INVALID;
+	static const string STRING_RESCHEDULE;
 	static const string STRING_SEARCH;
 	static const string STRING_UNDO;
 	static const int TOP10MAX;
@@ -58,7 +69,7 @@ private:
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT
+		DEADLINE, FLOATING, NORMAL, DELETE, SEARCH, EXIT, INVALID, UNDO, EDIT, ARCHIVE, CHECK, RESCHEDULE, COMPLETE, COMPLETED
 	};
 
 	string executeLogicCore(string);

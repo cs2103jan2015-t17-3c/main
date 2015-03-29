@@ -2,10 +2,15 @@
 #include "Logic.h"
 
 const string Logic::STRING_ADD = "add";
+const string Logic::STRING_ARCHIVE = "archive";
+const string Logic::STRING_CHECK = "check";
+const string Logic::STRING_COMPLETED = "complete";
+const string Logic::STRING_COMPLETED = "completed";
 const string Logic::STRING_DELETE = "delete";
 const string Logic::STRING_EDIT = "edit";
 const string Logic::STRING_EXIT = "exit";
 const string Logic::STRING_INVALID = "ERROR!";
+const string Logic::STRING_INVALID = "reschedule";
 const string Logic::STRING_SEARCH = "search";
 const string Logic::STRING_UNDO = "undo";
 const int Logic::TOP10MAX = 10;
@@ -29,6 +34,15 @@ vector<string> Logic::displayFloatingTask(void) {
 	return floatingTask; 
 }
 
+vector<string> displayArchive(void) {
+	vector<string> archive = storage.retrieveArchive();
+	return archive;
+}
+vector<string> displayOverdue(void) {
+	vector<string> overdue = storage.retrieveOverdue();
+	return overdue;
+}
+
 vector<string> Logic::displaySearchResults(string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
@@ -37,25 +51,19 @@ vector<string> Logic::displaySearchResults(string userInput) {
 	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
 }
 
+string Logic::getLastCommand(string userInput) {
+	int index = commandDetails.size();
+	commandDetails.push_back(new CommandDetails());
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+	string lastCommand = commandDetails[index]->commandType;
+	commandDetails.pop_back();
+	return lastCommand;
+}
+
 
 string Logic::receiveCommand(string userInput) {
 	string displayMessage = executeLogicCore(userInput);
 	return displayMessage;
-}
-
-bool Logic::isSearch(string userInput) {
-	int index = commandDetails.size();
-	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
-	TASK_TYPE taskType = determineSpecificTaskType(index);
-	if (taskType == SEARCH) {
-		commandDetails.pop_back();
-		return true;
-	}
-	else {
-		commandDetails.pop_back();
-		return false;
-	}
 }
 
 string Logic::executeLogicCore(string userInput) {
@@ -103,6 +111,26 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 			displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
 		}
 		break;
+	case ARCHIVE:
+		displayMessageToUI = " ";
+		break;
+	case RESCHEDULE:
+		displayMessageToUI = rescheduleTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
+		break;
+	case CHECK:
+		displayMessageToUI = " ";
+		break;
+	case COMPLETE:
+		if (lastCommandIsSearch()) {
+			displayMessageToUI = overdueTask.completeSearchTask(commandDetails[index]->indexReference, storage);
+		}
+		else{
+			displayMessageToUI = overdueTask.completeTask(commandDetails[index]->indexReference, storage);
+		}
+		break;
+	case COMPLETED:
+		displayMessageToUI = overdueTask.loadTask(storage);
+		break;
 	case INVALID:
 		displayMessageToUI = STRING_INVALID;
 		break;
@@ -138,6 +166,21 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	}
 	else if(commandDetails[index]->commandType==STRING_EDIT) {
 		return EDIT;
+	}
+	else if (commandDetails[index]->commandType == STRING_ARCHIVE) {
+		return ARCHIVE;
+	}
+	else if (commandDetails[index]->commandType == STRING_CHECK) {
+		return CHECK;
+	}
+	else if (commandDetails[index]->commandType == STRING_RESCHEDULE) {
+		return RESCHEDULE;
+	}
+	else if (commandDetails[index]->commandType == STRING_COMPLETE) {
+		return COMPLETE;
+	}
+	else if (commandDetails[index]->commandType == STRING_COMPLETED) {
+		return COMPLETED;
 	}
 	else return INVALID;
 }
