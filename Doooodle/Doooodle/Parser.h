@@ -26,6 +26,7 @@ private:
 	static const string START_TIME_INDICATORS[];
 	static const string END_TIME_INDICATORS[];
 	static const string TIME_IDENTIFIERS[];
+	static const string EMPTY;
 	static const int NO_OF_START_TIME_INDICATORS;
 	static const int NO_OF_END_TIME_INDICATORS;
 	static const int NO_OF_TIME_IDENTIFIERS;
@@ -42,6 +43,7 @@ private:
 	size_t intToPos(int,string);
 	size_t getEndOfUserTask(string);
 	size_t getStartOfUserTask(string);
+	void userTaskParsing(string&);
 	void assignToday(boost::gregorian::date&);
 	bool isDeadline(string);
 

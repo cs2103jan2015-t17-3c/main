@@ -22,6 +22,8 @@ private:
 	static const string MESSAGE_FLOAT;
 	static const string MESSAGE_SEARCH;
 	static const string MESSAGE_CHECK;
+	static const string MESSAGE_CATEGORICAL_TASK1;
+	static const string MESSAGE_CATEGORICAL_TASK2;
 	static const string MESSAGE_CHECK_ADD;
 	static const string MESSAGE_CHECK_DELETE;
 	static const string MESSAGE_CHECK_SEARCH;

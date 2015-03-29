@@ -6,6 +6,7 @@ const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
 const int Parser :: NO_OF_TIME_IDENTIFIERS = 18;
 const string Parser::INVALID_DATE = "Invalid Date";
+const string Parser::EMPTY = "Empty Task";
 const string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
 const string Parser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { " Monday", " Tuesday", " Wednesday", " Thursday", " Friday", " Saturday", " Sunday",
@@ -34,6 +35,14 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	endDate = getEndDate(pos);
 	startTime = getStartTime(pos);
 	endTime = getEndTime(pos);
+
+	if (commandType == "display"){
+		userTaskParsing(userTask);
+	}
+
+	if (userTask == EMPTY){
+		commandType = EMPTY;
+	}
 	//date or time is identifed but not correct date format
 	if (startDate == dmax || endDate == dmax || startTime==pmax || endTime==pmax){
 		commandType = INVALID_DATE;
@@ -90,6 +99,9 @@ string Parser::getUserTask(string input){
 	string task;
 	positionA = getStartOfUserTask(input);
 	positionB = getEndOfUserTask(input);
+	if (positionA <= positionB){
+		return EMPTY;
+	}
 	task = input.substr(positionA, positionB - positionA);
 	return task;
 }
@@ -240,4 +252,16 @@ bool Parser::isDeadline(string input){
 		}
 	}
 	return false;
+}
+
+void Parser::userTaskParsing(string& input){
+	if (input == "Normal" || input == "N" || input == "norm" || input == "Norm"){
+		input = "normal";
+	}else if (input == "Float" || input == "float" || input == "Floating"){
+		input = "floating";
+	}else if (input == "Deadline" || input == "d" || input == "D" || input == "dead" || input == "Dead" || input == "dateline" || input == "Dateline"){
+		input = "deadline";
+	}else if (input == "Archive"){
+		input = "archive";
+	}
 }

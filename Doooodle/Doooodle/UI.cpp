@@ -7,6 +7,8 @@ const string UI::MESSAGE_WELCOME = "*************************\n\
 const string UI::MESSAGE_TOPTEN = "Below is the list of top ten items in your scheduler\n\n";
 const string UI::MESSAGE_FLOAT = "Below are the tasks without specific date or time\n";
 const string UI::MESSAGE_SEARCH = "Below is the search result\n";
+const string UI::MESSAGE_CATEGORICAL_TASK1 = "Below is the whole list of the ";
+const string UI::MESSAGE_CATEGORICAL_TASK2 = " tasks\n";
 const string UI::MESSAGE_CHECK = "Have you completed the following task(s)?\n";
 const string UI::MESSAGE_CHECK_ADD = "Before add, have you completed the following task(s)?\n";
 const string UI::MESSAGE_CHECK_DELETE = "Before delete, have you completed the following task(s)?\n";
@@ -26,16 +28,23 @@ void UI::readMessage(){
 	string message = " ";
 	date today(day_clock::local_day());
 	vector<string> displayMessage;
+	string cat;
 	cout << MESSAGE_WELCOME;
 
 	while (true){
 		cout << "Today: "<<today << endl << endl;
 		assert(command != "");
 		if (logic.getCommandType(command) == "search"){
-			cout << MESSAGE_SEARCH << endl;
+			printToUser(MESSAGE_SEARCH);
 			displayMessage = logic.displaySearchResults(command);
 			printVectorToUser(displayMessage);
-		} else{
+		} else if (logic.getCommandType(command)=="display"){
+			displayMessage = logic.displayCategoricalTask(command,cat);
+			printToUser(MESSAGE_CATEGORICAL_TASK1);
+			printToUser(cat);
+			printToUser(MESSAGE_CATEGORICAL_TASK2)
+			printVectorToUser(displayMessage);
+		} else {
 			cout << MESSAGE_TOPTEN;
 			displayMessage = logic.displayTopTen();
 			printVectorToUser(displayMessage);
