@@ -17,13 +17,23 @@ namespace TestLibrary
 			Assert::IsTrue(logic.isSearch("search swimming"));
 		}
 
-		TEST_METHOD(TestLastCommandIsSearch) {
+		TEST_METHOD(TestIsSearch_3) {
 			Logic logic;
-			logic.commandDetails.push_back(new CommandDetails());
-			logic.commandDetails[0]->commandType = "search";
-			logic.commandDetails.push_back(new CommandDetails());
-			logic.commandDetails[1]->commandType = "add";
-			Assert::IsFalse(logic.lastCommandIsSearch());
+			Assert::IsFalse(logic.isSearch("searc swimming"));
+		}
+
+		TEST_METHOD(TestExecuteTask_1) {
+			Logic logic;
+			string displayMessage = logic.executeTask(Logic::TASK_TYPE::SEARCH, 0);
+			string expected = " ";
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(TestExecuteTask_2) {
+			Logic logic;
+			string displayMessage = logic.executeTask(Logic::TASK_TYPE::UNDO, 0);
+			string expected = "Undo is successfully performed";
+			Assert::AreEqual(expected, displayMessage);
 		}
 
 		/*
