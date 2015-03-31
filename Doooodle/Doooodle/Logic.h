@@ -34,6 +34,9 @@ public:
 	vector<string> displayOverdue(void);
 	vector<string> displayCategoricalTask(string, string&);
 	string getCommandType(string);
+	int getDeadlineSize(void);
+	int getNormalSize(void);
+	int getFloatingSize(void);
 
 private:
 	Storage storage;
@@ -71,6 +74,7 @@ private:
 
 	string executeLogicCore(string);
 	string executeTask(TASK_TYPE, int);
+	string executeRecurringTask(string, int);
 	TASK_TYPE determineSpecificTaskType(int);
 	bool lastCommandIsSearch(void);
 };
