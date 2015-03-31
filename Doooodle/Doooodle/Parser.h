@@ -30,6 +30,7 @@ private:
 	static const int NO_OF_START_TIME_INDICATORS;
 	static const int NO_OF_END_TIME_INDICATORS;
 	static const int NO_OF_TIME_IDENTIFIERS;
+	static const char RECURRING_INDENTIFIER;
 	vector<string> tokens;
 
 	void tokenizeInput(string);
@@ -50,7 +51,9 @@ private:
 public:
 	Parser();
 	~Parser();
+	bool isRecurring(string);
 	void processCommand(string, string&, string&, boost::gregorian::date&, boost::gregorian::date&, boost::posix_time::ptime&, boost::posix_time::ptime&, int& indexReference);
+	void processCommand(string, string&, vector<boost::gregorian::date>&, vector<boost::gregorian::date>&, vector<boost::posix_time::ptime>&, vector<boost::posix_time::ptime>&);
 };
 
 #endif

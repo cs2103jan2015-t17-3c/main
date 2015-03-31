@@ -2,6 +2,7 @@
 
 const int Parser::POSITION_COMMAND_TYPE = 0;
 const string Parser::DELIMITERS = " ";
+const char Parser::RECURRING_INDENTIFIER = ';';
 const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
 const int Parser :: NO_OF_TIME_IDENTIFIERS = 18;
@@ -17,6 +18,13 @@ Parser::Parser(){
 }
 Parser::~Parser(){
 
+}
+
+bool Parser::isRecurring(string input){
+	if (input.find(RECURRING_INDENTIFIER) != string::npos){
+		return true;
+	}
+	return false;
 }
 
 void Parser::processCommand(string input, string& commandType, string& userTask, boost::gregorian::date& startDate, boost::gregorian::date& endDate, 

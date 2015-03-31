@@ -47,12 +47,12 @@ void UI::readMessage(){
 		} else {
 			cout << MESSAGE_TOPTEN;
 			displayMessage = logic.displayTopTen();
-			cout << "  [" << displayMessage.size() << ']'<<endl;
+			cout << "  [" << logic.getDeadlineSize() << "]  ["<<logic.getNormalSize()<<']'<<endl;
 			printVectorToUser(displayMessage);
 			cout << endl;
 			cout<<MESSAGE_FLOAT;
 			displayMessage = logic.displayFloatingTask();
-			cout << "  [" << displayMessage.size() << ']' << endl;
+			cout << "  [" << logic.getFloatingSize() << ']' << endl;
 			printVectorToUser(displayMessage);
 		}
 		cout << endl;
