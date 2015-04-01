@@ -20,6 +20,8 @@ using namespace boost::posix_time;
 class Parser {
 
 private:
+	DateParser dateparser;
+	TimeParser timeparser;
 	static const int POSITION_COMMAND_TYPE;
 	static const string INVALID_DATE;
 	static const string DELIMITERS;
@@ -47,6 +49,7 @@ private:
 	void userTaskParsing(string&);
 	void assignToday(boost::gregorian::date&);
 	bool isDeadline(string);
+	string getFrequency(string);
 
 public:
 	Parser();
