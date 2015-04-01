@@ -11,19 +11,60 @@ const int Storage::NUMBER_OF_FLOATING_DISPLAY = 5;
 const int Storage::NUMBER_OF_ARCHIVED_DISPLAY = 20;
 
 Storage::Storage(void){
-	fstream fl_h; //file handle
-	fl_h.open("tempStorage.dtb", ios::in | ios::out | ios::binary);
+	ifstream fl_h; //file handle
+	fl_h.open("tempStorage.txt");
 	if (fl_h.good()){
-	int num = 0;
+	int num = 1;
 	Task tempTask;
+	string dummy;
 	while (!fl_h.eof()){
-		fl_h.seekg(num*sizeof(Task), ios::beg); //move the read pointer to where the rec is
-		fl_h.read((char*)&tempTask, sizeof(Task)); //read it
-		activeTask.push_back(tempTask);
-		num++;
-	}
-	}
+		getline(fl_h, tempTask.taskDetails);
 
+		getline(fl_h, dummy);
+		if (dummy != "not-a-date-time"){
+			date d(from_undelimited_string(dummy));
+			tempTask.startDate = d;
+		}else
+			tempTask.startDate = nonDate;
+
+		getline(fl_h, dummy);
+		if (dummy != "not-a-date-time"){
+			date dd(from_undelimited_string(dummy));
+			tempTask.endDate = dd;
+		}
+		else
+			tempTask.endDate = nonDate;
+		getline(fl_h, dummy);
+		if (dummy != "not-a-date-time"){
+			ptime t(from_iso_string(dummy));
+			tempTask.startTime = t;
+		}
+		else
+			tempTask.startTime = nonTime;
+		getline(fl_h, dummy);
+		if (dummy != "not-a-date-time"){
+			ptime tt(from_iso_string(dummy));
+			tempTask.endTime = tt;
+		}
+		else
+			tempTask.endTime = nonTime;
+		getline(fl_h, tempTask.taskDisplay);
+		getline(fl_h, dummy);
+		if (dummy == "0"){
+			tempTask.taskType = DEADLINE;
+		}
+		else if (dummy == "1"){
+			tempTask.taskType = FLOATING;
+		}
+		else
+			tempTask.taskType = NORMAL;
+		
+
+		activeTask.push_back(tempTask);
+		//num++;
+	}
+	}
+	
 };
 
 
@@ -409,14 +450,33 @@ void Storage::writeToFile(){
 		outputFile << index + 1 << ". " << activeTask[index].taskDisplay << endl;
 	}
 	outputFile.close();	
+	
 
 	ofstream tempStorage;
-	tempStorage.open("tempStorage.dtb", ios::in | ios::out | ios::binary);
-	for (int index = 0; index < activeTask.size(); index++){
-		tempStorage.seekp(0, ios::end); //will disscuss this later,this sets the file write pointer to end
+	tempStorage.open("tempStorage.txt"/*, /*ios::in | ios::out | ios::binary*/);
+	int index;
+	for (index = 0; index < activeTask.size()-1; index++){
+		//tempStorage.seekp(0, ios::end); //will disscuss this later,this sets the file write pointer to end
+		tempStorage << activeTask[index].taskDetails << endl;
+		tempStorage << to_iso_string(activeTask[index].startDate) << endl;
+		tempStorage << to_iso_string(activeTask[index].endDate) << endl;
+		tempStorage << to_iso_string(activeTask[index].startTime) << endl;
+		tempStorage << to_iso_string(activeTask[index].endTime) << endl;
+		tempStorage << activeTask[index].taskDisplay << endl;
+		tempStorage << activeTask[index].taskType << endl;
 
-		tempStorage.write((char*)&activeTask[index], sizeof(Task));
+		//tempStorage.write((char*)&activeTask[index], sizeof(Task));
+		//tempStorage << "good \n";
 	}
+	tempStorage << activeTask[index].taskDetails << endl;
+	tempStorage << to_iso_string(activeTask[index].startDate) << endl;
+	tempStorage << to_iso_string(activeTask[index].endDate) << endl;
+	tempStorage << to_iso_string(activeTask[index].startTime) << endl;
+	tempStorage << to_iso_string(activeTask[index].endTime) << endl;
+	tempStorage << activeTask[index].taskDisplay << endl;
+	tempStorage << activeTask[index].taskType;
+
+
 	tempStorage.close();
 	/*	fl_h.seekg(num*sizeof(DtbRec), ios::beg); //move the read pointer to where the rec is
 	fl_h.read((char*)&xRec, sizeof(DtbRec)); //read it
