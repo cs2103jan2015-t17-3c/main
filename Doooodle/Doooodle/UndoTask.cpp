@@ -23,7 +23,7 @@ string UndoTask::loadTask(vector<CommandDetails*>& CD, Storage& storage) {
 	case ADD:
 		displayMessage = executeUndoAdd(CD, storage);
 		break;
-	case DELETE:
+	case ERASE:
 		displayMessage = executeUndoDelete(CD, storage);
 		break;
 	case EDIT:
@@ -60,7 +60,7 @@ UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*>& CD
 		return ADD;
 	}
 	else if(CD[index]->commandType==STRING_DELETE) {
-		return DELETE;
+		return ERASE;
 	}
 	else if(CD[index]->commandType==STRING_SEARCH) {
 		CD.pop_back(); //search will not be undone, hence pop_back and recursion to retrieve next in line

@@ -114,7 +114,7 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 	case FLOATING:
 		displayMessageToUI = floatingTask.loadTask(commandDetails[index]->task, storage);
 		break;
-	case DELETE:
+	case ERASE:
 		if (lastCommandIsSearch()) {
 			displayMessageToUI = deleteTask.deleteSearchTask(commandDetails[index]->indexReference, storage);
 		}
@@ -178,7 +178,7 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 		}
 	}
 	else if(commandDetails[index]->commandType==STRING_DELETE) {
-		return DELETE;
+		return ERASE;
 	}
 	else if(commandDetails[index]->commandType==STRING_SEARCH) {
 		return SEARCH;

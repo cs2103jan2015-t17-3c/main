@@ -7,7 +7,7 @@ const string Storage::MESSAGE_UNDO = "Undo is successfully performed";
 const string Storage::DEFAULT_DIRECTORY = "dooodle.txt";
 const int Storage::DEFAULT_WIDTH = 25;
 const int Storage::NUMBER_OF_DISPLAY = 10;
-const int Storage::NUMBER_OF_FLOAT_DISPLAY = 5;
+const int Storage::NUMBER_OF_FLOATING_DISPLAY = 5;
 const int Storage::NUMBER_OF_ARCHIVED_DISPLAY = 20;
 
 Storage::Storage(void){
@@ -51,7 +51,7 @@ int Storage::retrieveNormalSize(){
 int Storage::retrieveFloatingSize(){
 	int count = 0;
 	for (int i = 0; i < activeTask.size(); i++){
-		if (activeTask[i].taskType == FLOAT){
+		if (activeTask[i].taskType == FLOATING){
 			count++;
 		}
 	}
@@ -86,7 +86,7 @@ string Storage::initializeTaskDetails(Task temp){
 			} else{
 				outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << temp.endDate.day() << " " <<temp.endDate.month() << " " << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
 			}
-		} else if (temp.taskType == FLOAT){
+		} else if (temp.taskType == FLOATING){
 				outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails;
 			}
 	return outputTask.str();
@@ -121,8 +121,8 @@ string Storage::taskDetailsFeedback(Task temp){
 		} else{
 			outputTask << "Deadline task: " << temp.taskDetails << " by " << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << " successfully added.\n";
 		}
-	} else if(temp.taskType == FLOAT){
-		outputTask << "Float task: " << temp.taskDetails << " successfully added.\n";
+	} else if(temp.taskType == FLOATING){
+		outputTask << "Floating task: " << temp.taskDetails << " successfully added.\n";
 	}
 	return outputTask.str();
 }
@@ -182,20 +182,20 @@ string Storage::addDeadlineTask(string task, date endDate, ptime endTime){
     return taskDetailsFeedback(temp);
 };
 
-Task Storage::initializeFloatTask(string task){
+Task Storage::initializeFloatingTask(string task){
 	Task temp;
 	temp.taskDetails = task;
 	temp.startDate = nonDate;
 	temp.endDate = nonDate;
 	temp.startTime = nonTime;
 	temp.endTime = nonTime;
-	temp.taskType = FLOAT;
+	temp.taskType = FLOATING;
 	temp.taskDisplay = initializeTaskDetails(temp);
 	return temp;
 }
 
-string Storage::addFloatTask(string task){
-	Task temp = initializeFloatTask(task);
+string Storage::addFloatingTask(string task){
+	Task temp = initializeFloatingTask(task);
 	taskDetailsHistory.push(task);
 	activeTask.push_back(temp);
 	History trace = registerHistory(temp);
@@ -253,7 +253,7 @@ vector<string> Storage::retrieveTopTen(){
 	int finalNumber = NUMBER_OF_DISPLAY - count - 1;
 	for (int i = diffIndex; i < diffIndex + finalNumber && i < activeTask.size(); i++){
 		Task dummy = activeTask[i];
-		if (dummy.taskType != FLOAT){
+		if (dummy.taskType != FLOATING){
 			ostringstream oneTask;
 			oneTask << count + 1 << ". " << dummy.taskDisplay;
 			topTasks.push_back(oneTask.str());
@@ -334,7 +334,7 @@ vector<string> Storage::retrieveCategoricalTask(string typeTask){
 	}
 		if (typeTask == "floating"){
 			for (int i = 0; i < activeTask.size(); i++){
-				if (activeTask[i].taskType == FLOAT){
+				if (activeTask[i].taskType == FLOATING){
 					ostringstream oneTask;
 					oneTask << i + 1 << ". " << activeTask[i].taskDisplay;
 					displayedTasks.push_back(oneTask.str());
@@ -366,8 +366,8 @@ vector<string> Storage::retrieveCategoricalTask(string typeTask){
 vector<string> Storage::retrieveFloatingTask(){
 	vector<string> TopTasks;
 	int count = 0;
-	for (int i = 0; i < activeTask.size() && count < NUMBER_OF_FLOAT_DISPLAY; i++){
-		if (activeTask[i].taskType == FLOAT){
+	for (int i = 0; i < activeTask.size() && count < NUMBER_OF_FLOATING_DISPLAY; i++){
+		if (activeTask[i].taskType == FLOATING){
 			TopTasks.push_back(activeTask[i].taskDisplay);
 			count++;
 		}
@@ -392,7 +392,7 @@ bool task_sorter(Task const& lhs, Task const& rhs){
 		if (lhs.endDate != rhs.endDate)
 			return lhs.endDate < rhs.endDate;
 		return lhs.endTime < rhs.endTime;
-	} else if (lhs.taskType == FLOAT || rhs.taskType == FLOAT)
+	} else if (lhs.taskType == FLOATING || rhs.taskType == FLOATING)
 		return lhs.endDate < rhs.endDate;
 }
 

@@ -19,7 +19,7 @@ using namespace boost::gregorian;
 using namespace boost::posix_time;
 
 enum TYPE_OF_TASK{
-	DEADLINE, FLOAT, NORMAL
+	DEADLINE, FLOATING, NORMAL
 };
 
 struct Task{
@@ -45,7 +45,7 @@ public:
 	~Storage(void);
 	string addNormalTask(string, date, date,ptime,ptime);
 	string addDeadlineTask(string,date,ptime);
-	string addFloatTask(string);
+	string addFloatingTask(string);
 	vector<string> retrieveTopTen();
 	void sortStorage();
 	void writeToFile();
@@ -66,7 +66,7 @@ public:
 	string taskDetailsFeedback(Task);
 	History registerHistory(Task);
 	Task initializeDeadlineTask(string, date, ptime);
-	Task initializeFloatTask(string);
+	Task initializeFloatingTask(string);
 	void registerSearchedStuff(vector<Task>::iterator, bool&, vector<string>&,int&);
 	vector<string> retrieveArchive();
 	vector<string> retrieveOverdue();
@@ -89,7 +89,7 @@ private:
 	static const string DEFAULT_DIRECTORY;
 	static const int DEFAULT_WIDTH;
     static const int NUMBER_OF_DISPLAY;
-	static const int NUMBER_OF_FLOAT_DISPLAY;
+	static const int NUMBER_OF_FLOATING_DISPLAY;
 	static const int NUMBER_OF_ARCHIVED_DISPLAY;
 
 

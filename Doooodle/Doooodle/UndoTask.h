@@ -17,7 +17,7 @@ public:
 
 private:
 	enum TASK_TYPE {
-		ADD, DELETE, EDIT, NIL
+		ADD, ERASE, EDIT, NIL
 	};
 	static const string STRING_ADD;
 	static const string STRING_DELETE;
