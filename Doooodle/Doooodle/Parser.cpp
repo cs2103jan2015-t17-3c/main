@@ -27,6 +27,26 @@ bool Parser::isRecurring(string input){
 	return false;
 }
 
+void Parser::processCommand(string input, string& userTask, vector<boost::gregorian::date>& vecStartDate, vector<boost::gregorian::date>& vecEndDate, vector<boost::posix_time::ptime>& vecStartTime, vector<boost::posix_time::ptime>& vecEndTime){
+	string commandType;
+	string frequency;
+	int indexReference;
+	boost::gregorian::date startDate(not_a_date_time);
+	boost::gregorian::date endDate(not_a_date_time);
+	boost::posix_time::ptime startTime(not_a_date_time);
+	boost::posix_time::ptime endTime(not_a_date_time);
+	processCommand(input, commandType, userTask, startDate, endDate, startTime, endTime, indexReference);
+	frequency = getFrequency(input);
+	vecStartDate.push_back(startDate);
+	vecEndDate.push_back(endDate);
+	vecStartTime.push_back(startTime);
+	vecEndTime.push_back(endTime);
+	frequency = getFrequency(input);
+	dateparser.completeRecurring(frenquency, vecStartDate, vecEndDate, vecStartTime, vecEndTime);
+	
+	return;
+}
+
 void Parser::processCommand(string input, string& commandType, string& userTask, boost::gregorian::date& startDate, boost::gregorian::date& endDate, 
 	boost::posix_time::ptime& startTime, boost::posix_time::ptime& endTime, int& indexReference){
 	boost::gregorian::date d1(boost::date_time::not_a_date_time);
@@ -109,7 +129,6 @@ string Parser::getUserTask(string input){
 
 
 boost::gregorian::date Parser::getStartDate(int& num){
-	DateParser dateparser;
 	boost::gregorian::date d(boost::date_time::not_a_date_time);
 	string task;
 	string str;
@@ -130,7 +149,6 @@ boost::gregorian::date Parser::getStartDate(int& num){
 }
 
 boost::gregorian::date Parser::getEndDate(int& num){
-	DateParser dateparser;
 	boost::gregorian::date d(boost::date_time::not_a_date_time);
 	string task;
 	for (int i = tokens.size()-1; i > 0; i--){
@@ -148,7 +166,6 @@ boost::gregorian::date Parser::getEndDate(int& num){
 	return d;
 }
 boost::posix_time::ptime Parser::getStartTime(int& num){
-	TimeParser timeparser;
 	boost::posix_time::ptime d(boost::date_time::not_a_date_time);
 	string task;
 	for (int i = 0; i < tokens.size(); i++){
@@ -162,7 +179,6 @@ boost::posix_time::ptime Parser::getStartTime(int& num){
 }
 
 boost::posix_time::ptime Parser::getEndTime(int& num){
-	TimeParser timeparser;
 	boost::posix_time::ptime d(boost::date_time::not_a_date_time);
 	string task;
 	for (int i = tokens.size()-1; i > 0; i--){
@@ -269,4 +285,12 @@ void Parser::userTaskParsing(string& input){
 	}else if (input == "Archive"){
 		input = "archive";
 	}
+}
+
+string Parser::getFrequency(string input){
+	size_t position;
+	string frequency;
+	position = input.find(RECURRING_INDENTIFIER);
+	frequency = input.substr(position, input.size() - position);
+	return frequency;
 }

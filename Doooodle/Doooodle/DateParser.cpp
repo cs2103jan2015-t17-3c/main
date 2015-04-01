@@ -7,6 +7,12 @@ const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
 const int DateParser::NO_OF_TIME_IDENTIFIERS = 66;
 const int DateParser::NO_OF_MONTH_IDENTIFIERS=48;
 const string DateParser::DEFAULT_YEAR = "2015";
+const int DateParser::NO_OF_RECURRING_DAILY_DEFAULT = 365;
+const int DateParser::NO_OF_RECURRING_WEEKLY_DEFAULT = 52;
+const int DateParser::NO_OF_RECURRING_MONTHLY_DEFAULT = 24;
+const int DateParser::NO_OF_RECURRING_YEARLY_DEFAULT = 40;
+static const boost::gregorian::date EMPTY_DATE(not_a_date_time);
+static const boost::posix_time::ptime EMPTY_TIME(not_a_date_time);
 const int DateParser::DEFAULT_DAY=1;
 const string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December",
                                                                        "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",
@@ -194,16 +200,88 @@ boost::gregorian::date DateParser::standardiseDate(string before,string input,st
 
 void DateParser::removeSlash(string& input){
 	size_t position;
-	for (int i = 0; i<NO_OF_DELIMITERS; i++) {
-		position = input.find(DELIMITERS[i]);
-		if (position != string::npos) {
-			input.erase(input.begin() + position);
+	for (int i = 0; i < 2; i++){
+		for (int i = 0; i < NO_OF_DELIMITERS; i++) {
+			position = input.find(DELIMITERS[i]);
+			if (position != string::npos) {
+				input.erase(input.begin() + position);
+			}
 		}
 	}
-	for (int i = 0; i<NO_OF_DELIMITERS; i++) {
-		position = input.find(DELIMITERS[i]);
-		if (position != string::npos) {
-			input.erase(input.begin() + position);
+	return;
+}
+
+
+void DateParser::completeRecurring(string frequency, vector<boost::gregorian::date>& vecStartDate, vector<boost::gregorian::date>& vecEndDate, vector<boost::posix_time::ptime>& vecStartTime, vector<boost::posix_time::ptime>& vecEndTime){
+	date d;
+	switch (frequencyCat(frequency)){
+	case DAILY:
+		for (int i = 0; i < NO_OF_RECURRING_DAILY_DEFAULT; i++){
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}else {
+				d = vecStartDate[i] + days(1);
+				vecStartDate.push_back(d);
+			}
+			d = vecEndDate[i]+days(1);
+			vecEndDate.push_back(d);
 		}
+	case WEEKLY:
+		for (int i = 0; i < NO_OF_RECURRING_WEEKLY_DEFAULT; i++){
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}
+			else {
+				d = vecStartDate[i] + weeks(1);
+				vecStartDate.push_back(d);
+			}
+			d = vecEndDate[i] + weeks(1);
+			vecEndDate.push_back(d);
+		}
+	case MONTHLY:
+		for (int i = 0; i < NO_OF_RECURRING_MONTHLY_DEFAULT; i++){
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}
+			else {
+				d = vecStartDate[i] + months(1);
+				vecStartDate.push_back(d);
+			}
+			d = vecEndDate[i] + months(1);
+			vecEndDate.push_back(d);
+		}
+	case YEARLY:
+		for (int i = 0; i < NO_OF_RECURRING_YEARLY_DEFAULT; i++){
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}
+			else {
+				d = vecStartDate[i] + years(1);
+				vecStartDate.push_back(d);
+			}
+			d = vecEndDate[i] + years(1);
+			vecEndDate.push_back(d);
+		}
+	}
+	for (int i = 1; i < vecStartDate.size(); i++){
+		vecStartTime.push_back(EMPTY_TIME);
+		vecEndTime.push_back(EMPTY_TIME);
+	}
+	assert(vecEndTime.size() == vecEndDate.size());
+	return;
+}
+
+int DateParser::frequencyCat(string input){
+	if (input == "everyday" || input == "every day" || input == "daily"){
+		return DAILY;
+	}
+	if (input == "every week" || input == "weekly"){
+		return WEEKLY;
+	}
+	if (input == "every month" || input == "monthly"){
+		return MONTHLY;
+	}
+	if (input == "every year" || input == "yearly"){
+		return YEARLY;
 	}
 }
