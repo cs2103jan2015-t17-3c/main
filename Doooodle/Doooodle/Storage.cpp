@@ -11,7 +11,7 @@ const int Storage::NUMBER_OF_FLOATING_DISPLAY = 5;
 const int Storage::NUMBER_OF_ARCHIVED_DISPLAY = 20;
 
 Storage::Storage(void){
-	fstream fl_h; //file handle
+	/*fstream fl_h; //file handle
 	fl_h.open("tempStorage.dtb", ios::in | ios::out | ios::binary);
 	int num = 0;
 	Task tempTask;
@@ -20,7 +20,7 @@ Storage::Storage(void){
 		fl_h.read((char*)&tempTask, sizeof(Task)); //read it
 		activeTask.push_back(tempTask);
 		num++;
-	}
+	}*/
 
 };
 

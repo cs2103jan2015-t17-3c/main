@@ -42,7 +42,7 @@ void Parser::processCommand(string input, string& userTask, vector<boost::gregor
 	vecStartTime.push_back(startTime);
 	vecEndTime.push_back(endTime);
 	frequency = getFrequency(input);
-	dateparser.completeRecurring(frenquency, vecStartDate, vecEndDate, vecStartTime, vecEndTime);
+	dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime);
 	
 	return;
 }

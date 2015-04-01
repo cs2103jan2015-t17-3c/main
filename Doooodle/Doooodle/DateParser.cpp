@@ -11,8 +11,8 @@ const int DateParser::NO_OF_RECURRING_DAILY_DEFAULT = 365;
 const int DateParser::NO_OF_RECURRING_WEEKLY_DEFAULT = 52;
 const int DateParser::NO_OF_RECURRING_MONTHLY_DEFAULT = 24;
 const int DateParser::NO_OF_RECURRING_YEARLY_DEFAULT = 40;
-static const boost::gregorian::date EMPTY_DATE(not_a_date_time);
-static const boost::posix_time::ptime EMPTY_TIME(not_a_date_time);
+const boost::gregorian::date DateParser::EMPTY_DATE;
+const boost::posix_time::ptime DateParser::EMPTY_TIME;
 const int DateParser::DEFAULT_DAY=1;
 const string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December",
                                                                        "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",
