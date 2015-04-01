@@ -10,9 +10,6 @@
 #include <boost/date_time.hpp>
 #include <iomanip>
 #include <stack>
-#include <windows.h> 
-#include <stdio.h>
-#include <tchar.h>
 
 using namespace std;
 using namespace boost::gregorian;

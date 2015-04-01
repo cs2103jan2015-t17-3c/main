@@ -11,16 +11,6 @@ const int Storage::NUMBER_OF_FLOAT_DISPLAY = 5;
 const int Storage::NUMBER_OF_ARCHIVED_DISPLAY = 20;
 
 Storage::Storage(void){
-	fstream fl_h; //file handle
-	fl_h.open("tempStorage.dtb", ios::in | ios::out | ios::binary);
-	int num = 0;
-	Task tempTask;
-	while (!fl_h.eof()){
-		fl_h.seekg(num*sizeof(Task), ios::beg); //move the read pointer to where the rec is
-		fl_h.read((char*)&tempTask, sizeof(Task)); //read it
-		activeTask.push_back(tempTask);
-		num++;
-	}
 };
 
 Storage::~Storage(void){
@@ -370,50 +360,16 @@ void Storage::sortStorage(){
 
 void Storage::writeToFile(){
 	ofstream outputFile;
-	outputFile.open("dooodle.txt");
+	outputFile.open(directoryName);
 	for (int index = 0; index < activeTask.size(); index++){
 		outputFile << index + 1 << ". " << activeTask[index].taskDisplay << endl;
 	}
 	outputFile.close();	
-
-	ofstream tempStorage;
-	tempStorage.open("tempStorage.dtb",ios::in | ios::out | ios::binary);
-	for (int index = 0; index < activeTask.size(); index++){
-		tempStorage.seekp(0, ios::end); //will disscuss this later,this sets the file write pointer to end
-
-		tempStorage.write((char*)&activeTask[index], sizeof(Task));
-	}
-	tempStorage.close();
-/*	fl_h.seekg(num*sizeof(DtbRec), ios::beg); //move the read pointer to where the rec is
-	fl_h.read((char*)&xRec, sizeof(DtbRec)); //read it
-	xRec.dispdata();
-	*/
 }
 
 void Storage::changeDirectory(string newDirectory){
-#define BUFSIZE MAX_PATH
-		TCHAR Buffer[BUFSIZE];
-		DWORD dwRet;
-		dwRet = GetCurrentDirectory(BUFSIZE, Buffer);
-
-		if (dwRet == 0)
-		{
-			printf("GetCurrentDirectory failed (%d)\n", GetLastError());
-			return;
-		}
-		if (dwRet > BUFSIZE)
-		{
-			printf("Buffer too small; need %d characters\n", dwRet);
-			return;
-		}
-
-		if (!SetCurrentDirectory(newDirectory.c_str()))
-		{
-			printf("SetCurrentDirectory failed (%d)\n", GetLastError());
-			return;
-		}
-		_tprintf(TEXT("Set current directory to %s\n"), newDirectory);
-		return;
+	directoryName = newDirectory + DEFAULT_DIRECTORY;
+	return;
 }
 
 string Storage::deleteTask(int index){

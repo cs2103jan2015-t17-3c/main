@@ -1,144 +1,16 @@
-﻿Build started 1/4/2015 3:28:29 PM.
-     1>Project "C:\Users\Funtomxu\Desktop\main\Doooodle\Doooodle\Doooodle.vcxproj" on node 2 (Build target(s)).
+﻿Build started 3/4/2015 5:08:55 PM.
+     1>Project "C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Doooodle.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\boost\boost_1_57_0 /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt DeadlineTask.cpp DeleteTask.cpp EditTask.cpp FloatingTask.cpp ITask.cpp Logic.cpp Main.cpp NormalTask.cpp OverdueTask.cpp RescheduleTask.cpp SearchTask.cpp Storage.cpp UI.cpp UndoTask.cpp
-         UndoTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C2059: syntax error : '('
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C3805: '(': unexpected token, expected either '}' or a ','
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2143: syntax error : missing ')' before ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2238: unexpected token(s) preceding ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.cpp(20): error C2065: 'NIL' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.cpp(20): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.cpp(29): error C2065: 'EDIT' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.cpp(29): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.cpp(57): error C2065: 'NIL' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.cpp(63): error C2440: 'return' : cannot convert from 'long' to 'UndoTask::TASK_TYPE'
-                 Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.cpp(74): error C2065: 'EDIT' : undeclared identifier
-         UI.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C2059: syntax error : '('
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C3805: '(': unexpected token, expected either '}' or a ','
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2143: syntax error : missing ')' before ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2238: unexpected token(s) preceding ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(69): error C2059: syntax error : '('
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(69): error C3805: '(': unexpected token, expected either '}' or a ','
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(70): error C2143: syntax error : missing ')' before ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(70): error C2238: unexpected token(s) preceding ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\ui.cpp(81): warning C4018: '<' : signed/unsigned mismatch
-         Storage.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(57): error C2275: 'FLOAT' : illegal use of this type as an expression
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(92): error C2275: 'FLOAT' : illegal use of this type as an expression
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(160): error C2275: 'FLOAT' : illegal use of this type as an expression
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(178): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(190): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(222): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(224): error C2275: 'FLOAT' : illegal use of this type as an expression
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(259): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(294): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(304): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(305): error C2275: 'FLOAT' : illegal use of this type as an expression
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(315): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(325): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(337): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(338): error C2275: 'FLOAT' : illegal use of this type as an expression
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(363): error C2275: 'FLOAT' : illegal use of this type as an expression
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(374): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.cpp(381): warning C4018: '<' : signed/unsigned mismatch
-         SearchTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         RescheduleTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         OverdueTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         NormalTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         Main.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C2059: syntax error : '('
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C3805: '(': unexpected token, expected either '}' or a ','
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2143: syntax error : missing ')' before ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2238: unexpected token(s) preceding ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(69): error C2059: syntax error : '('
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(69): error C3805: '(': unexpected token, expected either '}' or a ','
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(70): error C2143: syntax error : missing ')' before ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(70): error C2238: unexpected token(s) preceding ';'
-         Logic.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C2059: syntax error : '('
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(20): error C3805: '(': unexpected token, expected either '}' or a ','
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2143: syntax error : missing ')' before ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\undotask.h(21): error C2238: unexpected token(s) preceding ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(69): error C2059: syntax error : '('
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(69): error C3805: '(': unexpected token, expected either '}' or a ','
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(70): error C2143: syntax error : missing ')' before ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.h(70): error C2238: unexpected token(s) preceding ';'
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(104): error C2065: 'SEARCH' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(104): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(107): error C2065: 'EXIT' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(107): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(110): error C2065: 'UNDO' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(110): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(113): error C2065: 'EDIT' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(113): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(121): error C2065: 'RESCHEDULE' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(121): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(124): error C2065: 'CHECK' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(124): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(127): error C2065: 'COMPLETE' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(127): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(135): error C2065: 'COMPLETED' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(135): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(138): error C2065: 'INVALID' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(138): error C2051: case expression not constant
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(160): error C2440: 'return' : cannot convert from 'long' to 'Logic::TASK_TYPE'
-                 Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(163): error C2065: 'SEARCH' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(166): error C2065: 'EXIT' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(169): error C2065: 'UNDO' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(172): error C2065: 'EDIT' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(175): error C2065: 'CHECK' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(178): error C2065: 'RESCHEDULE' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(181): error C2065: 'COMPLETE' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(184): error C2065: 'COMPLETED' : undeclared identifier
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\logic.cpp(186): error C2065: 'INVALID' : undeclared identifier
-         ITask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         FloatingTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         EditTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         DeleteTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         DeadlineTask.cpp
-     1>c:\users\funtomxu\desktop\main\doooodle\doooodle\storage.h(22): error C2365: 'FLOAT' : redefinition; previous definition was 'typedef'
-                 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(160) : see declaration of 'FLOAT'
-         Generating Code...
-     1>Done Building Project "C:\Users\Funtomxu\Desktop\main\Doooodle\Doooodle\Doooodle.vcxproj" (Build target(s)) -- FAILED.
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Parser.cpp
+         Parser.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Debug\Doooodle.lib" /NOLOGO Debug\Logic.obj
+         Debug\Parser.obj
+         Debug\Storage.obj
+         Debug\UI.obj
+         Doooodle.vcxproj -> C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Debug\Doooodle.lib
+     1>Done Building Project "C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Doooodle.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:30.79
+Time Elapsed 00:00:00.65
