@@ -6,7 +6,7 @@ namespace TestLibrary
 {
 	TEST_CLASS(testLogic) {
 	public:
-
+		/*
 		TEST_METHOD(TestIsSearch_1) {
 			Logic logic;
 			Assert::IsFalse(logic.isSearch("add meeting from 3pm to 5pm"));
@@ -36,7 +36,7 @@ namespace TestLibrary
 			Assert::AreEqual(expected, displayMessage);
 		}
 
-		/*
+		
 		TEST_METHOD(TestLastCommandIsSearch_1) {
 			Logic logic;
 			logic.commandDetails.push_back(new CommandDetails());

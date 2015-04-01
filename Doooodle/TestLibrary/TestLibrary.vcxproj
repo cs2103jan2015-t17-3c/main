@@ -90,9 +90,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="testDateParser.cpp" />
+    <ClCompile Include="testIntegrated.cpp" />
     <ClCompile Include="testLogic.cpp" />
-    <ClCompile Include="testParser.cpp" />
     <ClCompile Include="testStorage.cpp" />
+    <ClCompile Include="testTimeParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Doooodle\Doooodle.vcxproj">
