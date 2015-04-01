@@ -25,7 +25,7 @@ Logic::~Logic(void) {
 
 vector<string> Logic::displayTopTen(void) {
 	vector<string> topTenToDisplay = storage.retrieveTopTen();
-	assert(topTenToDisplay.size()<=TOP10MAX);
+	//assert(topTenToDisplay.size()<=TOP10MAX);
 	return topTenToDisplay; 
 }
 

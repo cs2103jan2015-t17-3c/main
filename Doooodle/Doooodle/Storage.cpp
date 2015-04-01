@@ -11,8 +11,9 @@ const int Storage::NUMBER_OF_FLOATING_DISPLAY = 5;
 const int Storage::NUMBER_OF_ARCHIVED_DISPLAY = 20;
 
 Storage::Storage(void){
-	/*fstream fl_h; //file handle
+	fstream fl_h; //file handle
 	fl_h.open("tempStorage.dtb", ios::in | ios::out | ios::binary);
+	if (fl_h.good()){
 	int num = 0;
 	Task tempTask;
 	while (!fl_h.eof()){
@@ -20,7 +21,8 @@ Storage::Storage(void){
 		fl_h.read((char*)&tempTask, sizeof(Task)); //read it
 		activeTask.push_back(tempTask);
 		num++;
-	}*/
+	}
+	}
 
 };
 
@@ -231,7 +233,7 @@ vector<string> Storage::retrieveTopTen(){
 	}
 	int diffIndex;
 	if (deadlineIndex < normalIndex){
-		for (diffIndex = deadlineIndex + 1; diffIndex < normalIndex; diffIndex++){
+		for (diffIndex = deadlineIndex; diffIndex < normalIndex && diffIndex < NUMBER_OF_DISPLAY-count+1; diffIndex++){
 			if (activeTask[diffIndex].taskType == DEADLINE){
 				ostringstream oneTask;
 				oneTask << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
@@ -241,7 +243,7 @@ vector<string> Storage::retrieveTopTen(){
 		}
 	}
 	else {
-		for (diffIndex = normalIndex + 1; diffIndex < deadlineIndex; diffIndex++){
+		for (diffIndex = normalIndex; diffIndex < deadlineIndex && diffIndex < NUMBER_OF_DISPLAY - count +1; diffIndex++){
 			if (activeTask[diffIndex].taskType == NORMAL){				
 				ostringstream oneTask;
 				oneTask << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
@@ -250,8 +252,8 @@ vector<string> Storage::retrieveTopTen(){
 			}
 		}
 	}
-	int finalNumber = NUMBER_OF_DISPLAY - count - 1;
-	for (int i = diffIndex; i < diffIndex + finalNumber && i < activeTask.size(); i++){
+	int finalNumber = max(NUMBER_OF_DISPLAY - count - 1,0);
+	for (int i = diffIndex; i < diffIndex + finalNumber +1 && i < activeTask.size(); i++){
 		Task dummy = activeTask[i];
 		if (dummy.taskType != FLOATING){
 			ostringstream oneTask;

@@ -291,6 +291,6 @@ string Parser::getFrequency(string input){
 	size_t position;
 	string frequency;
 	position = input.find(RECURRING_INDENTIFIER);
-	frequency = input.substr(position, input.size() - position);
+	frequency = input.substr(position+1, input.size() - position);
 	return frequency;
 }

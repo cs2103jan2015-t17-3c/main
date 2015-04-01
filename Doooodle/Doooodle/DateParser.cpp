@@ -226,6 +226,7 @@ void DateParser::completeRecurring(string frequency, vector<boost::gregorian::da
 			d = vecEndDate[i]+days(1);
 			vecEndDate.push_back(d);
 		}
+		break;
 	case WEEKLY:
 		for (int i = 0; i < NO_OF_RECURRING_WEEKLY_DEFAULT; i++){
 			if (vecStartDate[i] == EMPTY_DATE){
@@ -238,6 +239,7 @@ void DateParser::completeRecurring(string frequency, vector<boost::gregorian::da
 			d = vecEndDate[i] + weeks(1);
 			vecEndDate.push_back(d);
 		}
+		break;
 	case MONTHLY:
 		for (int i = 0; i < NO_OF_RECURRING_MONTHLY_DEFAULT; i++){
 			if (vecStartDate[i] == EMPTY_DATE){
@@ -250,6 +252,7 @@ void DateParser::completeRecurring(string frequency, vector<boost::gregorian::da
 			d = vecEndDate[i] + months(1);
 			vecEndDate.push_back(d);
 		}
+		break;
 	case YEARLY:
 		for (int i = 0; i < NO_OF_RECURRING_YEARLY_DEFAULT; i++){
 			if (vecStartDate[i] == EMPTY_DATE){
@@ -263,10 +266,13 @@ void DateParser::completeRecurring(string frequency, vector<boost::gregorian::da
 			vecEndDate.push_back(d);
 		}
 	}
+
 	for (int i = 1; i < vecStartDate.size(); i++){
 		vecStartTime.push_back(EMPTY_TIME);
 		vecEndTime.push_back(EMPTY_TIME);
 	}
+
+	//cout << vecStartDate.size() << endl << vecEndDate.size() <<endl<< vecStartTime.size() <<endl<< vecEndTime.size() << endl;
 	assert(vecEndTime.size() == vecEndDate.size());
 	return;
 }
