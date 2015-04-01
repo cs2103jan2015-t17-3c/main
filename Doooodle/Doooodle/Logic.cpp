@@ -67,6 +67,17 @@ string Logic::getCommandType(string userInput) {
 	return lastCommand;
 }
 
+int Logic::getDeadlineSize(void) {
+	return storage.retrieveDeadlineSize();
+}
+
+int Logic::getNormalSize(void) {
+	return storage.retrieveNormalSize();
+}
+
+int Logic::getFloatingSize(void) {
+	return storage.retrieveFloatingSize();
+}
 
 string Logic::receiveCommand(string userInput) {
 	string displayMessage = executeLogicCore(userInput);
@@ -76,9 +87,19 @@ string Logic::receiveCommand(string userInput) {
 string Logic::executeLogicCore(string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
-	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
-	TASK_TYPE taskType = determineSpecificTaskType(index);
-	return executeTask(taskType, index);
+	if (parser.isRecurring(userInput)) {
+		return executeRecurringTask(userInput, index);
+	}
+	else {
+		parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+		TASK_TYPE taskType = determineSpecificTaskType(index);
+		return executeTask(taskType, index);
+	}
+}
+
+string Logic::executeRecurringTask(string userInput, int index) {
+	parser.processCommand(userInput, commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
+	return storage.addRecurringTask(commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
 }
 
 string Logic::executeTask(TASK_TYPE taskType, int index) {
