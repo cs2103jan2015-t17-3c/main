@@ -75,7 +75,7 @@ public:
 	vector<string> retrieveCategoricalTask(string);
 	string completeTask(int);
 	string completeSearchTask(int);
-
+	string addRecurringTask(string, vector<date>, vector<date>, vector<ptime>, vector<ptime>);
 
 
 

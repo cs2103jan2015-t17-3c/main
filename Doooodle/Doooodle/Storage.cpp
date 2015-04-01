@@ -24,6 +24,8 @@ Storage::Storage(void){
 
 };
 
+
+
 Storage::~Storage(void){
 };
 
@@ -598,4 +600,19 @@ string Storage::editTask(int index, string information, date tempStartDate, date
 	activeTask.push_back(temporaryTask);
 	taskDetailsHistory.push(temporaryTask.taskDetails);
 	return "Task is successfuly edited";
+}
+
+
+string Storage::addRecurringTask(string task, vector<date> vStartDate, vector<date> vEndDate, vector<ptime> vStartTime, vector<ptime> vEndTime){
+	if (vStartDate[0] == nonDate && vStartTime[0] == nonTime){
+		for (int i = 0; i < vEndDate.size(); i++){
+			addDeadlineTask(task, vEndDate[i], vEndTime[i]);
+		}
+	}
+	else{
+		for (int i = 0; i < vEndDate.size(); i++){
+			addNormalTask(task,vStartDate[i],vEndDate[i], vStartTime[i], vEndTime[i]);
+		}
+	}
+	return "Recurring Task is successfully added!";
 }
