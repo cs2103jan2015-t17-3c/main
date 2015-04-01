@@ -29,6 +29,35 @@ Storage::Storage(void){
 Storage::~Storage(void){
 };
 
+int Storage::retrieveDeadlineSize(){
+	int count = 0;
+	for (int i = 0; i < activeTask.size(); i++){
+		if (activeTask[i].taskType == DEADLINE){
+			count++;
+		}
+	}
+	return count;
+}
+int Storage::retrieveNormalSize(){
+
+	int count = 0;
+	for (int i = 0; i < activeTask.size(); i++){
+		if (activeTask[i].taskType == NORMAL){
+			count++;
+		}
+	}
+	return count;
+}
+int Storage::retrieveFloatingSize(){
+	int count = 0;
+	for (int i = 0; i < activeTask.size(); i++){
+		if (activeTask[i].taskType == FLOAT){
+			count++;
+		}
+	}
+	return count;
+}
+
 string Storage::initializeTaskDetails(Task temp){
 	ostringstream outputTask;
 	if (temp.taskType == NORMAL){
