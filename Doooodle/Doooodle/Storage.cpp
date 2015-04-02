@@ -705,6 +705,9 @@ string Storage::addRecurringTask(string task, vector<date> vStartDate, vector<da
 			addNormalTask(task,vStartDate[i],vEndDate[i], vStartTime[i], vEndTime[i]);
 		}
 	}
+	sortStorage();
 	writeToFile();
 	return "Recurring Task is successfully added!";
 }
+
+
