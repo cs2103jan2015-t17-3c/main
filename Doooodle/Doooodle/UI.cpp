@@ -1,6 +1,6 @@
 #include "UI.h"
 
-const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search, undo\nEnter Command:";
+const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search, undo, complete, display\nEnter Command:";
 const string UI::MESSAGE_DEFAULT_CHECK = "Commands available:completed, reschedule\nEnter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
 *        Doooodle       *\n*************************\n";
@@ -16,8 +16,6 @@ const string UI::MESSAGE_CHECK_SEARCH = "Before search, have you completed the f
 const string UI::MESSAGE_CHECK_EDIT = "Before edit, have you completed the following task(s)?\n";
 const string UI::MESSAGE_CHECK_ARCHIVE = "Before showing archive, have you completed the following task(s)?\n";
 
-const int UI::NUMBER_OF_TOTAL_LINES = 12;
-const int UI::NUMBER_OF_SEARCH_LINES = 27;
 UI::UI(void) {
 }
 UI::~UI(void) {
