@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <windows.h>
 using namespace std;
 
 class UI {

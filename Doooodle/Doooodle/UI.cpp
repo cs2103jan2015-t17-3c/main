@@ -29,37 +29,56 @@ void UI::readMessage(){
 	date today(day_clock::local_day());
 	vector<string> displayMessage;
 	string cat;
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, 245);
 	cout << MESSAGE_WELCOME;
+	SetConsoleTextAttribute(hConsole, 240);
 
 	while (true){
 		cout << "Today: "<<today << endl << endl;
 		assert(command != "");
 		if (logic.getCommandType(command) == "search"){
+			SetConsoleTextAttribute(hConsole, 249);
 			printToUser(MESSAGE_SEARCH);
 			displayMessage = logic.displaySearchResults(command);
+			SetConsoleTextAttribute(hConsole, 248);
 			printVectorToUser(displayMessage);
 		} else if (logic.getCommandType(command)=="display"){
 			displayMessage = logic.displayCategoricalTask(command,cat);
+			SetConsoleTextAttribute(hConsole, 249);
 			cout<<MESSAGE_CATEGORICAL_TASK1;
 			cout << cat;
 			cout<<MESSAGE_CATEGORICAL_TASK2<<endl;
+			SetConsoleTextAttribute(hConsole, 248);
 			printVectorToUser(displayMessage);
 		} else {
+			SetConsoleTextAttribute(hConsole, 249);
 			cout << MESSAGE_TOPTEN;
 			displayMessage = logic.displayTopTen();
-			cout << "  [" << logic.getDeadlineSize() << "]  ["<<logic.getNormalSize()<<']'<<endl;
+			SetConsoleTextAttribute(hConsole, 252);
+			cout << "  [" << logic.getDeadlineSize() << "]"; 
+			SetConsoleTextAttribute(hConsole, 242);
+			cout << " [" << logic.getNormalSize() << ']' << endl;
+			SetConsoleTextAttribute(hConsole, 248);
 			printVectorToUser(displayMessage);
 			cout << endl;
+			SetConsoleTextAttribute(hConsole, 249);
 			cout<<MESSAGE_FLOAT;
+			SetConsoleTextAttribute(hConsole, 251);
 			displayMessage = logic.displayFloatingTask();
 			cout << "  [" << logic.getFloatingSize() << ']' << endl;
+			SetConsoleTextAttribute(hConsole, 248);
 			printVectorToUser(displayMessage);
 		}
 		cout << endl;
 		//The above is the top segment
+		SetConsoleTextAttribute(hConsole, 225);
 		printToUser(message);
 		//The above is the middle segment
+		SetConsoleTextAttribute(hConsole, 240);
 		cout << MESSAGE_DEFAULT;
+		SetConsoleTextAttribute(hConsole, 244);
 		getline(cin, command);
 		//The above is the bottom segment
 		std::system("CLS");
