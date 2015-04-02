@@ -30,8 +30,7 @@ private:
 	static const string MESSAGE_CHECK_SEARCH;
 	static const string MESSAGE_CHECK_EDIT;
 	static const string MESSAGE_CHECK_ARCHIVE;
-	static const int NUMBER_OF_TOTAL_LINES;
-	static const int NUMBER_OF_SEARCH_LINES;
+
 	void printToUser(string);
 	void printVectorToUser(vector<string>);
 	void printEmptyLine(int);
