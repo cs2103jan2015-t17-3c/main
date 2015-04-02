@@ -156,6 +156,9 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 	case COMPLETED:
 		displayMessageToUI = overdueTask.loadTask(storage);
 		break;
+	case DISPLAY:
+		displayMessageToUI = " ";
+		break;
 	case INVALID:
 		displayMessageToUI = STRING_INVALID;
 		break;
@@ -203,6 +206,9 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	}
 	else if (commandDetails[index]->commandType == STRING_COMPLETED) {
 		return COMPLETED;
+	}
+	else if (commandDetails[index]->commandType == STRING_DISPLAY) {
+		return DISPLAY;
 	}
 	else return INVALID;
 }

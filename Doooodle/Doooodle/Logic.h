@@ -56,6 +56,7 @@ private:
 	static const string STRING_COMPLETE;
 	static const string STRING_COMPLETED;
 	static const string STRING_DISPLAY;
+
 	static const string STRING_DELETE;
 	static const string STRING_EDIT;
 	static const string STRING_EXIT;
@@ -69,7 +70,7 @@ private:
 	vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED
+		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED, DISPLAY
 	};
 
 	string executeLogicCore(string);
