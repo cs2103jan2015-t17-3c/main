@@ -100,18 +100,6 @@ void UI::printVectorToUser(vector<string> vec){
 	}
 }
 
-void UI::printEmptyLine(int num){
-	for (int i = num; i < NUMBER_OF_TOTAL_LINES; i++){
-		cout << endl;
-	}
-}
-
-void UI::printSearchLine(int num){
-	for (int i = num; i < NUMBER_OF_SEARCH_LINES; i++){
-		cout << endl;
-	}
-}
-
 bool UI::checkOverdue(string command){
 	string message=" ";
 	if (logic.displayOverdue().empty()){
