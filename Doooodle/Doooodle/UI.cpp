@@ -1,6 +1,6 @@
 #include "UI.h"
 
-const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search, undo, complete, display\nEnter Command:";
+const string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search, undo\nEnter Command:";
 const string UI::MESSAGE_DEFAULT_CHECK = "Commands available:completed, reschedule\nEnter Command:";
 const string UI::MESSAGE_WELCOME = "*************************\n\
 *        Doooodle       *\n*************************\n";
