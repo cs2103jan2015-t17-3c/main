@@ -289,13 +289,13 @@ std::vector<std::string> Storage::retrieveTopTen(){
 		}
 	}
 	for (i = 0; i < activeTask.size(); i++){
-		bool repeat = false;
+		bool repeat=false;
 		for (int j = 0; j < sortedTaskIndex.size(); j++){
 			if ((i == sortedTaskIndex[j] && activeTask[i].taskType != FLOATING) || activeTask[i].taskType == FLOATING){
 				repeat = true;
 			}
 		}
-		if (!repeat){
+		if (!repeat && sortedTaskIndex.size()!=0){
 			sortedTaskIndex.push_back(i);
 			count++;
 		}
@@ -820,6 +820,7 @@ std::string Storage::editTask(int index, std::string information, date tempStart
 			temporaryTask.taskType = NORMAL;
 		}
 		temporaryTask.startTime = tempStartTime;
+		temporaryTask.startDate = temporaryTask.endDate;
 	}
 	if (tempStartDate != temporaryTask.startDate && tempStartDate != nonDate){
 		if (temporaryTask.startDate == nonDate){
