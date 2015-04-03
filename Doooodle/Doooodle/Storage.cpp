@@ -266,64 +266,115 @@ std::string Storage::addFloatingTask(std::string task){
 
 std::vector<std::string> Storage::retrieveTopTen(){
 	using namespace std;
-
+	vector<int> sortedTaskIndex;
 	vector<string> topTasks;
-	int deadlineIndex =0;
+	int i;
 	int count = 0;
-	while (count < 3 && deadlineIndex <activeTask.size()){
+	for (i = 0; i < activeTask.size(); i++){
+		if (activeTask[i].taskType == DEADLINE){
+			sortedTaskIndex.push_back(i);
+			count++;
+		}
+		if (count == 3){
+			break;
+		}
+	}
+	for (i = 0; i < activeTask.size(); i++){
+		if (activeTask[i].taskType == NORMAL){
+			sortedTaskIndex.push_back(i);
+			count++;
+		}
+		if (count == 5){
+			break;
+		}
+	}
+	for (i = 0; i < activeTask.size(); i++){
+		bool repeat = false;
+		for (int j = 0; j < sortedTaskIndex.size(); j++){
+			if ((i == sortedTaskIndex[j] && activeTask[i].taskType != FLOATING) || activeTask[i].taskType == FLOATING){
+				repeat = true;
+			}
+		}
+		if (!repeat){
+			sortedTaskIndex.push_back(i);
+			count++;
+		}
+		if (count == 10){
+			break;
+		}
+	}
+	for (int j = 0; j < sortedTaskIndex.size(); j++){
+		ostringstream oneTask;
+		oneTask << setfill('0') << setw(2) << j + 1 << ". " << activeTask[sortedTaskIndex[j]].taskDisplay;
+		topTasks.push_back(oneTask.str());
+	}
+
+
+
+		/*
+		int deadlineIndex =0;
+
+		while (count < 3 && deadlineIndex <activeTask.size()){
 		Task dummy = activeTask[deadlineIndex];
 		if (dummy.taskType == DEADLINE){
-			ostringstream oneTask;
-			oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
-			topTasks.push_back(oneTask.str());
+		ostringstream oneTask;
+		oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
+		topTasks.push_back(oneTask.str());
 
-			count++;
+		count++;
 		}
 		deadlineIndex++;
-	}
-	int normalIndex = 0;
-	while (count < 5 &&  normalIndex < activeTask.size()){
+		}
+		int normalIndex = 0;
+		while (count < 5 &&  normalIndex < activeTask.size()){
 		Task dummy = activeTask[normalIndex];
 		if (dummy.taskType == NORMAL){
-			ostringstream oneTask;
-			oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
-			topTasks.push_back(oneTask.str());
-			count++;
+		ostringstream oneTask;
+		oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
+		topTasks.push_back(oneTask.str());
+		count++;
 		}
 		normalIndex++;
-	}
-	int diffIndex;
-	if (deadlineIndex < normalIndex){
+		}
+		int diffIndex;
+		if (deadlineIndex < normalIndex){
 		for (diffIndex = deadlineIndex; diffIndex < normalIndex && diffIndex < NUMBER_OF_DISPLAY-count+1; diffIndex++){
-			if (activeTask[diffIndex].taskType == DEADLINE){
-				ostringstream oneTask;
-				oneTask << setfill('0') << setw(2) << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
-				topTasks.push_back(oneTask.str());
-				count++;
-			}
+		if (activeTask[diffIndex].taskType == DEADLINE){
+		ostringstream oneTask;
+		oneTask << setfill('0') << setw(2) << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
+		topTasks.push_back(oneTask.str());
+		count++;
 		}
-	}
-	else {
+		}
+		}
+		else {
 		for (diffIndex = normalIndex; diffIndex < deadlineIndex && diffIndex < NUMBER_OF_DISPLAY - count +1; diffIndex++){
-			if (activeTask[diffIndex].taskType == NORMAL){				
-				ostringstream oneTask;
-				oneTask << setfill('0') << setw(2) << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
-				topTasks.push_back(oneTask.str());
-				count++;
-			}
+		if (activeTask[diffIndex].taskType == NORMAL){
+		ostringstream oneTask;
+		oneTask << setfill('0') << setw(2) << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
+		topTasks.push_back(oneTask.str());
+		count++;
 		}
-	}
-	int finalNumber = max(NUMBER_OF_DISPLAY - count - 1,0);
-	for (int i = diffIndex; i < diffIndex + finalNumber +1 && i < activeTask.size(); i++){
+		}
+		}
+		int finalNumber = max(NUMBER_OF_DISPLAY - count - 1,0);
+		for (int i = diffIndex; i < diffIndex + finalNumber +1 && i < activeTask.size(); i++){
 		Task dummy = activeTask[i];
 		if (dummy.taskType != FLOATING){
-			ostringstream oneTask;
-			oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
-			topTasks.push_back(oneTask.str());
-			count++;
+		ostringstream oneTask;
+		oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
+		topTasks.push_back(oneTask.str());
+		count++;
 		}
-		} 	
-	return topTasks;
+		}
+		*/
+
+
+
+
+
+		return topTasks;
+	
 }
 
 std::vector<std::string> Storage::retrieveOverdue(){
