@@ -1,12 +1,12 @@
 
 #include "UndoTask.h"
 
-const string UndoTask::STRING_ADD = "add";
-const string UndoTask::STRING_DELETE = "delete";
-const string UndoTask::STRING_EDIT = "edit";
-const string UndoTask::STRING_SEARCH = "search";
-const string UndoTask::STRING_UNDO = "undo";
-const string UndoTask::STRING_UNDO_FAILURE = "Nothing to undo!";
+const std::string UndoTask::STRING_ADD = "add";
+const std::string UndoTask::STRING_DELETE = "delete";
+const std::string UndoTask::STRING_EDIT = "edit";
+const std::string UndoTask::STRING_SEARCH = "search";
+const std::string UndoTask::STRING_UNDO = "undo";
+const std::string UndoTask::STRING_UNDO_FAILURE = "Nothing to undo!";
 
 UndoTask::UndoTask(void) {
 }
@@ -14,7 +14,7 @@ UndoTask::UndoTask(void) {
 UndoTask::~UndoTask(void) {
 }
 
-string UndoTask::loadTask(vector<CommandDetails*>& CD, Storage& storage) {
+std::string UndoTask::loadTask(std::vector<CommandDetails*>& CD, Storage& storage) {
 	TASK_TYPE taskType = retrieveTaskTypeToUndo(CD);
 	switch(taskType) {
 	case NIL:
@@ -35,22 +35,22 @@ string UndoTask::loadTask(vector<CommandDetails*>& CD, Storage& storage) {
 	return displayMessage;
 }
 
-string UndoTask::executeUndoAdd(vector<CommandDetails*>& CD, Storage& storage) {
+std::string UndoTask::executeUndoAdd(std::vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoAdd();
 }
 
-string UndoTask::executeUndoDelete(vector<CommandDetails*>& CD, Storage& storage) {
+std::string UndoTask::executeUndoDelete(std::vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoDelete();
 }
 
-string UndoTask::executeUndoEdit(vector<CommandDetails*>& CD, Storage& storage) {
+std::string UndoTask::executeUndoEdit(std::vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoEdit();
 }
 
-UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(vector<CommandDetails*>& CD) {
+UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(std::vector<CommandDetails*>& CD) {
 	int index = CD.size()-1;
 	//use exception
 	if (index<0) {

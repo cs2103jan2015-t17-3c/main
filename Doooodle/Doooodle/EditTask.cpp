@@ -7,7 +7,7 @@ EditTask::EditTask(void) {
 EditTask::~EditTask(void) {
 }
 
-string EditTask::loadTask(int index, string stringToEdit, boost::gregorian::date startDate, boost::gregorian::date endDate, boost::posix_time::ptime startTime, boost::posix_time::ptime endTime, Storage& storage){
+std::string EditTask::loadTask(int index, std::string stringToEdit, date startDate, date endDate, ptime startTime, ptime endTime, Storage& storage){
 	displayMessage = storage.editTask(index, stringToEdit, startDate, endDate, startTime, endTime);
 	storage.sortStorage();
 	storage.writeToFile();
@@ -15,7 +15,7 @@ string EditTask::loadTask(int index, string stringToEdit, boost::gregorian::date
 	return displayMessage;
 }
 
-string EditTask::editSearchTask(int index, string stringToEdit, boost::gregorian::date startDate, boost::gregorian::date endDate, boost::posix_time::ptime startTime, boost::posix_time::ptime endTime, Storage& storage){
+std::string EditTask::editSearchTask(int index, std::string stringToEdit, date startDate, date endDate, ptime startTime, ptime endTime, Storage& storage){
 	displayMessage = storage.editSearchTask(index, stringToEdit, startDate, endDate, startTime, endTime);
 	storage.sortStorage();
 	storage.writeToFile();

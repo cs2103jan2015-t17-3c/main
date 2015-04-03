@@ -8,7 +8,7 @@ FloatingTask::FloatingTask(void) {
 FloatingTask::~FloatingTask(void) {
 }
 
-string FloatingTask::loadTask(string task, Storage& storage) {
+std::string FloatingTask::loadTask(std::string task, Storage& storage) {
 	this->task = task;
 	displayMessage = storage.addFloatingTask(task);
 	storage.sortStorage();

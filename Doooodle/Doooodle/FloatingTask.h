@@ -5,14 +5,15 @@
 #include <iostream>
 #include "ITask.h"
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class FloatingTask : public ITask {
 
 public:
 	FloatingTask(void);
 	~FloatingTask(void);
-	string loadTask(string, Storage&);
+	std::string loadTask(std::string, Storage&);
 
 private:
 

@@ -5,16 +5,17 @@
 #include <iostream>
 #include "ITask.h"
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class OverdueTask : public ITask {
 
 public:
 	OverdueTask(void);
 	~OverdueTask(void);
-	string loadTask(Storage&);
-	string completeTask(int, Storage&);
-	string completeSearchTask(int, Storage&);
+	std::string loadTask(Storage&);
+	std::string completeTask(int, Storage&);
+	std::string completeSearchTask(int, Storage&);
 
 private:
 

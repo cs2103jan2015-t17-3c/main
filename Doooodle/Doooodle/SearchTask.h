@@ -6,14 +6,15 @@
 #include "assert.h"
 #include "ITask.h"
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class SearchTask {
 
 public:
 	SearchTask(void);
 	~SearchTask(void);
-	vector<string> loadTask(string, boost::gregorian::date, boost::posix_time::ptime, Storage&);
+	std::vector<std::string> loadTask(std::string, date, ptime, Storage&);
 
 private:
 

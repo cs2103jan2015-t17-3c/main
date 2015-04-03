@@ -3,14 +3,14 @@
 
 DeadlineTask::DeadlineTask(void) {
 	task = "";
-	dateEnd = boost::gregorian::day_clock::local_day();
-	timeEnd = boost::posix_time::not_a_date_time;
+	dateEnd = day_clock::local_day();
+	timeEnd = not_a_date_time;
 }
 
 DeadlineTask::~DeadlineTask(void) {
 }
 
-string DeadlineTask::loadTask(string task, boost::gregorian::date dateEnd, boost::posix_time::ptime timeEnd, Storage& storage) {
+std::string DeadlineTask::loadTask(std::string task, date dateEnd, ptime timeEnd, Storage& storage) {
 	this->task = task;
 	this->dateEnd = dateEnd;
 	this->timeEnd = timeEnd;

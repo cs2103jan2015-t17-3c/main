@@ -5,15 +5,16 @@
 #include <iostream>
 #include "ITask.h"
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class EditTask : public ITask {
 
 public:
 	EditTask(void);
 	~EditTask(void);
-	string loadTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
-	string editSearchTask(int, string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
+	std::string loadTask(int, std::string, date, date, ptime, ptime, Storage&);
+	std::string editSearchTask(int, std::string, date, date, ptime, ptime, Storage&);
 
 private:
 

@@ -1,4 +1,4 @@
-#include "DoooodleGUI.h"
+#include "GUI.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -8,7 +8,6 @@ using namespace System::Windows::Forms;
 void main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-
-	UI::DoooodleGUI mainWindow;
+	DoooodleGUI::GUI mainWindow;
 	Application::Run(%mainWindow);
 }

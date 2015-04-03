@@ -1,19 +1,19 @@
 
 #include "Logic.h"
 
-const string Logic::STRING_ADD = "add";
-const string Logic::STRING_ARCHIVE = "archive";
-const string Logic::STRING_CHECK = "check";
-const string Logic::STRING_COMPLETE = "complete";
-const string Logic::STRING_COMPLETED = "completed";
-const string Logic::STRING_DISPLAY = "display";
-const string Logic::STRING_DELETE = "delete";
-const string Logic::STRING_EDIT = "edit";
-const string Logic::STRING_EXIT = "exit";
-const string Logic::STRING_INVALID = "ERROR!";
-const string Logic::STRING_RESCHEDULE = "reschedule";
-const string Logic::STRING_SEARCH = "search";
-const string Logic::STRING_UNDO = "undo";
+const std::string Logic::STRING_ADD = "add";
+const std::string Logic::STRING_ARCHIVE = "archive";
+const std::string Logic::STRING_CHECK = "check";
+const std::string Logic::STRING_COMPLETE = "complete";
+const std::string Logic::STRING_COMPLETED = "completed";
+const std::string Logic::STRING_DISPLAY = "display";
+const std::string Logic::STRING_DELETE = "delete";
+const std::string Logic::STRING_EDIT = "edit";
+const std::string Logic::STRING_EXIT = "exit";
+const std::string Logic::STRING_INVALID = "ERROR!";
+const std::string Logic::STRING_RESCHEDULE = "reschedule";
+const std::string Logic::STRING_SEARCH = "search";
+const std::string Logic::STRING_UNDO = "undo";
 const int Logic::TOP10MAX = 10;
 const int Logic::FLOATMAX = 5;
 
@@ -23,24 +23,24 @@ Logic::Logic(void) {
 Logic::~Logic(void) {
 }
 
-vector<string> Logic::displayTopTen(void) {
-	vector<string> topTenToDisplay = storage.retrieveTopTen();
+std::vector<std::string> Logic::displayTopTen(void) {
+	std::vector<std::string> topTenToDisplay = storage.retrieveTopTen();
 	//assert(topTenToDisplay.size()<=TOP10MAX);
 	return topTenToDisplay; 
 }
 
-vector<string> Logic::displayFloatingTask(void) {
-	vector<string> floatingTask = storage.retrieveFloatingTask();
+std::vector<std::string> Logic::displayFloatingTask(void) {
+	std::vector<std::string> floatingTask = storage.retrieveFloatingTask();
 	assert(floatingTask.size()<=FLOATMAX);
 	return floatingTask; 
 }
 
-vector<string> Logic::displayOverdue(void) {
-	vector<string> overdue = storage.retrieveOverdue();
+std::vector<std::string> Logic::displayOverdue(void) {
+	std::vector<std::string> overdue = storage.retrieveOverdue();
 	return overdue;
 }
 
-vector<string> Logic::displaySearchResults(string userInput) {
+std::vector<std::string> Logic::displaySearchResults(std::string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
@@ -48,9 +48,9 @@ vector<string> Logic::displaySearchResults(string userInput) {
 	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
 }
 
-vector<string> Logic::displayCategoricalTask(string userInput, string& taskType) {
+std::vector<std::string> Logic::displayCategoricalTask(std::string userInput, std::string& taskType) {
 	int index = commandDetails.size();
-	vector<string> categoricalTask;
+	std::vector<std::string> categoricalTask;
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
 	taskType = commandDetails[index]->task;
@@ -58,11 +58,11 @@ vector<string> Logic::displayCategoricalTask(string userInput, string& taskType)
 	return categoricalTask;
 }
 
-string Logic::getCommandType(string userInput) {
+std::string Logic::getCommandType(std::string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
-	string lastCommand = commandDetails[index]->commandType;
+	std::string lastCommand = commandDetails[index]->commandType;
 	commandDetails.pop_back();
 	return lastCommand;
 }
@@ -79,12 +79,12 @@ int Logic::getFloatingSize(void) {
 	return storage.retrieveFloatingSize();
 }
 
-string Logic::receiveCommand(string userInput) {
-	string displayMessage = executeLogicCore(userInput);
+std::string Logic::receiveCommand(std::string userInput) {
+	std::string displayMessage = executeLogicCore(userInput);
 	return displayMessage;
 }
 
-string Logic::executeLogicCore(string userInput) {
+std::string Logic::executeLogicCore(std::string userInput) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
 	if (parser.isRecurring(userInput)) {
@@ -97,13 +97,13 @@ string Logic::executeLogicCore(string userInput) {
 	}
 }
 
-string Logic::executeRecurringTask(string userInput, int index) {
+std::string Logic::executeRecurringTask(std::string userInput, int index) {
 	parser.processCommand(userInput, commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
 	return storage.addRecurringTask(commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
 }
 
-string Logic::executeTask(TASK_TYPE taskType, int index) {
-	string displayMessageToUI;
+std::string Logic::executeTask(TASK_TYPE taskType, int index) {
+	std::string displayMessageToUI;
 	switch(taskType) {
 	case NORMAL:
 		displayMessageToUI = normTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateStart ,commandDetails[index]->dateEnd, commandDetails[index]->timeStart ,commandDetails[index]->timeEnd, storage);
@@ -168,12 +168,12 @@ string Logic::executeTask(TASK_TYPE taskType, int index) {
 }
 
 Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
-	boost::gregorian::date dateNull(boost::date_time::not_a_date_time);
+	date dateNull(not_a_date_time);
 	if(commandDetails[index]->commandType==STRING_ADD) {
-		if((commandDetails[index]->timeEnd==boost::posix_time::not_a_date_time) && (commandDetails[index]->dateEnd==dateNull)) {
+		if((commandDetails[index]->timeEnd==not_a_date_time) && (commandDetails[index]->dateEnd==dateNull)) {
 			return FLOATING;
 		}
-		else if((commandDetails[index]->timeStart==boost::posix_time::not_a_date_time) && (commandDetails[index]->dateStart==dateNull)) {
+		else if((commandDetails[index]->timeStart==not_a_date_time) && (commandDetails[index]->dateStart==dateNull)) {
 			return DEADLINE;
 		}
 		else {
@@ -215,5 +215,5 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 
 bool Logic::lastCommandIsSearch(void) {
 	int index = commandDetails.size()-2;
-	return (commandDetails[index]->commandType==STRING_SEARCH);
+	return ((commandDetails[index]->commandType==STRING_SEARCH) && index>=0);
 }

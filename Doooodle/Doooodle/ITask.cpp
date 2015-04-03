@@ -1,11 +1,11 @@
 
 #include "ITask.h"
 
-const string ITask::STRING_TEMPLATE = "Interface Class";
+const std::string ITask::STRING_TEMPLATE = "Interface Class";
 
 ITask::~ITask(void) {
 }
 
-string ITask::loadTask() {
+std::string ITask::loadTask() {
 	return "";
 }

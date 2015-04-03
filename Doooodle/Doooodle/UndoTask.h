@@ -6,30 +6,31 @@
 #include "ITask.h"
 #include "CommandDetails.h"
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class UndoTask : public ITask {
 
 public:
 	UndoTask(void);
 	~UndoTask(void);
-	string loadTask(vector<CommandDetails*>&, Storage&);
+	std::string loadTask(std::vector<CommandDetails*>&, Storage&);
 
 private:
 	enum TASK_TYPE {
 		ADD, ERASE, EDIT, NIL
 	};
-	static const string STRING_ADD;
-	static const string STRING_DELETE;
-	static const string STRING_EDIT;
-	static const string STRING_UNDO_FAILURE;
-	static const string STRING_SEARCH;
-	static const string STRING_UNDO;
+	static const std::string STRING_ADD;
+	static const std::string STRING_DELETE;
+	static const std::string STRING_EDIT;
+	static const std::string STRING_UNDO_FAILURE;
+	static const std::string STRING_SEARCH;
+	static const std::string STRING_UNDO;
 
-	TASK_TYPE retrieveTaskTypeToUndo(vector<CommandDetails*>&);
-	string executeUndoAdd(vector<CommandDetails*>&, Storage&);
-	string executeUndoDelete(vector<CommandDetails*>&, Storage&);
-	string executeUndoEdit(vector<CommandDetails*>&, Storage&);
+	TASK_TYPE retrieveTaskTypeToUndo(std::vector<CommandDetails*>&);
+	std::string executeUndoAdd(std::vector<CommandDetails*>&, Storage&);
+	std::string executeUndoDelete(std::vector<CommandDetails*>&, Storage&);
+	std::string executeUndoEdit(std::vector<CommandDetails*>&, Storage&);
 };
 
 #endif

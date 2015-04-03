@@ -5,15 +5,15 @@
 #include <iostream>
 #include "ITask.h"
 
-
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class NormalTask : public ITask {
 
 public:
 	NormalTask(void);
 	~NormalTask(void);
-	string loadTask(string, boost::gregorian::date, boost::gregorian::date, boost::posix_time::ptime, boost::posix_time::ptime, Storage&);
+	std::string loadTask(std::string, date, date, ptime, ptime, Storage&);
 
 private:
 

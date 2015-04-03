@@ -7,13 +7,13 @@ DeleteTask::DeleteTask(void) {
 DeleteTask::~DeleteTask(void) {
 }
 
-string DeleteTask::loadTask(int intToDelete, Storage& storage){
+std::string DeleteTask::loadTask(int intToDelete, Storage& storage){
 	displayMessage =  storage.deleteTask(intToDelete);
 	storage.writeToFile();
 	return displayMessage;
 }
 
-string DeleteTask::deleteSearchTask(int intToDelete, Storage& storage){
+std::string DeleteTask::deleteSearchTask(int intToDelete, Storage& storage){
 	displayMessage = storage.deleteSearchTask(intToDelete);
 	storage.writeToFile();
 	return displayMessage;

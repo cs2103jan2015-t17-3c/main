@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 #include <assert.h>
-#include <boost/date_time.hpp>
 #include "Parser.h"
 #include "Storage.h"
 #include "CommandDetails.h"
@@ -19,21 +18,23 @@
 #include "EditTask.h"
 #include "RescheduleTask.h"
 #include "OverdueTask.h"
+#include <boost/date_time.hpp>
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class Logic {
 
 public:
 	Logic(void);
 	~Logic(void);
-	string receiveCommand(string);
-	vector<string> displayTopTen(void);
-	vector<string> displayFloatingTask(void);
-	vector<string> displaySearchResults(string);
-	vector<string> displayOverdue(void);
-	vector<string> displayCategoricalTask(string, string&);
-	string getCommandType(string);
+	std::string receiveCommand(std::string);
+	std::vector<std::string> displayTopTen(void);
+	std::vector<std::string> displayFloatingTask(void);
+	std::vector<std::string> displaySearchResults(std::string);
+	std::vector<std::string> displayOverdue(void);
+	std::vector<std::string> displayCategoricalTask(std::string, std::string&);
+	std::string getCommandType(std::string);
 	int getDeadlineSize(void);
 	int getNormalSize(void);
 	int getFloatingSize(void);
@@ -50,32 +51,32 @@ private:
 	EditTask editTask;
 	RescheduleTask rescheduleTask;
 	OverdueTask overdueTask;
-	static const string STRING_ADD;
-	static const string STRING_ARCHIVE;
-	static const string STRING_CHECK;
-	static const string STRING_COMPLETE;
-	static const string STRING_COMPLETED;
-	static const string STRING_DISPLAY;
+	static const std::string STRING_ADD;
+	static const std::string STRING_ARCHIVE;
+	static const std::string STRING_CHECK;
+	static const std::string STRING_COMPLETE;
+	static const std::string STRING_COMPLETED;
+	static const std::string STRING_DISPLAY;
 
-	static const string STRING_DELETE;
-	static const string STRING_EDIT;
-	static const string STRING_EXIT;
-	static const string STRING_INVALID;
-	static const string STRING_RESCHEDULE;
-	static const string STRING_SEARCH;
-	static const string STRING_UNDO;
+	static const std::string STRING_DELETE;
+	static const std::string STRING_EDIT;
+	static const std::string STRING_EXIT;
+	static const std::string STRING_INVALID;
+	static const std::string STRING_RESCHEDULE;
+	static const std::string STRING_SEARCH;
+	static const std::string STRING_UNDO;
 	static const int TOP10MAX;
 	static const int FLOATMAX;
 
-	vector<CommandDetails*> commandDetails;
+	std::vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
 		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED, DISPLAY
 	};
 
-	string executeLogicCore(string);
-	string executeTask(TASK_TYPE, int);
-	string executeRecurringTask(string, int);
+	std::string executeLogicCore(std::string);
+	std::string executeTask(TASK_TYPE, int);
+	std::string executeRecurringTask(std::string, int);
 	TASK_TYPE determineSpecificTaskType(int);
 	bool lastCommandIsSearch(void);
 };

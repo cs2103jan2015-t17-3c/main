@@ -5,15 +5,16 @@
 #include <iostream>
 #include "ITask.h"
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class DeleteTask : public ITask {
 
 public:
 	DeleteTask(void);
 	~DeleteTask(void);
-	string loadTask(int, Storage&);
-	string deleteSearchTask(int, Storage&);
+	std::string loadTask(int, Storage&);
+	std::string deleteSearchTask(int, Storage&);
 
 private:
 

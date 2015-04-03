@@ -7,7 +7,7 @@ OverdueTask::OverdueTask(void) {
 OverdueTask::~OverdueTask(void) {
 }
 
-string OverdueTask::loadTask(Storage& storage){
+std::string OverdueTask::loadTask(Storage& storage){
 	displayMessage = storage.completeAll();
 	storage.sortStorage();
 	storage.writeToFile();
@@ -15,7 +15,7 @@ string OverdueTask::loadTask(Storage& storage){
 	return displayMessage;
 }
 
-string OverdueTask::completeTask(int intToComplete, Storage& storage) {
+std::string OverdueTask::completeTask(int intToComplete, Storage& storage) {
 	displayMessage = storage.completeTask(intToComplete);
 	storage.sortStorage();
 	storage.writeToFile();
@@ -23,7 +23,7 @@ string OverdueTask::completeTask(int intToComplete, Storage& storage) {
 	return displayMessage;
 }
 
-string OverdueTask::completeSearchTask(int intToComplete, Storage& storage) {
+std::string OverdueTask::completeSearchTask(int intToComplete, Storage& storage) {
 	displayMessage = storage.completeSearchTask(intToComplete);
 	storage.sortStorage();
 	storage.writeToFile();

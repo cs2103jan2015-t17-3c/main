@@ -5,23 +5,24 @@
 #include <iostream>
 #include <boost/date_time.hpp>
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class CommandDetails {
 
 public:
-	string commandType;		//for "add", "delete", "edit", "undo" etc.
-	string task;		//to store details for add, edit, reschedule etc.
+	std::string commandType;		//for "add", "delete", "edit", "undo" etc.
+	std::string task;		//to store details for add, edit, reschedule etc.
 	int indexReference;		//to store reference index for delete, edit, reschedule etc.
-	boost::gregorian::date dateStart;
-	boost::gregorian::date dateEnd;
-	boost::posix_time::ptime timeStart;
-	boost::posix_time::ptime timeEnd;
+	date dateStart;
+	date dateEnd;
+	ptime timeStart;
+	ptime timeEnd;
 	//following vectors for recurring events to store future recurrence
-	vector<boost::gregorian::date> dateStartRecur;
-	vector<boost::gregorian::date> dateEndRecur;
-	vector<	boost::posix_time::ptime> timeStartRecur;
-	vector<	boost::posix_time::ptime> timeEndRecur;
+	std::vector<date> dateStartRecur;
+	std::vector<date> dateEndRecur;
+	std::vector<ptime> timeStartRecur;
+	std::vector<ptime> timeEndRecur;
 
 	CommandDetails(void);
 	~CommandDetails(void);

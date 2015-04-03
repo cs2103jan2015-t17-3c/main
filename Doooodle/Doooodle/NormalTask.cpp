@@ -3,16 +3,16 @@
 
 NormalTask::NormalTask(void) {
 	task = "";
-	dateStart = boost::gregorian::day_clock::local_day();
-	dateEnd = boost::gregorian::day_clock::local_day();
-	timeStart = boost::posix_time::not_a_date_time;
-	timeEnd = boost::posix_time::not_a_date_time;
+	dateStart = day_clock::local_day();
+	dateEnd = day_clock::local_day();
+	timeStart = not_a_date_time;
+	timeEnd = not_a_date_time;
 }
 
 NormalTask::~NormalTask(void) {
 }
 
-string NormalTask::loadTask(string task, boost::gregorian::date dateStart, boost::gregorian::date dateEnd, boost::posix_time::ptime timeStart, boost::posix_time::ptime timeEnd, Storage& storage) {
+std::string NormalTask::loadTask(std::string task, date dateStart, date dateEnd, ptime timeStart, ptime timeEnd, Storage& storage) {
 	this->task = task;
 	this->dateStart = dateStart;
 	this->dateEnd = dateEnd;
