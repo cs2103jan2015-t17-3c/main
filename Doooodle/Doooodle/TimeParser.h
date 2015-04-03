@@ -1,4 +1,3 @@
-
 #ifndef TIMEPARSER_H_
 #define TIMEPARSER_H_
 
@@ -7,7 +6,8 @@
 #include <algorithm>
 #include <boost/date_time.hpp>
 
-using namespace std;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 class TimeParser{
 
@@ -15,16 +15,16 @@ private:
 	static const int NO_OF_TYPE1_INDICATORS;
 	static const int NO_OF_TYPE2_INDICATORS;
 	static const int NO_OF_TYPE3_INDICATORS;
-	static const string TYPE1_INDICATORS[];
-	static const string TYPE2_INDICATORS[];
-	static const string TYPE3_INDICATORS[];
+	static const std::string TYPE1_INDICATORS[];
+	static const std::string TYPE2_INDICATORS[];
+	static const std::string TYPE3_INDICATORS[];
 	static const int DIFFERENCE_BETWEEN_12HRS_24HRS;
-	static const boost::posix_time::ptime INVALID_TIME;
+	static const ptime INVALID_TIME;
 public:
 	TimeParser();
 	~TimeParser();
-	bool isTime(string);
-	boost::posix_time::ptime standardTime(string);
+	bool isTime(std::string);
+	ptime standardTime(std::string);
 };
 
 #endif

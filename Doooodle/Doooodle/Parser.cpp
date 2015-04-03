@@ -1,18 +1,15 @@
 #include "Parser.h"
 
 const int Parser::POSITION_COMMAND_TYPE = 0;
-const string Parser::DELIMITERS = " ";
+const std::string Parser::DELIMITERS = " ";
 const char Parser::RECURRING_INDENTIFIER = ';';
 const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
-const int Parser :: NO_OF_TIME_IDENTIFIERS = 18;
-const string Parser::INVALID_DATE = "Invalid Date";
-const string Parser::EMPTY = "Empty Task";
-const string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
-const string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
-const string Parser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { " Monday", " Tuesday", " Wednesday", " Thursday", " Friday", " Saturday", " Sunday",
-                                                                  " monday", " tuesday", " wednesday", " thursday", " friday", " saturday", " sunday",
-                                                                  " Today"," today"," Tomorrow", " tomorrow" };
+const std::string Parser::INVALID_DATE = "Invalid Date";
+const std::string Parser::EMPTY = "Empty Task";
+const std::string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
+const std::string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
+
 Parser::Parser(){
 
 }
@@ -20,21 +17,28 @@ Parser::~Parser(){
 
 }
 
-bool Parser::isRecurring(string input){
-	if (input.find(RECURRING_INDENTIFIER) != string::npos){
+bool Parser::isRecurring(std::string input){
+	if (input.find(RECURRING_INDENTIFIER) != std::string::npos){
 		return true;
 	}
 	return false;
 }
 
-void Parser::processCommand(string input, string& userTask, vector<boost::gregorian::date>& vecStartDate, vector<boost::gregorian::date>& vecEndDate, vector<boost::posix_time::ptime>& vecStartTime, vector<boost::posix_time::ptime>& vecEndTime){
-	string commandType;
-	string frequency;
+bool Parser::isRigid(std::string input){
+	if (input.find('*') != std::string::npos){
+		return true;
+	}
+	return false;
+}
+
+void Parser::processCommand(std::string input, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
+	std::string commandType;
+	std::string frequency;
 	int indexReference;
-	boost::gregorian::date startDate(not_a_date_time);
-	boost::gregorian::date endDate(not_a_date_time);
-	boost::posix_time::ptime startTime(not_a_date_time);
-	boost::posix_time::ptime endTime(not_a_date_time);
+	date startDate(not_a_date_time);
+	date endDate(not_a_date_time);
+	ptime startTime(not_a_date_time);
+	ptime endTime(not_a_date_time);
 	processCommand(input, commandType, userTask, startDate, endDate, startTime, endTime, indexReference);
 	frequency = getFrequency(input);
 	vecStartDate.push_back(startDate);
@@ -47,23 +51,32 @@ void Parser::processCommand(string input, string& userTask, vector<boost::gregor
 	return;
 }
 
-void Parser::processCommand(string input, string& commandType, string& userTask, boost::gregorian::date& startDate, boost::gregorian::date& endDate, 
-	boost::posix_time::ptime& startTime, boost::posix_time::ptime& endTime, int& indexReference){
-	boost::gregorian::date d1(boost::date_time::not_a_date_time);
-	boost::gregorian::date dmax(boost::date_time::max_date_time);
-	boost::posix_time::ptime d2(boost::date_time::not_a_date_time);
-	boost::posix_time::ptime pmax(boost::posix_time::max_date_time);
+void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, date& startDate, date& endDate, 
+	ptime& startTime, ptime& endTime, int& indexReference){
+	date d1(not_a_date_time);
+	date dmax(max_date_time);
+	ptime d2(not_a_date_time);
+	ptime pmax(max_date_time);
 	int pos;
-	tokenizeInput(input);    //tokenize string by white space
-	
-	commandType = getCommandType(input);
-	indexReference = getIndexReference(input);
-	userTask = getUserTask(input);
-	startDate = getStartDate(pos);
-	endDate = getEndDate(pos);
-	startTime = getStartTime(pos);
-	endTime = getEndTime(pos);
-
+	if (isRigid(input)){
+		rigidTokenizer(input);
+		commandType = tokens[0];
+		userTask = tokens[1];
+		startDate = dateparser.standardiseDate(tokens[2]);
+		endDate = dateparser.standardiseDate(tokens[4]);
+		startTime = timeparser.standardTime(tokens[3]);
+		endTime = timeparser.standardTime(tokens[5]);
+	}
+	else{
+		tokenizeInput(input);    //tokenize string by white space
+		commandType = getCommandType(input);
+		indexReference = getIndexReference(input);
+		userTask = getUserTask(input);
+		startDate = getStartDate(pos);
+		endDate = getEndDate(pos);
+		startTime = getStartTime(pos);
+		endTime = getEndTime(pos);
+	}
 	if (commandType == "display"){
 		userTaskParsing(userTask);
 	}
@@ -86,27 +99,42 @@ void Parser::processCommand(string input, string& commandType, string& userTask,
 	}
 	//if only have date and it is a deadlin task, a default time of 2359 will be assigned
 	if (endDate != d1 && endTime == d2 && isDeadline(input)){
-		ptime t(endDate, boost::posix_time::hours(23)+boost::posix_time::minutes(59)+boost::posix_time::seconds(59));
+		ptime t(endDate, hours(23)+minutes(59)+seconds(59));
 		endTime = t;
 	}
 	return;
 }
 
-void Parser::tokenizeInput(string input){
-	string buf; 
+void Parser::tokenizeInput(std::string input){
+	std::string buf; 
 	tokens.clear();
-	stringstream ss(input); // Insert the string into a stream
+	std::stringstream ss(input); // Insert the string into a stream
 	while (ss >> buf)
 		tokens.push_back(buf);
 }
 
-string Parser::getCommandType(string input){
-	string task;
+void Parser::rigidTokenizer(std::string input){
+	tokens.clear();
+	char str[1000]=" ";
+	for (int i = 0; i < input.size(); i++){
+		str[i] = input[i];
+	}
+	char * pch;
+	pch = strtok(str, "*");
+	while (pch != NULL)
+	{
+		tokens.push_back(pch);
+		pch = strtok(NULL, "*");
+	}
+}
+
+std::string Parser::getCommandType(std::string input){
+	std::string task;
 	task = tokens[POSITION_COMMAND_TYPE];
 	return task;
 }
 
-int Parser::getIndexReference(string input){
+int Parser::getIndexReference(std::string input){
 	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"|| getCommandType(input)=="complete" || getCommandType(input)=="reschedule"){
 		for (int i = 0; i < tokens.size(); i++){
 			if (isdigit(tokens[i][0])){
@@ -117,10 +145,10 @@ int Parser::getIndexReference(string input){
 	return -1;
 }
 
-string Parser::getUserTask(string input){
+std::string Parser::getUserTask(std::string input){
 	size_t positionA=0;
 	size_t positionB=0;
-	string task;
+	std::string task;
 	positionA = getStartOfUserTask(input);
 	positionB = getEndOfUserTask(input);
 	task = input.substr(positionA, positionB - positionA);
@@ -128,10 +156,10 @@ string Parser::getUserTask(string input){
 }
 
 
-boost::gregorian::date Parser::getStartDate(int& num){
-	boost::gregorian::date d(boost::date_time::not_a_date_time);
-	string task;
-	string str;
+date Parser::getStartDate(int& num){
+	date d(not_a_date_time);
+	std::string task;
+	std::string str;
 	for (int i = 0; i < tokens.size(); i++){
 		if (dateparser.isDate(tokens[i])){
 			num = i;
@@ -148,9 +176,9 @@ boost::gregorian::date Parser::getStartDate(int& num){
 	return d;
 }
 
-boost::gregorian::date Parser::getEndDate(int& num){
-	boost::gregorian::date d(boost::date_time::not_a_date_time);
-	string task;
+date Parser::getEndDate(int& num){
+	date d(not_a_date_time);
+	std::string task;
 	for (int i = tokens.size()-1; i > 0; i--){
 		if (dateparser.isDate(tokens[i])){
 			if (i == 0){
@@ -165,9 +193,10 @@ boost::gregorian::date Parser::getEndDate(int& num){
 	num = tokens.size();
 	return d;
 }
-boost::posix_time::ptime Parser::getStartTime(int& num){
-	boost::posix_time::ptime d(boost::date_time::not_a_date_time);
-	string task;
+
+ptime Parser::getStartTime(int& num){
+	ptime d(not_a_date_time);
+	std::string task;
 	for (int i = 0; i < tokens.size(); i++){
 		if (timeparser.isTime(tokens[i])){
 			num = i;
@@ -178,9 +207,9 @@ boost::posix_time::ptime Parser::getStartTime(int& num){
 	return d;
 }
 
-boost::posix_time::ptime Parser::getEndTime(int& num){
-	boost::posix_time::ptime d(boost::date_time::not_a_date_time);
-	string task;
+ptime Parser::getEndTime(int& num){
+	ptime d(not_a_date_time);
+	std::string task;
 	for (int i = tokens.size()-1; i > 0; i--){
 		if (timeparser.isTime(tokens[i])){
 			return timeparser.standardTime(tokens[i]);
@@ -191,7 +220,7 @@ boost::posix_time::ptime Parser::getEndTime(int& num){
 	return d;
 }
 
-size_t Parser::intToPos(int num,string input){
+size_t Parser::intToPos(int num,std::string input){
 	size_t position=0;
 	for (int i = 0; i < num; i++){
 		position = input.find(" ", position+1);
@@ -199,7 +228,7 @@ size_t Parser::intToPos(int num,string input){
 	return position;
 }
 
-size_t Parser::getStartOfUserTask(string input){
+size_t Parser::getStartOfUserTask(std::string input){
 	size_t pos;
 	pos=input.find_first_of(DELIMITERS);
 	pos++;
@@ -210,47 +239,38 @@ size_t Parser::getStartOfUserTask(string input){
 	return pos;
 }
 
-size_t Parser::getEndOfUserTask(string input){
-	size_t pos=string::npos;
-	size_t position=string::npos;
+size_t Parser::getEndOfUserTask(std::string input){
+	size_t pos=std::string::npos;
+	size_t position=std::string::npos;
 	int num;
 	//check for start time indicators
 	for (int i = 0; i < NO_OF_START_TIME_INDICATORS; i++){
 		pos = input.find(START_TIME_INDICATORS[i]);
-		if (pos != string::npos){
+		if (pos != std::string::npos){
 			break;
 		}
 	}
-	position = min(position, pos);
-
-	//check for time indentidiers
-	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++){
-		pos = input.find(TIME_IDENTIFIERS[i]);
-		if (pos != string::npos){
-			break;
-		}
-	}
-	position = min(position, pos);
+	position = std::min(position, pos);
 
 	//check for end time indicators
 	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
 		pos = input.find(END_TIME_INDICATORS[i]);
-		if (pos != string::npos){
+		if (pos != std::string::npos){
 			break;
 		}
 	}
-	position = min(position, pos);
+	position = std::min(position, pos);
 
 	//check for date
 	getStartDate(num);
 	pos = intToPos(num, input);
-	position = min(position, pos);
+	position = std::min(position, pos);
 
 	//check for time;
 	getStartTime(num);
 	pos = intToPos(num, input);
-	position = min(position, pos);
-	if (position == string::npos){
+	position = std::min(position, pos);
+	if (position == std::string::npos){
 		position = input.length();
 	}
 	else{
@@ -260,13 +280,13 @@ size_t Parser::getEndOfUserTask(string input){
 	return position;
 }
 
-void Parser::assignToday(boost::gregorian::date& d){
-	boost::gregorian::date today(day_clock::local_day());
+void Parser::assignToday(date& d){
+	date today(day_clock::local_day());
 	d = today;
 	return;
 }
 
-bool Parser::isDeadline(string input){
+bool Parser::isDeadline(std::string input){
 	for (int i = 0; i < tokens.size(); i++){
 		if (tokens[i]=="by"){
 			return true;
@@ -275,7 +295,7 @@ bool Parser::isDeadline(string input){
 	return false;
 }
 
-void Parser::userTaskParsing(string& input){
+void Parser::userTaskParsing(std::string& input){
 	if (input == "Normal" || input == "N" || input == "norm" || input == "Norm"){
 		input = "normal";
 	}else if (input == "Float" || input == "float" || input == "Floating"){
@@ -287,9 +307,9 @@ void Parser::userTaskParsing(string& input){
 	}
 }
 
-string Parser::getFrequency(string input){
+std::string Parser::getFrequency(std::string input){
 	size_t position;
-	string frequency;
+	std::string frequency;
 	position = input.find(RECURRING_INDENTIFIER);
 	frequency = input.substr(position+1, input.size() - position);
 	return frequency;

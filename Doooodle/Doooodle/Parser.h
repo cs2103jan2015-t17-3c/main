@@ -12,8 +12,6 @@
 #include <boost/date_time.hpp>
 #include <sstream>
 
-
-using namespace std;
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
@@ -23,40 +21,40 @@ private:
 	DateParser dateparser;
 	TimeParser timeparser;
 	static const int POSITION_COMMAND_TYPE;
-	static const string INVALID_DATE;
-	static const string DELIMITERS;
-	static const string START_TIME_INDICATORS[];
-	static const string END_TIME_INDICATORS[];
-	static const string TIME_IDENTIFIERS[];
-	static const string EMPTY;
+	static const std::string INVALID_DATE;
+	static const std::string DELIMITERS;
+	static const std::string START_TIME_INDICATORS[];
+	static const std::string END_TIME_INDICATORS[];
+	static const std::string EMPTY;
 	static const int NO_OF_START_TIME_INDICATORS;
 	static const int NO_OF_END_TIME_INDICATORS;
-	static const int NO_OF_TIME_IDENTIFIERS;
 	static const char RECURRING_INDENTIFIER;
-	vector<string> tokens;
+	std::vector<std::string> tokens;
 
-	void tokenizeInput(string);
-	string getCommandType(string);
-	int getIndexReference(string);
-	string getUserTask(string);
-	boost::gregorian::date getStartDate(int&);
-	boost::gregorian::date getEndDate(int&);
-	boost::posix_time::ptime getStartTime(int&);
-	boost::posix_time::ptime getEndTime(int&);
-	size_t intToPos(int,string);
-	size_t getEndOfUserTask(string);
-	size_t getStartOfUserTask(string);
-	void userTaskParsing(string&);
-	void assignToday(boost::gregorian::date&);
-	bool isDeadline(string);
-	string getFrequency(string);
+	void tokenizeInput(std::string);
+	void rigidTokenizer(std::string);
+	std::string getCommandType(std::string);
+	int getIndexReference(std::string);
+	std::string getUserTask(std::string);
+	date getStartDate(int&);
+	date getEndDate(int&);
+	ptime getStartTime(int&);
+	ptime getEndTime(int&);
+	size_t intToPos(int,std::string);
+	size_t getEndOfUserTask(std::string);
+	size_t getStartOfUserTask(std::string);
+	void userTaskParsing(std::string&);
+	void assignToday(date&);
+	bool isRigid(std::string);
+	bool isDeadline(std::string);
+	std::string getFrequency(std::string);
 
 public:
 	Parser();
 	~Parser();
-	bool isRecurring(string);
-	void processCommand(string, string&, string&, boost::gregorian::date&, boost::gregorian::date&, boost::posix_time::ptime&, boost::posix_time::ptime&, int& indexReference);
-	void processCommand(string, string&, vector<boost::gregorian::date>&, vector<boost::gregorian::date>&, vector<boost::posix_time::ptime>&, vector<boost::posix_time::ptime>&);
+	bool isRecurring(std::string);
+	void processCommand(std::string, std::string&, std::string&, date&, date&, ptime&, ptime&, int& indexReference);
+	void processCommand(std::string, std::string&, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&);
 };
 
 #endif
