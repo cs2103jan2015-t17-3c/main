@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
-using namespace std;
+//using namespace std;
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
@@ -23,82 +23,86 @@ enum TYPE_OF_TASK{
 };
 
 struct Task{
-	string taskDetails;
+	std::string taskDetails;
 	date startDate;
 	date endDate;
 	ptime endTime;
 	ptime startTime;
 	TYPE_OF_TASK taskType;
-	string taskDisplay;
+	std::string taskDisplay;
 };
 
 struct History{
 	date requestDate;
 	ptime requestTime;
 	Task commandDetails;
-	string commandDisplay;
+	std::string commandDisplay;
 };
 
 class Storage{
+	
 public:
 	Storage(void);
 	~Storage(void);
-	string addNormalTask(string, date, date,ptime,ptime);
-	string addDeadlineTask(string,date,ptime);
-	string addFloatingTask(string);
-	vector<string> retrieveTopTen();
+	std::string addNormalTask(std::string, date, date, ptime, ptime);
+	std::string addDeadlineTask(std::string, date, ptime);
+	std::string addFloatingTask(std::string);
+	std::vector<std::string> retrieveTopTen();
 	void sortStorage();
 	void writeToFile();
-	string deleteTask(int);
-	vector<string> searchTask(string,date,ptime);
-	string undoAdd();
-	string undoDelete();
-	string undoEdit();
-    string deleteSearchTask(int);
-	string editSearchTask(int, string, date, date, ptime, ptime);
+	std::string deleteTask(int);
+	std::vector<std::string> searchTask(std::string, date, ptime);
+	std::string undoAdd();
+	std::string undoDelete();
+	std::string undoEdit();
+	std::string deleteSearchTask(int);
+	std::string editSearchTask(int, std::string, date, date, ptime, ptime);
 	//can I do this two together? think about this.
-	string editTask(int, string, date, date, ptime, ptime);
-	vector<string> retrieveFloatingTask();
+	std::string editTask(int, std::string, date, date, ptime, ptime);
+	std::vector<std::string> retrieveFloatingTask();
 	//can I do this with retrieve topTen?
-	void changeDirectory(string);
-	string initializeTaskDetails(Task);
-	Task initializeNormalTask(string, date, date, ptime, ptime);
-	string taskDetailsFeedback(Task);
+	void changeDirectory(std::string);
+	std::string initializeTaskDetails(Task);
+	Task initializeNormalTask(std::string, date, date, ptime, ptime);
+	std::string taskDetailsFeedback(Task);
 	History registerHistory(Task);
-	Task initializeDeadlineTask(string, date, ptime);
-	Task initializeFloatingTask(string);
-	void registerSearchedStuff(vector<Task>::iterator, bool&, vector<string>&,int&);
-	vector<string> retrieveArchive();
-	vector<string> retrieveOverdue();
-	string completeAll();
-	string reschedule(int, date, date, ptime, ptime);
-	vector<string> retrieveCategoricalTask(string);
-	string completeTask(int);
-	string completeSearchTask(int);
-	string addRecurringTask(string, vector<date>, vector<date>, vector<ptime>, vector<ptime>);
+	Task initializeDeadlineTask(std::string, date, ptime);
+	Task initializeFloatingTask(std::string);
+	void registerSearchedStuff(std::vector<Task>::iterator, bool&, std::vector<std::string>&, int&);
+	std::vector<std::string> retrieveArchive();
+	std::vector<std::string> retrieveOverdue();
+	std::string completeAll();
+	std::string reschedule(int, date, date, ptime, ptime);
+	std::vector<std::string> retrieveCategoricalTask(std::string);
+	std::string completeTask(int);
+	std::string completeSearchTask(int);
+	std::string addRecurringTask(std::string, std::vector<date>, std::vector<date>, std::vector<ptime>, std::vector<ptime>);
 	int retrieveDeadlineSize();
 	int retrieveNormalSize();
 	int retrieveFloatingSize();
+	int searchTaskDisplay(std::string);
+
 
 
 private:
-	vector<Task> archivedTask;
-	vector<Task> activeTask;
-	vector<History> commandHistory;
-	static const string MESSAGE_UNDO;
-	static const string DEFAULT_DIRECTORY;
+	
+	std::vector<Task> archivedTask;
+	std::vector<Task> activeTask;
+	std::vector<History> commandHistory;
+	static const std::string MESSAGE_UNDO;
+	static const std::string DEFAULT_DIRECTORY;
 	static const int DEFAULT_WIDTH;
     static const int NUMBER_OF_DISPLAY;
 	static const int NUMBER_OF_FLOATING_DISPLAY;
 	static const int NUMBER_OF_ARCHIVED_DISPLAY;
 
 
-	stack<Task> tempTask;
-	stack<string> taskDetailsHistory;
-	vector<vector<Task>::iterator> tempSearchIterator;
-	vector<vector<Task>::iterator> tempOverdueTaskIterator;
+	std::stack<Task> tempTask;
+	std::stack<std::string> taskDetailsHistory;
+	std::vector<std::vector<Task>::iterator> tempSearchIterator;
+	std::vector<std::vector<Task>::iterator> tempOverdueTaskIterator;
 
-	string directoryName;
+	std::string directoryName;
 };
 
 #endif

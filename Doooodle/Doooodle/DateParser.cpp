@@ -1,24 +1,24 @@
 #include "DateParser.h"
-using namespace boost::gregorian;
+
 const int DateParser::NUM_IN_FRONT = -1;
 const int DateParser::NO_OF_DELIMITERS = 2;
 const int DateParser::NO_OF_NEARFUTURE_IDENTIFIERS = 4;
 const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
 const int DateParser::NO_OF_TIME_IDENTIFIERS = 66;
 const int DateParser::NO_OF_MONTH_IDENTIFIERS=48;
-const string DateParser::DEFAULT_YEAR = "2015";
+const std::string DateParser::DEFAULT_YEAR = "2015";
 const int DateParser::NO_OF_RECURRING_DAILY_DEFAULT = 365;
 const int DateParser::NO_OF_RECURRING_WEEKLY_DEFAULT = 52;
 const int DateParser::NO_OF_RECURRING_MONTHLY_DEFAULT = 24;
 const int DateParser::NO_OF_RECURRING_YEARLY_DEFAULT = 40;
-const boost::gregorian::date DateParser::EMPTY_DATE;
-const boost::posix_time::ptime DateParser::EMPTY_TIME;
+const date DateParser::EMPTY_DATE;
+const ptime DateParser::EMPTY_TIME;
 const int DateParser::DEFAULT_DAY=1;
-const string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December",
+const std::string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December",
                                                                        "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",
 																	   "january","february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december",
 																	   "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
-const string DateParser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+const std::string DateParser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
                                                                       "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
                                                                       "Tomorrow", "tomorrow", "today" ,"Today",
 																	  "January", "February", "March", "April", "May", "June", "July", "August", "Septemper", "October", "November", "December",
@@ -26,12 +26,12 @@ const string DateParser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", 
 																	  "january", "february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december",
 																	  "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
 
-const string DateParser::WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+const std::string DateParser::WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
 "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
 
-const string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS] = { "Tomorrow", "tomorrow", "today", "Today" };
+const std::string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS] = { "Tomorrow", "tomorrow", "today", "Today" };
 
-const string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\","/"};
+const std::string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\","/"};
 
 DateParser::DateParser(){
 
@@ -39,7 +39,7 @@ DateParser::DateParser(){
 DateParser::~DateParser(){
 
 }
-int DateParser::weekdaysToNum(string input){
+int DateParser::weekdaysToNum(std::string input){
 	if (input == "Sunday" || input=="sunday"){
 		return Sunday;
 	}
@@ -63,7 +63,7 @@ int DateParser::weekdaysToNum(string input){
 	}
 }
 
-int DateParser::monthToNum(string input){
+int DateParser::monthToNum(std::string input){
 	if (input == "January" || input == "Jan" || input == "january" || input == "jan"){
 		return Jan;
 	}
@@ -102,7 +102,7 @@ int DateParser::monthToNum(string input){
 	}
 }
 
-int DateParser::nearfutureToNum(string input){
+int DateParser::nearfutureToNum(std::string input){
 	if (input == "Today" || input=="today"){
 		return Today;
 	}
@@ -111,7 +111,7 @@ int DateParser::nearfutureToNum(string input){
 	}
 }
 
-bool DateParser::isDate(string input){
+bool DateParser::isDate(std::string input){
 	removeSlash(input);
 	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++)
 		if (input == TIME_IDENTIFIERS[i]){
@@ -123,7 +123,32 @@ bool DateParser::isDate(string input){
 	return false;
 }
 
-boost::gregorian::date DateParser::standardiseDate(string before,string input,string after,int& num,int reference){
+date DateParser::standardiseDate(std::string input){
+	date d;
+	date temp(max_date_time);
+	removeSlash(input);
+	if (atoi(input.c_str()) > 20150101){
+		try{
+			d = from_undelimited_string(input);
+		}
+		catch (...){
+			return temp;
+		}
+	}
+	else if (input.length() == 4){
+		std::string modified = DEFAULT_YEAR + input;
+		try{
+			d = from_undelimited_string(modified);
+		}
+		catch (...){
+			return temp;
+		}
+	}
+
+	return d;
+}
+
+date DateParser::standardiseDate(std::string before,std::string input,std::string after,int& num,int reference){
 	date d1;
 	date d;
 	greg_day day=DEFAULT_DAY;
@@ -171,6 +196,7 @@ boost::gregorian::date DateParser::standardiseDate(string before,string input,st
 			d = fdaf.get_date(date(today));
 		}
 	}
+
 	for (int i = 0; i < NO_OF_NEARFUTURE_IDENTIFIERS; i++){
 		if (input == NEARFUTURE_IDENTIFIERS[i]){
 			d=today+days(nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]));
@@ -186,7 +212,7 @@ boost::gregorian::date DateParser::standardiseDate(string before,string input,st
 		}
 	}
 	else if (input.length() == 4){
-		string modified = DEFAULT_YEAR + input;
+		std::string modified = DEFAULT_YEAR + input;
 		try{
 			d = from_undelimited_string(modified);
 		}
@@ -198,12 +224,12 @@ boost::gregorian::date DateParser::standardiseDate(string before,string input,st
 	return d;
 }
 
-void DateParser::removeSlash(string& input){
+void DateParser::removeSlash(std::string& input){
 	size_t position;
 	for (int i = 0; i < 2; i++){
 		for (int i = 0; i < NO_OF_DELIMITERS; i++) {
 			position = input.find(DELIMITERS[i]);
-			if (position != string::npos) {
+			if (position != std::string::npos) {
 				input.erase(input.begin() + position);
 			}
 		}
@@ -212,7 +238,7 @@ void DateParser::removeSlash(string& input){
 }
 
 
-void DateParser::completeRecurring(string frequency, vector<boost::gregorian::date>& vecStartDate, vector<boost::gregorian::date>& vecEndDate, vector<boost::posix_time::ptime>& vecStartTime, vector<boost::posix_time::ptime>& vecEndTime){
+void DateParser::completeRecurring(std::string frequency, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
 	date d;
 	switch (frequencyCat(frequency)){
 	case DAILY:
@@ -271,13 +297,11 @@ void DateParser::completeRecurring(string frequency, vector<boost::gregorian::da
 		vecStartTime.push_back(EMPTY_TIME);
 		vecEndTime.push_back(EMPTY_TIME);
 	}
-
-	//cout << vecStartDate.size() << endl << vecEndDate.size() <<endl<< vecStartTime.size() <<endl<< vecEndTime.size() << endl;
 	assert(vecEndTime.size() == vecEndDate.size());
 	return;
 }
 
-int DateParser::frequencyCat(string input){
+int DateParser::frequencyCat(std::string input){
 	if (input == "everyday" || input == "every day" || input == "daily"){
 		return DAILY;
 	}
