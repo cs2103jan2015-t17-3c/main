@@ -241,22 +241,42 @@ private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows:
 		clearGUI();
 		String^ userInput = textBox1->Text;
 		std::string input;
+		std::string cat;
+		std::vector<std::string> displayMessage;
 		MarshalString(userInput, input);
 		logic->receiveCommand(input);
 		storage = logic->getStorage();
 		std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
 		std::vector<std::string> topTen = storage->retrieveTopTen();
+
 		if (floatingTask.size() > 0) {
 			textBox2->Text = convertStdToManaged(floatingTask[0]);
 			for (int i = 1; i<floatingTask.size(); i++) {
 				textBox2->Text = textBox2->Text + "\r\n" + (convertStdToManaged(floatingTask[i]));
 			}
 		}
-		textBox3->ForeColor = Color::DarkBlue;
-		textBox3->Text = "Below is the list of upcoming events in your calendar:";
-		for (int i = 0; i < topTen.size(); i++) {
-			textBox3->Text = textBox3->Text + "\r\n" + (convertStdToManaged(topTen[i]));
+
+		if (logic->getCommandType(input) == "search") {
+			displayMessage = logic->displaySearchResults(input);
+			textBox3->Text = "Search Results [" + Convert::ToUInt32(displayMessage.size()) + "]:";
+			for (int i = 0; i < displayMessage.size(); i++) {
+				textBox3->Text = textBox3->Text + "\r\n" + (convertStdToManaged(displayMessage[i]));
+			}
 		}
+		else if (logic->getCommandType(input) == "display"){
+			displayMessage = logic->displayCategoricalTask(input, cat);
+			textBox3->Text = "Below is the list of " + convertStdToManaged(cat) + " tasks [" + Convert::ToUInt32(displayMessage.size()) + "]:";
+			for (int i = 0; i < displayMessage.size(); i++) {
+				textBox3->Text = textBox3->Text + "\r\n" + (convertStdToManaged(displayMessage[i]));
+			}
+		}
+		else {
+			textBox3->Text = "Below is the list of upcoming events in your calendar [" + Convert::ToUInt32(logic->getNormalSize()) + "] [" + Convert::ToUInt32(logic->getNormalSize()) + "]:";
+			for (int i = 0; i < topTen.size(); i++) {
+				textBox3->Text = textBox3->Text + "\r\n" + (convertStdToManaged(topTen[i]));
+			}
+		}
+
 		clearUserInput();
 	}
 }
