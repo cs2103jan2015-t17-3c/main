@@ -38,6 +38,7 @@ public:
 	int getDeadlineSize(void);
 	int getNormalSize(void);
 	int getFloatingSize(void);
+	Storage* getStorage(void);
 
 private:
 	Storage storage;

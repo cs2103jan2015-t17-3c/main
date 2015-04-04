@@ -215,5 +215,9 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 
 bool Logic::lastCommandIsSearch(void) {
 	int index = commandDetails.size()-2;
-	return ((commandDetails[index]->commandType==STRING_SEARCH) && index>=0);
+	return ((index>=0) && (commandDetails[index]->commandType == STRING_SEARCH));
+}
+
+Storage* Logic::getStorage() {
+	return &storage;
 }
