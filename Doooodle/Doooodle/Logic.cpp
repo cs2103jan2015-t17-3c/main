@@ -3,6 +3,7 @@
 
 const std::string Logic::STRING_ADD = "add";
 const std::string Logic::STRING_ARCHIVE = "archive";
+const std::string Logic::STRING_CD = "cd";
 const std::string Logic::STRING_CHECK = "check";
 const std::string Logic::STRING_COMPLETE = "complete";
 const std::string Logic::STRING_COMPLETED = "completed";
@@ -159,6 +160,9 @@ std::string Logic::executeTask(TASK_TYPE taskType, int index) {
 	case DISPLAY:
 		displayMessageToUI = " ";
 		break;
+	case CD:
+		storage.changeDirectory(commandDetails[index]->task);
+		break;
 	case INVALID:
 		displayMessageToUI = STRING_INVALID;
 		break;
@@ -210,10 +214,17 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	else if (commandDetails[index]->commandType == STRING_DISPLAY) {
 		return DISPLAY;
 	}
+	else if (commandDetails[index]->commandType == STRING_CD) {
+		return CD;
+	}
 	else return INVALID;
 }
 
 bool Logic::lastCommandIsSearch(void) {
 	int index = commandDetails.size()-2;
-	return ((commandDetails[index]->commandType==STRING_SEARCH) && index>=0);
+	return ((index>=0) && (commandDetails[index]->commandType == STRING_SEARCH));
+}
+
+Storage* Logic::getStorage() {
+	return &storage;
 }

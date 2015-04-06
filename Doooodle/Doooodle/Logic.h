@@ -38,6 +38,7 @@ public:
 	int getDeadlineSize(void);
 	int getNormalSize(void);
 	int getFloatingSize(void);
+	Storage* getStorage(void);
 
 private:
 	Storage storage;
@@ -53,11 +54,11 @@ private:
 	OverdueTask overdueTask;
 	static const std::string STRING_ADD;
 	static const std::string STRING_ARCHIVE;
+	static const std::string STRING_CD;
 	static const std::string STRING_CHECK;
 	static const std::string STRING_COMPLETE;
 	static const std::string STRING_COMPLETED;
 	static const std::string STRING_DISPLAY;
-
 	static const std::string STRING_DELETE;
 	static const std::string STRING_EDIT;
 	static const std::string STRING_EXIT;
@@ -71,7 +72,7 @@ private:
 	std::vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED, DISPLAY
+		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED, DISPLAY, CD
 	};
 
 	std::string executeLogicCore(std::string);
