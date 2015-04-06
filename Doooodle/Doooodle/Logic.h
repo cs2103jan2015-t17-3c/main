@@ -29,7 +29,7 @@ public:
 	Logic(void);
 	~Logic(void);
 	std::string receiveCommand(std::string);
-	std::vector<std::string> displayTopTen(void);
+	std::vector<std::string> displayTopFifteen(void);
 	std::vector<std::string> displayFloatingTask(void);
 	std::vector<std::string> displaySearchResults(std::string);
 	std::vector<std::string> displayOverdue(void);
@@ -66,7 +66,7 @@ private:
 	static const std::string STRING_RESCHEDULE;
 	static const std::string STRING_SEARCH;
 	static const std::string STRING_UNDO;
-	static const int TOP10MAX;
+	static const int TOP15MAX;
 	static const int FLOATMAX;
 
 	std::vector<CommandDetails*> commandDetails;
