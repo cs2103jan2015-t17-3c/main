@@ -697,6 +697,17 @@ vector<string> searchedStuff;
 		registerSearchedStuff(iter, findIt, searchedStuff, count);
 		foundAlready = true;
 		}	
+		if (dateToSearch.year() == 1900 && dateToSearch.month() == iter->startDate.month() && !foundAlready){
+			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			foundAlready = true;
+		}
+		if (dateToSearch.year() == 1900 && dateToSearch.month() == iter->endDate.month() && !foundAlready){
+			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			foundAlready = true;
+		}
+
+//change
+
 	}
 	if (findIt){
 		return searchedStuff;
