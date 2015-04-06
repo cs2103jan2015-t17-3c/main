@@ -31,6 +31,8 @@ namespace DoooodleGUI {
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
 
 			 Storage* storage;
+			 std::vector<std::string>* commandHistory;
+			 int counter;
 
 	public:
 		GUI(void)
@@ -41,6 +43,8 @@ namespace DoooodleGUI {
 			//
 			logic = new Logic;
 			storage = new Storage;
+			commandHistory = new std::vector<std::string>;
+			counter = 0;
 		}
 
 	protected:
@@ -57,12 +61,6 @@ namespace DoooodleGUI {
 	private: System::Windows::Forms::TextBox^  textBox2;
 	private: System::Windows::Forms::TextBox^  textBox1;
 	protected:
-
-
-
-
-
-
 
 
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
@@ -102,7 +100,6 @@ namespace DoooodleGUI {
 			this->textBox1->Size = System::Drawing::Size(756, 20);
 			this->textBox1->TabIndex = 0;
 			this->textBox1->TextChanged += gcnew System::EventHandler(this, &GUI::textBox1_TextChanged);
-			this->textBox1->Enter += gcnew System::EventHandler(this, &GUI::textBox1_TextChanged);
 			this->textBox1->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &GUI::textBox1_KeyDown);
 			// 
 			// pictureBox1
@@ -115,7 +112,6 @@ namespace DoooodleGUI {
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 3;
 			this->pictureBox1->TabStop = false;
-			this->pictureBox1->Click += gcnew System::EventHandler(this, &GUI::pictureBox1_Click);
 			// 
 			// label1
 			// 
@@ -128,7 +124,6 @@ namespace DoooodleGUI {
 			this->label1->Size = System::Drawing::Size(171, 65);
 			this->label1->TabIndex = 4;
 			this->label1->Text = L"Floating Task";
-			this->label1->Click += gcnew System::EventHandler(this, &GUI::label1_Click);
 			// 
 			// dateTimePicker1
 			// 
@@ -240,16 +235,7 @@ namespace DoooodleGUI {
 
 
 #pragma endregion
-	private: System::Void listView1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-	}
-private: System::Void label1_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void label2_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
-}
+
 private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 	if (e->KeyCode == Keys::Enter) {
 		clearGUI();
@@ -259,6 +245,7 @@ private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows:
 		std::string cat;
 		std::vector<std::string> displayMessage;
 		MarshalString(userInput, input);
+		commandHistory->push_back(input);
 		std::string message = logic->receiveCommand(input);
 		storage = logic->getStorage();
 		std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
@@ -308,8 +295,35 @@ private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows:
 			}
 		}
 		textBox4->Text = convertStdToManaged(message);
+		textBox1->ForeColor = Color::Black;
+		counter = commandHistory->size();
 		clearUserInput();
 	}
+	if (e->KeyCode == Keys::Up) {
+		if (commandHistory->size() > 0) {
+			if (counter > 0) {
+				counter--;
+			}
+			textBox1->Text = convertStdToManaged(commandHistory->at(counter));
+			textBox1->ForeColor = Color::DarkGoldenrod;
+		}
+	}
+	if (e->KeyCode == Keys::Down) {
+		if (commandHistory->size() > 0) {
+			if (counter < commandHistory->size() - 1) {
+				counter++;
+			}
+			else if (counter == commandHistory->size()) {
+				counter--;
+			}
+			textBox1->Text = convertStdToManaged(commandHistory->at(counter));
+			textBox1->ForeColor = Color::DarkGoldenrod;
+		}
+	}
+}
+
+private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+	textBox1->ForeColor = Color::Black;
 }
 };
 }
