@@ -47,7 +47,7 @@ public:
 	std::string addNormalTask(std::string, date, date, ptime, ptime);
 	std::string addDeadlineTask(std::string, date, ptime);
 	std::string addFloatingTask(std::string);
-	std::vector<std::string> retrieveTopTen();
+	std::vector<std::string> retrieveTopFifteen();
 	void sortStorage();
 	void writeToFile();
 	std::string deleteTask(int);
@@ -81,6 +81,8 @@ public:
 	int retrieveNormalSize();
 	int retrieveFloatingSize();
 	int searchTaskDisplay(std::string);
+	void loadTasks(std::string , std::vector<Task>&);
+
 
 
 

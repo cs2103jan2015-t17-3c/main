@@ -7,65 +7,77 @@ const std::string Storage::MESSAGE_UNDO = "Undo is successfully performed";
 const std::string Storage::DEFAULT_DIRECTORY = "dooodle.txt";
 const int Storage::DEFAULT_WIDTH = 25;
 const int Storage::NUMBER_OF_DISPLAY = 10;
-const int Storage::NUMBER_OF_FLOATING_DISPLAY = 5;
+const int Storage::NUMBER_OF_FLOATING_DISPLAY = 12;
 const int Storage::NUMBER_OF_ARCHIVED_DISPLAY = 20;
 
 Storage::Storage(void){
 	using namespace std;
-	ifstream fl_h; //file handle
-	fl_h.open("tempStorage.txt");
-	if (fl_h.good()){
-	int num = 1;
-	Task tempTask;
-	string dummy;
-	while (!fl_h.eof()){
-		getline(fl_h, tempTask.taskDetails);
 
-		getline(fl_h, dummy);
-		if (dummy != "not-a-date-time"){
-			date d(from_undelimited_string(dummy));
-			tempTask.startDate = d;
-		}else
-			tempTask.startDate = nonDate;
+	loadTasks("tempStorage.txt", activeTask);
+	loadTasks("tempArchive.txt", archivedTask);
 
-		getline(fl_h, dummy);
-		if (dummy != "not-a-date-time"){
-			date dd(from_undelimited_string(dummy));
-			tempTask.endDate = dd;
-		}
-		else
-			tempTask.endDate = nonDate;
-		getline(fl_h, dummy);
-		if (dummy != "not-a-date-time"){
-			ptime t(from_iso_string(dummy));
-			tempTask.startTime = t;
-		}
-		else
-			tempTask.startTime = nonTime;
-		getline(fl_h, dummy);
-		if (dummy != "not-a-date-time"){
-			ptime tt(from_iso_string(dummy));
-			tempTask.endTime = tt;
-		}
-		else
-			tempTask.endTime = nonTime;
-		getline(fl_h, tempTask.taskDisplay);
-		getline(fl_h, dummy);
-		if (dummy == "0"){
-			tempTask.taskType = DEADLINE;
-		}
-		else if (dummy == "1"){
-			tempTask.taskType = FLOATING;
-		}
-		else
-			tempTask.taskType = NORMAL;
-		
 
-		activeTask.push_back(tempTask);
-		//num++;
-	}
-	}
+
+}
 	
+	
+	
+
+	void loadTasks(std::string filename, std::vector<Task>& target ){
+		using namespace std;
+	ifstream fl_h; //file handle
+	fl_h.open(filename);
+	if (fl_h.good()){
+		int num = 1;
+		Task tempTask;
+		string dummy;
+		while (!fl_h.eof()){
+			getline(fl_h, tempTask.taskDetails);
+
+			getline(fl_h, dummy);
+			if (dummy != "not-a-date-time"){
+				date d(from_undelimited_string(dummy));
+				tempTask.startDate = d;
+			}
+			else
+				tempTask.startDate = nonDate;
+
+			getline(fl_h, dummy);
+			if (dummy != "not-a-date-time"){
+				date dd(from_undelimited_string(dummy));
+				tempTask.endDate = dd;
+			}
+			else
+				tempTask.endDate = nonDate;
+			getline(fl_h, dummy);
+			if (dummy != "not-a-date-time"){
+				ptime t(from_iso_string(dummy));
+				tempTask.startTime = t;
+			}
+			else
+				tempTask.startTime = nonTime;
+			getline(fl_h, dummy);
+			if (dummy != "not-a-date-time"){
+				ptime tt(from_iso_string(dummy));
+				tempTask.endTime = tt;
+			}
+			else
+				tempTask.endTime = nonTime;
+			getline(fl_h, tempTask.taskDisplay);
+			getline(fl_h, dummy);
+			if (dummy == "0"){
+				tempTask.taskType = DEADLINE;
+			}
+			else if (dummy == "1"){
+				tempTask.taskType = FLOATING;
+			}
+			else
+				tempTask.taskType = NORMAL;
+			target.push_back(tempTask);
+			//num++;
+		}
+	}
+	fl_h.close();
 };
 
 
@@ -264,7 +276,7 @@ std::string Storage::addFloatingTask(std::string task){
 	return taskDetailsFeedback(temp);
 };
 
-std::vector<std::string> Storage::retrieveTopTen(){
+std::vector<std::string> Storage::retrieveTopFifteen(){
 	using namespace std;
 	vector<int> sortedTaskIndex;
 	vector<string> topTasks;
@@ -299,7 +311,7 @@ std::vector<std::string> Storage::retrieveTopTen(){
 			sortedTaskIndex.push_back(i);
 			count++;
 		}
-		if (count == 10){
+		if (count == 15){
 			break;
 		}
 	}
@@ -308,71 +320,6 @@ std::vector<std::string> Storage::retrieveTopTen(){
 		oneTask << setfill('0') << setw(2) << j + 1 << ". " << activeTask[sortedTaskIndex[j]].taskDisplay;
 		topTasks.push_back(oneTask.str());
 	}
-
-
-
-		/*
-		int deadlineIndex =0;
-
-		while (count < 3 && deadlineIndex <activeTask.size()){
-		Task dummy = activeTask[deadlineIndex];
-		if (dummy.taskType == DEADLINE){
-		ostringstream oneTask;
-		oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
-		topTasks.push_back(oneTask.str());
-
-		count++;
-		}
-		deadlineIndex++;
-		}
-		int normalIndex = 0;
-		while (count < 5 &&  normalIndex < activeTask.size()){
-		Task dummy = activeTask[normalIndex];
-		if (dummy.taskType == NORMAL){
-		ostringstream oneTask;
-		oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
-		topTasks.push_back(oneTask.str());
-		count++;
-		}
-		normalIndex++;
-		}
-		int diffIndex;
-		if (deadlineIndex < normalIndex){
-		for (diffIndex = deadlineIndex; diffIndex < normalIndex && diffIndex < NUMBER_OF_DISPLAY-count+1; diffIndex++){
-		if (activeTask[diffIndex].taskType == DEADLINE){
-		ostringstream oneTask;
-		oneTask << setfill('0') << setw(2) << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
-		topTasks.push_back(oneTask.str());
-		count++;
-		}
-		}
-		}
-		else {
-		for (diffIndex = normalIndex; diffIndex < deadlineIndex && diffIndex < NUMBER_OF_DISPLAY - count +1; diffIndex++){
-		if (activeTask[diffIndex].taskType == NORMAL){
-		ostringstream oneTask;
-		oneTask << setfill('0') << setw(2) << count + 1 << ". " << activeTask[diffIndex].taskDisplay;
-		topTasks.push_back(oneTask.str());
-		count++;
-		}
-		}
-		}
-		int finalNumber = max(NUMBER_OF_DISPLAY - count - 1,0);
-		for (int i = diffIndex; i < diffIndex + finalNumber +1 && i < activeTask.size(); i++){
-		Task dummy = activeTask[i];
-		if (dummy.taskType != FLOATING){
-		ostringstream oneTask;
-		oneTask << setfill('0') << setw(2) << count + 1 << ". " << dummy.taskDisplay;
-		topTasks.push_back(oneTask.str());
-		count++;
-		}
-		}
-		*/
-
-
-
-
-
 		return topTasks;
 	
 }
@@ -483,7 +430,6 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask){
 
 std::vector<std::string> Storage::retrieveFloatingTask(){
 	using namespace std;
-
 	vector<string> TopTasks;
 	int count = 0;
 	int displayIndex = min(11, 1+retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size());
@@ -565,6 +511,28 @@ void Storage::writeToFile(){
 	fl_h.read((char*)&xRec, sizeof(DtbRec)); //read it
 	xRec.dispdata();
 	*/
+
+	ofstream tempArchive;
+	tempArchive.open("tempArchive.txt"/*, /*ios::in | ios::out | ios::binary*/);
+	for (index = 0; index < archivedTask.size() - 1; index++){
+		tempArchive << archivedTask[index].taskDetails << endl;
+		tempArchive << to_iso_string(archivedTask[index].startDate) << endl;
+		tempArchive << to_iso_string(archivedTask[index].endDate) << endl;
+		tempArchive << to_iso_string(archivedTask[index].startTime) << endl;
+		tempArchive << to_iso_string(archivedTask[index].endTime) << endl;
+		tempArchive << archivedTask[index].taskDisplay << endl;
+		tempArchive << archivedTask[index].taskType << endl;
+	}
+	tempArchive << archivedTask[index].taskDetails << endl;
+	tempArchive << to_iso_string(archivedTask[index].startDate) << endl;
+	tempArchive << to_iso_string(archivedTask[index].endDate) << endl;
+	tempArchive << to_iso_string(archivedTask[index].startTime) << endl;
+	tempArchive << to_iso_string(archivedTask[index].endTime) << endl;
+	tempArchive << archivedTask[index].taskDisplay << endl;
+	tempArchive << archivedTask[index].taskType;
+
+
+	tempArchive.close();
 }
 
 void Storage::changeDirectory(std::string newDirectory){
@@ -611,14 +579,14 @@ std::string Storage::deleteTask(int index){
 	using namespace std;
 
 	ostringstream feedbackMessage;
-	vector<string> tempTopTen = retrieveTopTen();
+	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
 	int tempSearchTaskIndex;
-	if (index < tempTopTen.size()){
-		 tempSearchTaskIndex = searchTaskDisplay(tempTopTen[index - 1]);
+	if (index < tempTopFifteen.size()){
+		 tempSearchTaskIndex = searchTaskDisplay(tempTopFifteen[index - 1]);
 	}
 	else {
-		tempSearchTaskIndex = index - 1 - tempTopTen.size() + retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size();
+		tempSearchTaskIndex = index - 1 - tempTopFifteen.size() + retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size();
 	}
 		vector<Task>::iterator iter = activeTask.begin();
 		tempDisplay = activeTask[tempSearchTaskIndex].taskDetails;
@@ -632,14 +600,14 @@ std::string Storage::completeTask(int index){
 	using namespace std;
 
 	ostringstream feedbackMessage;
-	vector<string> tempTopTen = retrieveTopTen();
+	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
 	int tempSearchTaskIndex;
-	if (index < tempTopTen.size()){
-		tempSearchTaskIndex = searchTaskDisplay(tempTopTen[index - 1]);
+	if (index < tempTopFifteen.size()){
+		tempSearchTaskIndex = searchTaskDisplay(tempTopFifteen[index - 1]);
 	}
 	else {
-		tempSearchTaskIndex = index - 1 - tempTopTen.size() + retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size();
+		tempSearchTaskIndex = index - 1 - tempTopFifteen.size() + retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size();
 	}
 
 	vector<Task>::iterator iter = activeTask.begin();
@@ -799,14 +767,14 @@ std::string Storage::editSearchTask(int index, std::string information, date tem
 std::string Storage::editTask(int index, std::string information, date tempStartDate, date tempEndDate, ptime tempStartTime, ptime tempEndTime){
 	using namespace std;
 	ostringstream feedbackMessage;
-	vector<string> tempTopTen = retrieveTopTen();
+	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
 	int tempSearchTaskIndex;
-	if (index < tempTopTen.size()){
-		tempSearchTaskIndex = searchTaskDisplay(tempTopTen[index - 1]);
+	if (index < tempTopFifteen	.size()){
+		tempSearchTaskIndex = searchTaskDisplay(tempTopFifteen[index - 1]);
 	}
 	else {
-		tempSearchTaskIndex = index - 1 - tempTopTen.size() + retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size();
+		tempSearchTaskIndex = index - 1 - tempTopFifteen.size() + retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size();
 	}
 	Task temporaryTask = activeTask[tempSearchTaskIndex];
 	vector<Task>::iterator iter = activeTask.begin();
