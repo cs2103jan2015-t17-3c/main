@@ -33,6 +33,7 @@ private:
 
 	void tokenizeInput(std::string);
 	void rigidTokenizer(std::string);
+	std::vector<std::string> recurringTokenizer(std::string);
 	std::string getCommandType(std::string);
 	int getIndexReference(std::string);
 	std::string getUserTask(std::string);
@@ -47,7 +48,7 @@ private:
 	void assignToday(date&);
 	bool isRigid(std::string);
 	bool isDeadline(std::string);
-	std::string getFrequency(std::string);
+	void getRecurringParameter(std::string,std::string&,int&,date&);
 
 public:
 	Parser();

@@ -45,7 +45,7 @@ public:
 
 	boost::gregorian::date standardiseDate(std::string, std::string, std::string,int&,int);
 	boost::gregorian::date standardiseDate(std::string);
-	void completeRecurring(std::string, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&);
+	void completeRecurring(std::string, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&,int,date);
 	bool isDate(std::string);
 };
 

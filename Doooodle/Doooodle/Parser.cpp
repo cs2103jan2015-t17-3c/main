@@ -34,19 +34,20 @@ bool Parser::isRigid(std::string input){
 void Parser::processCommand(std::string input, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
 	std::string commandType;
 	std::string frequency;
-	int indexReference;
+	int recurrence;
+	int dummyIndexReference;
+	date finishDate(not_a_date_time);
 	date startDate(not_a_date_time);
 	date endDate(not_a_date_time);
 	ptime startTime(not_a_date_time);
 	ptime endTime(not_a_date_time);
-	processCommand(input, commandType, userTask, startDate, endDate, startTime, endTime, indexReference);
-	frequency = getFrequency(input);
+	processCommand(input, commandType, userTask, startDate, endDate, startTime, endTime, dummyIndexReference);
+	getRecurringParameter(input, frequency, recurrence, finishDate);
 	vecStartDate.push_back(startDate);
 	vecEndDate.push_back(endDate);
 	vecStartTime.push_back(startTime);
 	vecEndTime.push_back(endTime);
-	frequency = getFrequency(input);
-	dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime);
+	dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime,recurrence,finishDate);
 	
 	return;
 }
@@ -66,8 +67,7 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 		endDate = dateparser.standardiseDate(tokens[4]);
 		startTime = timeparser.standardTime(tokens[3]);
 		endTime = timeparser.standardTime(tokens[5]);
-	}
-	else{
+	}else{
 		tokenizeInput(input);    //tokenize string by white space
 		commandType = getCommandType(input);
 		indexReference = getIndexReference(input);
@@ -308,10 +308,33 @@ void Parser::userTaskParsing(std::string& input){
 	}
 }
 
-std::string Parser::getFrequency(std::string input){
-	size_t position;
-	std::string frequency;
-	position = input.find(RECURRING_INDENTIFIER);
-	frequency = input.substr(position+1, input.size() - position);
-	return frequency;
+void Parser::getRecurringParameter(std::string input,std::string& frequency, int& recurrence, date& finish){
+	std::vector<std::string> items;
+	items=recurringTokenizer(input);
+	if (items.size() >= 2){
+		frequency = items[1];
+	}
+	if (items.size() >= 3){
+		recurrence = atoi(items[2].c_str());
+	}
+	if (items.size() >= 4){
+		finish = dateparser.standardiseDate(items[3]);
+	}
+	return;
+}
+
+std::vector<std::string> Parser::recurringTokenizer(std::string input){
+	std::vector<std::string> recurringTokens;
+	char str[1000] = " ";
+	for (int i = 0; i < input.size(); i++){
+		str[i] = input[i];
+	}
+	char * pch;
+	pch = strtok(str, ";");
+	while (pch != NULL)
+	{
+		recurringTokens.push_back(pch);
+		pch = strtok(NULL, ";");
+	}
+	return recurringTokens;
 }
