@@ -45,7 +45,7 @@ public:
 	int monthToNum(std::string);
 	boost::gregorian::date standardiseDate(std::string, std::string, std::string,int&,int);
 	boost::gregorian::date standardiseDate(std::string);
-	void completeRecurring(std::string, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&,int,date);
+	void completeRecurring(std::string, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&,int,int,date);
 	bool isDate(std::string);
 };
 

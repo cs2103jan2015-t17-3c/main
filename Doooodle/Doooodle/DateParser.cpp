@@ -238,7 +238,7 @@ void DateParser::removeSlash(std::string& input){
 }
 
 
-void DateParser::completeRecurring(std::string frequency, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime, int recurrence, date finishDate){
+void DateParser::completeRecurring(std::string frequency, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime, int recurrence,int interval, date finishDate){
 	date d;
 	switch (frequencyCat(frequency)){
 	case DAILY:
@@ -246,7 +246,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 			recurrence = NO_OF_RECURRING_DAILY_DEFAULT;
 		}
 		for (int i = 0; i < recurrence; i++){
-			d = vecEndDate[i] + days(1);
+			d = vecEndDate[i] + days(interval);
 			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
 				vecEndDate.push_back(d);
 			}
@@ -257,7 +257,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 				vecStartDate.push_back(EMPTY_DATE);
 			}
 			else {
-				d = vecStartDate[i] + days(1);
+				d = vecStartDate[i] + days(interval);
 				vecStartDate.push_back(d);
 			}
 		}
@@ -267,7 +267,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 			recurrence = NO_OF_RECURRING_WEEKLY_DEFAULT;
 		}
 		for (int i = 0; i < recurrence; i++){
-			d = vecEndDate[i] + weeks(1);
+			d = vecEndDate[i] + weeks(interval);
 			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
 				vecEndDate.push_back(d);
 			}
@@ -278,7 +278,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 				vecStartDate.push_back(EMPTY_DATE);
 			}
 			else {
-				d = vecStartDate[i] + weeks(1);
+				d = vecStartDate[i] + weeks(interval);
 				vecStartDate.push_back(d);
 			}
 		}
@@ -288,7 +288,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 			recurrence = NO_OF_RECURRING_MONTHLY_DEFAULT;
 		}
 		for (int i = 0; i < recurrence; i++){
-			d = vecEndDate[i] + months(1);
+			d = vecEndDate[i] + months(interval);
 			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
 				vecEndDate.push_back(d);
 			}
@@ -299,7 +299,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 				vecStartDate.push_back(EMPTY_DATE);
 			}
 			else {
-				d = vecStartDate[i] + months(1);
+				d = vecStartDate[i] + months(interval);
 				vecStartDate.push_back(d);
 			}
 		}
@@ -309,7 +309,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 			recurrence = NO_OF_RECURRING_YEARLY_DEFAULT;
 		}
 		for (int i = 0; i < recurrence; i++){
-			d = vecEndDate[i] + years(1);
+			d = vecEndDate[i] + years(interval);
 			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
 				vecEndDate.push_back(d);
 			}
@@ -320,7 +320,7 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 				vecStartDate.push_back(EMPTY_DATE);
 			}
 			else {
-				d = vecStartDate[i] + years(1);
+				d = vecStartDate[i] + years(interval);
 				vecStartDate.push_back(d);
 			}
 		}

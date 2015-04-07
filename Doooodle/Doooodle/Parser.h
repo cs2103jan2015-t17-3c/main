@@ -50,8 +50,9 @@ private:
 	void assignToday(date&);
 	bool isRigid(std::string);
 	bool isDeadline(std::string);
-	void getRecurringParameter(std::string,std::string&,int&,date&);
+	void getRecurringParameter(std::string,std::string&,int&,int&,date&);
 	void monthParsingForSearch(std::string&);
+	void frequencyParsing(std::string,int&,std::string&);
 
 public:
 	Parser();

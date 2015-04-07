@@ -37,6 +37,7 @@ void Parser::processCommand(std::string input, std::string& userTask, std::vecto
 	std::string commandType;
 	std::string frequency;
 	int recurrence=-1;
+	int interval = 1;
 	int dummyIndexReference;
 	date finishDate(not_a_date_time);
 	date startDate(not_a_date_time);
@@ -44,12 +45,12 @@ void Parser::processCommand(std::string input, std::string& userTask, std::vecto
 	ptime startTime(not_a_date_time);
 	ptime endTime(not_a_date_time);
 	processCommand(input, commandType, userTask, startDate, endDate, startTime, endTime, dummyIndexReference);
-	getRecurringParameter(input, frequency, recurrence, finishDate);
+	getRecurringParameter(input, frequency, interval,recurrence, finishDate);
 	vecStartDate.push_back(startDate);
 	vecEndDate.push_back(endDate);
 	vecStartTime.push_back(startTime);
 	vecEndTime.push_back(endTime);
-	dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime,recurrence,finishDate);
+	dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime,recurrence,interval,finishDate);
 	
 	return;
 }
@@ -312,11 +313,11 @@ void Parser::userTaskParsing(std::string& input){
 	}
 }
 
-void Parser::getRecurringParameter(std::string input,std::string& frequency, int& recurrence, date& finish){
+void Parser::getRecurringParameter(std::string input,std::string& frequency, int& interval, int& recurrence, date& finish){
 	std::vector<std::string> items;
 	items=recurringTokenizer(input);
 	if (items.size() >= 2){
-		frequency = items[1];
+		frequencyParsing(items[1], interval, frequency);
 	}
 	if (items.size() >= 3){
 		if (dateparser.isDate(items[2])){
@@ -364,6 +365,17 @@ void Parser::monthParsingForSearch(std::string& input){
 				oss << std::to_string(0)<<std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
 			}
 			tokens[i] = oss.str();
+			break;
+		}
+	}
+	return;
+}
+
+void Parser::frequencyParsing(std::string input,int& interval,std::string& frequency){
+	for (int i = 0; i < input.length(); i++){
+		if (isdigit(input[i])){
+			frequency = input.substr(0, i);
+			interval = atoi(input.substr(i, input.length() - i).c_str());
 			break;
 		}
 	}
