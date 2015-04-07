@@ -117,7 +117,7 @@ bool DateParser::isDate(std::string input){
 		if (input == TIME_IDENTIFIERS[i]){
 			return true;
 		}
-		else if (((atoi(input.c_str()) >= 101 && input.length() == 4)) || ((atoi(input.c_str()) >= 20150101 && input.length() == 8))){
+		else if (((atoi(input.c_str()) >= 101 && input.length() == 4)) || ((atoi(input.c_str()) >= 19000100 && input.length() == 8))){
 			return true;
 			}
 	return false;
@@ -127,7 +127,7 @@ date DateParser::standardiseDate(std::string input){
 	date d;
 	date temp(max_date_time);
 	removeSlash(input);
-	if (atoi(input.c_str()) > 20150101){
+	if (atoi(input.c_str()) > 19000100){
 		try{
 			d = from_undelimited_string(input);
 		}
@@ -203,7 +203,7 @@ date DateParser::standardiseDate(std::string before,std::string input,std::strin
 		}
 	}
 	removeSlash(input);
-	if (atoi(input.c_str()) > 20150101){
+	if (atoi(input.c_str()) > 19000100){
 		try{
 			d = from_undelimited_string(input);
 		}

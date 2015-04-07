@@ -33,7 +33,6 @@ private:
 	static const date EMPTY_DATE;
 	static const ptime EMPTY_TIME;
 	int weekdaysToNum(std::string);
-	int monthToNum(std::string);
 	int nearfutureToNum(std::string);
 	void removeSlash(std::string&);
 	int getDay(std::string);
@@ -43,6 +42,7 @@ public:
 	DateParser();
 	~DateParser();
 
+	int monthToNum(std::string);
 	boost::gregorian::date standardiseDate(std::string, std::string, std::string,int&,int);
 	boost::gregorian::date standardiseDate(std::string);
 	void completeRecurring(std::string, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&,int,date);

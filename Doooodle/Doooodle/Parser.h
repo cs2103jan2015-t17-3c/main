@@ -10,7 +10,7 @@
 #include <fstream>
 #include <algorithm>
 #include <boost/date_time.hpp>
-#include <sstream>
+#include <ostream>
 
 using namespace boost::gregorian;
 using namespace boost::posix_time;
@@ -29,6 +29,8 @@ private:
 	static const int NO_OF_START_TIME_INDICATORS;
 	static const int NO_OF_END_TIME_INDICATORS;
 	static const char RECURRING_INDENTIFIER;
+	static const std::string DEFAULT_YEAR_SEARCH;
+	static const std::string DEFAULT_DAY_SEARCH;
 	std::vector<std::string> tokens;
 
 	void tokenizeInput(std::string);
@@ -49,6 +51,7 @@ private:
 	bool isRigid(std::string);
 	bool isDeadline(std::string);
 	void getRecurringParameter(std::string,std::string&,int&,date&);
+	void monthParsingForSearch(std::string&);
 
 public:
 	Parser();

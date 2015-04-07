@@ -7,6 +7,8 @@ const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
 const std::string Parser::INVALID_DATE = "Invalid Date";
 const std::string Parser::EMPTY = "Empty Task";
+const std::string Parser::DEFAULT_YEAR_SEARCH="1900";
+const std::string Parser::DEFAULT_DAY_SEARCH = "01";
 const std::string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const std::string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
 
@@ -70,6 +72,9 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 	}else{
 		tokenizeInput(input);    //tokenize string by white space
 		commandType = getCommandType(input);
+		if (commandType == "search"){
+			monthParsingForSearch(input);
+		}
 		indexReference = getIndexReference(input);
 		userTask = getUserTask(input);
 		startDate = getStartDate(pos);
@@ -102,7 +107,6 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 		ptime t(endDate, hours(23)+minutes(59)+seconds(59));
 		endTime = t;
 	}
-
 	return;
 }
 
@@ -345,4 +349,23 @@ std::vector<std::string> Parser::recurringTokenizer(std::string input){
 		pch = strtok(NULL, ";");
 	}
 	return recurringTokens;
+}
+
+void Parser::monthParsingForSearch(std::string& input){
+	size_t pos;
+	size_t nextpos;
+	std::ostringstream oss;
+	oss << DEFAULT_YEAR_SEARCH;
+	for (int i = 0; i < tokens.size(); i++){
+		if (dateparser.monthToNum(tokens[i]) <= 12 && dateparser.monthToNum(tokens[i]) >= 1){
+			if (dateparser.monthToNum(tokens[i]) >= 10){
+				oss << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
+			}else{
+				oss << std::to_string(0)<<std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
+			}
+			tokens[i] = oss.str();
+			break;
+		}
+	}
+	return;
 }
