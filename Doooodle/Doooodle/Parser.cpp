@@ -34,7 +34,7 @@ bool Parser::isRigid(std::string input){
 void Parser::processCommand(std::string input, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
 	std::string commandType;
 	std::string frequency;
-	int recurrence;
+	int recurrence=-1;
 	int dummyIndexReference;
 	date finishDate(not_a_date_time);
 	date startDate(not_a_date_time);
@@ -315,10 +315,18 @@ void Parser::getRecurringParameter(std::string input,std::string& frequency, int
 		frequency = items[1];
 	}
 	if (items.size() >= 3){
-		recurrence = atoi(items[2].c_str());
+		if (dateparser.isDate(items[2])){
+			finish = dateparser.standardiseDate(items[2]);
+		}else{
+			recurrence = atoi(items[2].c_str());
+		}
 	}
 	if (items.size() >= 4){
-		finish = dateparser.standardiseDate(items[3]);
+		if (dateparser.isDate(items[3])){
+			finish = dateparser.standardiseDate(items[3]);
+		}else{
+			recurrence = atoi(items[3].c_str());
+		}
 	}
 	return;
 }

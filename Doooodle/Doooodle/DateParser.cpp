@@ -243,193 +243,85 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 	switch (frequencyCat(frequency)){
 	case DAILY:
 		if (recurrence == -1){
-			for (int i = 0; i < NO_OF_RECURRING_DAILY_DEFAULT; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + days(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + days(1);
-				if (finishDate != EMPTY_DATE && (d<finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
-			}
+			recurrence = NO_OF_RECURRING_DAILY_DEFAULT;
 		}
-		else if (recurrence > -1){
-			for (int i = 0; i < recurrence; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + days(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + days(1);
-				if (finishDate != EMPTY_DATE && (d < finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
+		for (int i = 0; i < recurrence; i++){
+			d = vecEndDate[i] + days(1);
+			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+				vecEndDate.push_back(d);
+			}
+			else{
+				break;
+			}
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}
+			else {
+				d = vecStartDate[i] + days(1);
+				vecStartDate.push_back(d);
 			}
 		}
 		break;
 	case WEEKLY:
 		if (recurrence == -1){
-			for (int i = 0; i < NO_OF_RECURRING_WEEKLY_DEFAULT; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + weeks(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + weeks(1);
-				if (finishDate != EMPTY_DATE && (d < finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
-			}
+			recurrence = NO_OF_RECURRING_WEEKLY_DEFAULT;
 		}
-		else if (recurrence > -1){
-			for (int i = 0; i < recurrence; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + weeks(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + weeks(1);
-				if (finishDate != EMPTY_DATE && (d < finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
+		for (int i = 0; i < recurrence; i++){
+			d = vecEndDate[i] + weeks(1);
+			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+				vecEndDate.push_back(d);
+			}
+			else{
+				break;
+			}
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}
+			else {
+				d = vecStartDate[i] + weeks(1);
+				vecStartDate.push_back(d);
 			}
 		}
 		break;
 	case MONTHLY:
 		if (recurrence == -1){
-			for (int i = 0; i < NO_OF_RECURRING_MONTHLY_DEFAULT; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + months(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + months(1);
-				if (finishDate != EMPTY_DATE && (d < finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
-			}
+			recurrence = NO_OF_RECURRING_MONTHLY_DEFAULT;
 		}
-		else if (recurrence > -1){
-			for (int i = 0; i < recurrence; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + months(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + months(1);
-				if (finishDate != EMPTY_DATE && (d < finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
+		for (int i = 0; i < recurrence; i++){
+			d = vecEndDate[i] + months(1);
+			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+				vecEndDate.push_back(d);
+			}
+			else{
+				break;
+			}
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}
+			else {
+				d = vecStartDate[i] + months(1);
+				vecStartDate.push_back(d);
 			}
 		}
 		break;
 	case YEARLY:
 		if (recurrence == -1){
-			for (int i = 0; i < NO_OF_RECURRING_YEARLY_DEFAULT; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + years(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + years(1);
-				if (finishDate != EMPTY_DATE && (d < finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
-			}
+			recurrence = NO_OF_RECURRING_YEARLY_DEFAULT;
 		}
-		else if (recurrence > -1){
-			for (int i = 0; i < recurrence; i++){
-				if (vecStartDate[i] == EMPTY_DATE){
-					vecStartDate.push_back(EMPTY_DATE);
-				}
-				else {
-					d = vecStartDate[i] + years(1);
-					if (finishDate != EMPTY_DATE && d < finishDate){
-						vecStartDate.push_back(d);
-					}
-					else{
-						break;
-					}
-				}
-				d = vecEndDate[i] + years(1);
-				if (finishDate != EMPTY_DATE && (d < finishDate || vecStartDate.size() == i + 2)){
-					vecEndDate.push_back(d);
-				}
-				else{
-					break;
-				}
+		for (int i = 0; i < recurrence; i++){
+			d = vecEndDate[i] + years(1);
+			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+				vecEndDate.push_back(d);
+			}
+			else{
+				break;
+			}
+			if (vecStartDate[i] == EMPTY_DATE){
+				vecStartDate.push_back(EMPTY_DATE);
+			}
+			else {
+				d = vecStartDate[i] + years(1);
+				vecStartDate.push_back(d);
 			}
 		}
 	}
