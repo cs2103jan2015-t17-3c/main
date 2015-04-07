@@ -23,7 +23,7 @@ Storage::Storage(void){
 	
 	
 
-	void loadTasks(std::string filename, std::vector<Task>& target ){
+	void Storage::loadTasks(std::string filename, std::vector<Task>& target ){
 		using namespace std;
 	ifstream fl_h; //file handle
 	fl_h.open(filename);
@@ -472,7 +472,6 @@ void Storage::sortStorage(){
 
 void Storage::writeToFile(){
 	using namespace std;
-
 	ofstream outputFile;
 	outputFile.open("doooodle.txt");
 	for (int index = 0; index < activeTask.size(); index++){
@@ -480,12 +479,10 @@ void Storage::writeToFile(){
 	}
 	outputFile.close();	
 	
-
 	ofstream tempStorage;
 	tempStorage.open("tempStorage.txt"/*, /*ios::in | ios::out | ios::binary*/);
 	int index;
 	for (index = 0; index < activeTask.size()-1; index++){
-		//tempStorage.seekp(0, ios::end); //will disscuss this later,this sets the file write pointer to end
 		tempStorage << activeTask[index].taskDetails << endl;
 		tempStorage << to_iso_string(activeTask[index].startDate) << endl;
 		tempStorage << to_iso_string(activeTask[index].endDate) << endl;
@@ -493,9 +490,6 @@ void Storage::writeToFile(){
 		tempStorage << to_iso_string(activeTask[index].endTime) << endl;
 		tempStorage << activeTask[index].taskDisplay << endl;
 		tempStorage << activeTask[index].taskType << endl;
-
-		//tempStorage.write((char*)&activeTask[index], sizeof(Task));
-		//tempStorage << "good \n";
 	}
 	tempStorage << activeTask[index].taskDetails << endl;
 	tempStorage << to_iso_string(activeTask[index].startDate) << endl;
@@ -504,35 +498,33 @@ void Storage::writeToFile(){
 	tempStorage << to_iso_string(activeTask[index].endTime) << endl;
 	tempStorage << activeTask[index].taskDisplay << endl;
 	tempStorage << activeTask[index].taskType;
-
-
 	tempStorage.close();
-	/*	fl_h.seekg(num*sizeof(DtbRec), ios::beg); //move the read pointer to where the rec is
-	fl_h.read((char*)&xRec, sizeof(DtbRec)); //read it
-	xRec.dispdata();
-	*/
 
-	ofstream tempArchive;
-	tempArchive.open("tempArchive.txt"/*, /*ios::in | ios::out | ios::binary*/);
-	for (index = 0; index < archivedTask.size() - 1; index++){
-		tempArchive << archivedTask[index].taskDetails << endl;
-		tempArchive << to_iso_string(archivedTask[index].startDate) << endl;
-		tempArchive << to_iso_string(archivedTask[index].endDate) << endl;
-		tempArchive << to_iso_string(archivedTask[index].startTime) << endl;
-		tempArchive << to_iso_string(archivedTask[index].endTime) << endl;
-		tempArchive << archivedTask[index].taskDisplay << endl;
-		tempArchive << archivedTask[index].taskType << endl;
+	if (archivedTask.size() != 0){
+		ofstream tempArchive;
+		tempArchive.open("tempArchive.txt"/*, /*ios::in | ios::out | ios::binary*/);
+		int archiveIndex = 0;
+		for (archiveIndex = 0; archiveIndex < archivedTask.size() - 1; archiveIndex++){
+
+			//cout << archivedTask.size();
+			tempArchive << archivedTask[archiveIndex].taskDetails << endl;
+			tempArchive << to_iso_string(archivedTask[archiveIndex].startDate) << endl;
+			tempArchive << to_iso_string(archivedTask[archiveIndex].endDate) << endl;
+			tempArchive << to_iso_string(archivedTask[archiveIndex].startTime) << endl;
+			tempArchive << to_iso_string(archivedTask[archiveIndex].endTime) << endl;
+			tempArchive << archivedTask[archiveIndex].taskDisplay << endl;
+			tempArchive << archivedTask[archiveIndex].taskType << endl;
+		}
+		tempArchive << archivedTask[archiveIndex].taskDetails << endl;
+		tempArchive << to_iso_string(archivedTask[archiveIndex].startDate) << endl;
+		tempArchive << to_iso_string(archivedTask[archiveIndex].endDate) << endl;
+		tempArchive << to_iso_string(archivedTask[archiveIndex].startTime) << endl;
+		tempArchive << to_iso_string(archivedTask[archiveIndex].endTime) << endl;
+		tempArchive << archivedTask[archiveIndex].taskDisplay << endl;
+		tempArchive << archivedTask[archiveIndex].taskType;
+		tempArchive.close();
 	}
-	tempArchive << archivedTask[index].taskDetails << endl;
-	tempArchive << to_iso_string(archivedTask[index].startDate) << endl;
-	tempArchive << to_iso_string(archivedTask[index].endDate) << endl;
-	tempArchive << to_iso_string(archivedTask[index].startTime) << endl;
-	tempArchive << to_iso_string(archivedTask[index].endTime) << endl;
-	tempArchive << archivedTask[index].taskDisplay << endl;
-	tempArchive << archivedTask[index].taskType;
 
-
-	tempArchive.close();
 }
 
 void Storage::changeDirectory(std::string newDirectory){
