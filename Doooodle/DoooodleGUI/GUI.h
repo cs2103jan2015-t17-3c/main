@@ -249,7 +249,7 @@ private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows:
 		std::string message = logic->receiveCommand(input);
 		storage = logic->getStorage();
 		std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
-		std::vector<std::string> topTen = storage->retrieveTopTen();
+		std::vector<std::string> topTen = storage->retrieveTopFifteen();
 
 		label1->Text = "Floating Tasks [" + Convert::ToUInt32(logic->getFloatingSize()) + "]:";
 		if (floatingTask.size() > 0) {
