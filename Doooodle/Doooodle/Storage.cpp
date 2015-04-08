@@ -268,8 +268,44 @@ std::string Storage::addFloatingTask(std::string task){
 	return taskDetailsFeedback(temp);
 };
 
+
+void Storage::registerColourIndex(Task temp){
+	date d(day_clock::local_day());
+	ptime t(second_clock::local_time());
+
+	if (temp.taskType == DEADLINE){
+		if (temp.endDate < d){
+			colourIndex.push_back(0);
+		}
+		else
+			if (temp.endDate == d && temp.endTime < t){
+				colourIndex.push_back(0);
+			}
+			else
+				colourIndex.push_back(1);
+			colourIndex.push_back(1);
+		}
+	else if (temp.taskType == NORMAL){
+		if(temp.startDate < d){
+			colourIndex.push_back(0);
+		}
+	else
+		if (temp.startDate == d && temp.startTime < t){
+			colourIndex.push_back(0);
+		}
+		else
+			colourIndex.push_back(2);
+	}
+	else if (temp.taskType == FLOATING){
+		colourIndex.push_back(3);
+
+	}
+	}
+
+
 std::vector<std::string> Storage::retrieveTopFifteen(){
 	using namespace std;
+	colourIndex.clear();
 	vector<int> sortedTaskIndex;
 	vector<string> topTasks;
 	int i;
@@ -277,7 +313,7 @@ std::vector<std::string> Storage::retrieveTopFifteen(){
 	for (i = 0; i < activeTask.size(); i++){
 		if (activeTask[i].taskType == DEADLINE){
 			sortedTaskIndex.push_back(i);
-			
+			registerColourIndex(activeTask[i]);
 			count++;
 		}
 		if (count == 3){
@@ -287,6 +323,7 @@ std::vector<std::string> Storage::retrieveTopFifteen(){
 	for (i = 0; i < activeTask.size(); i++){
 		if (activeTask[i].taskType == NORMAL){
 			sortedTaskIndex.push_back(i);
+			registerColourIndex(activeTask[i]);
 			count++;
 		}
 		if (count == 5){
@@ -302,6 +339,8 @@ std::vector<std::string> Storage::retrieveTopFifteen(){
 		}
 		if (!repeat && sortedTaskIndex.size()!=0){
 			sortedTaskIndex.push_back(i);
+			registerColourIndex(activeTask[i]);
+
 			count++;
 		}
 		if (count == 15){
@@ -370,10 +409,13 @@ std::string Storage::reschedule(int index, date tempStartDate, date tempEndDate,
 
 std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask){
 	using namespace std;
+	colourIndex.clear();
 	vector<string> displayedTasks;
 	if (typeTask == "normal"){
 		for (int i = 0; i < activeTask.size(); i++){
 			if (activeTask[i].taskType == NORMAL){
+				registerColourIndex(activeTask[i]);
+
 				ostringstream oneTask;
 				oneTask << setfill('0') << setw(2) << i + 1 << ". " << activeTask[i].taskDisplay;
 				displayedTasks.push_back(oneTask.str());
@@ -385,6 +427,8 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask){
 			for (int i = 0; i < activeTask.size(); i++){
 				if (activeTask[i].taskType == FLOATING){
 					ostringstream oneTask;
+					registerColourIndex(activeTask[i]);
+
 					oneTask << setfill('0') << setw(2) << i + 1 << ". " << activeTask[i].taskDisplay;
 					displayedTasks.push_back(oneTask.str());
 				}
@@ -394,6 +438,8 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask){
 		if (typeTask == "deadline"){
 			for (int i = 0; i < activeTask.size(); i++){
 				if (activeTask[i].taskType == DEADLINE){
+					registerColourIndex(activeTask[i]);
+
 					ostringstream oneTask;
 					oneTask << setfill('0') << setw(2) << i + 1 << ". " << activeTask[i].taskDisplay;
 					displayedTasks.push_back(oneTask.str());
@@ -620,7 +666,8 @@ void Storage::registerSearchedStuff(std::vector<Task>::iterator iter, bool& find
 
 std::vector<std::string> Storage::searchTask(std::string thingsToSearch,date dateToSearch, ptime timeToSearch ){
 using namespace std;
-date specialDate(1990,Jan,10);
+date specialDate(1900,Jan,10);
+colourIndex.clear();
 vector<string> searchedStuff;
 	size_t found = string::npos;
 	tempSearchIterator.clear();
@@ -636,31 +683,46 @@ vector<string> searchedStuff;
 		}
 		if (found != string::npos){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			//colourIndex.push_back(2);
+			registerColourIndex(*iter);
+
 			foundAlready = true;
 		}
 		if (dateToSearch == iter->startDate && iter->startDate != nonDate && !foundAlready){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			registerColourIndex(*iter);
+
 			foundAlready = true;
 		}
 		if	(dateToSearch == iter->endDate && iter->endDate != nonDate && !foundAlready) {
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			registerColourIndex(*iter);
+
 			foundAlready = true;
 		}
 		if (timeToSearch == iter->startTime && iter->startTime != nonTime && !foundAlready){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			registerColourIndex(*iter);
+
 			foundAlready = true;
 		}
 		if (timeToSearch == iter->endTime && iter->endTime != nonTime && !foundAlready){
 		registerSearchedStuff(iter, findIt, searchedStuff, count);
+		registerColourIndex(*iter);
+
 		foundAlready = true;
 		}	
 	    // * dateToSearch has problem with year() plz note
 		if (dateToSearch != nonDate && dateToSearch.year() == specialDate.year() && dateToSearch.month() == iter->startDate.month() && !foundAlready){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			registerColourIndex(*iter);
+
 			foundAlready = true;
 		}
 		if (dateToSearch != nonDate && dateToSearch.year() == specialDate.year() && dateToSearch.month() == iter->endDate.month() && !foundAlready){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			registerColourIndex(*iter);
+
 			foundAlready = true;
 		}
 
@@ -734,6 +796,10 @@ std::string Storage::deleteSearchTask(int index){
 		feedbackMessage << tempDisplay << " is successfully deleted.\n";
 		return feedbackMessage.str();
 	}
+}
+//new
+std::vector<int> Storage::retrieveColourIndex(){
+	return colourIndex;
 }
 
 std::string Storage::completeSearchTask(int index){
