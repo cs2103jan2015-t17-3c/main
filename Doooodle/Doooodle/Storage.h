@@ -22,6 +22,9 @@ enum TYPE_OF_TASK{
 	DEADLINE, FLOATING, NORMAL
 };
 
+enum TYPE_OF_SPECIAL_TASK{
+	NONRECUR,RECUR
+};
 struct Task{
 	std::string taskDetails;
 	date startDate;
@@ -29,6 +32,7 @@ struct Task{
 	ptime endTime;
 	ptime startTime;
 	TYPE_OF_TASK taskType;
+	TYPE_OF_SPECIAL_TASK specialTaskType;
 	std::string taskDisplay;
 };
 
@@ -82,6 +86,7 @@ public:
 	int retrieveFloatingSize();
 	int searchTaskDisplay(std::string);
 	void loadTasks(std::string , std::vector<Task>&);
+	std::vector<int> findRecurIndex(std::string, TYPE_OF_SPECIAL_TASK);
 
 
 
