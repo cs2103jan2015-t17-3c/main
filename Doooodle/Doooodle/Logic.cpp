@@ -11,6 +11,7 @@ const std::string Logic::STRING_DISPLAY = "display";
 const std::string Logic::STRING_DELETE = "delete";
 const std::string Logic::STRING_EDIT = "edit";
 const std::string Logic::STRING_EXIT = "exit";
+const std::string Logic::STRING_HELP = "help";
 const std::string Logic::STRING_INVALID = "ERROR!";
 const std::string Logic::STRING_RESCHEDULE = "reschedule";
 const std::string Logic::STRING_SEARCH = "search";
@@ -165,7 +166,10 @@ std::string Logic::executeTask(TASK_TYPE taskType, int index) {
 		displayMessageToUI = " ";
 		break;
 	case CD:
-		storage.changeDirectory(commandDetails[index]->task);
+		displayMessage = storage.changeDirectory(commandDetails[index]->task);
+		break;
+	case HELP:
+		displayMessageToUI = " ";
 		break;
 	case INVALID:
 		displayMessageToUI = STRING_INVALID;
@@ -220,6 +224,9 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	}
 	else if (commandDetails[index]->commandType == STRING_CD) {
 		return CD;
+	}
+	else if (commandDetails[index]->commandType == STRING_HELP) {
+		return HELP;
 	}
 	else return INVALID;
 }
