@@ -284,9 +284,9 @@ void Storage::registerColourIndex(Task temp){
 			if (temp.endDate == d && temp.endTime < t){
 				colourIndex.push_back(0);
 			}
-			else
+			else{
 				colourIndex.push_back(1);
-			colourIndex.push_back(1);
+			}
 		}
 	else if (temp.taskType == NORMAL){
 		if(temp.startDate < d){
