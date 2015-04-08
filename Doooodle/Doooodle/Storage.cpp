@@ -600,6 +600,14 @@ int Storage::searchTaskDisplay(std::string thingsToSearch){
 
 std::string Storage::deleteTask(int index){
 	using namespace std;
+	if (index > activeTask.size() || index <= 0){
+	
+
+		numberOfUndoActions.push(0);
+
+		return "Wrong index.\n";
+	}
+
 	ostringstream feedbackMessage;
 	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
@@ -638,6 +646,12 @@ std::string Storage::deleteTask(int index){
 
 std::string Storage::completeTask(int index){
 	using namespace std;
+	
+	if (index > activeTask.size() || index <= 0){
+		numberOfUndoActions.push(0);
+
+		return "Wrong index.\n";
+	}
 
 	ostringstream feedbackMessage;
 	vector<string> tempTopFifteen = retrieveTopFifteen();
@@ -757,6 +771,9 @@ std::string Storage::undoAdd(){
 		taskDetailsHistory.pop();
 	}
 	numberOfUndoActions.pop();
+	if (n == 0){
+		return "Nothing to undo.\n";
+	}
 	return MESSAGE_UNDO;
 }
 
@@ -769,10 +786,16 @@ std::string Storage::undoDelete(){
 	}
 	numberOfUndoActions.pop();
 	sortStorage();
+	if (n == 0){
+		return "Nothing to undo.\n";
+	}
 	return MESSAGE_UNDO;
 }
 
 std::string Storage::undoEdit(){
+	if (numberOfUndoActions.top() == 0){
+		return "Nothing to undo.\n";
+	}
 	numberOfUndoActions.push(numberOfUndoActions.top());
 	std::cout << numberOfUndoActions.top();
 	undoAdd();
@@ -782,6 +805,14 @@ std::string Storage::undoEdit(){
 
 std::string Storage::deleteSearchTask(int index){
 	using namespace std;
+	if (index > tempSearchIterator.size() || index <= 0){
+		numberOfUndoActions.push(0);
+
+		return "Wrong index.\n";
+	}
+	
+	
+	
 	ostringstream feedbackMessage;
 	if (tempSearchIterator[index - 1]->specialTaskType == RECUR){
 		vector<int> recurIndex = findRecurIndex(tempSearchIterator[index - 1]->taskDetails, RECUR);
@@ -810,6 +841,13 @@ std::vector<int> Storage::retrieveColourIndex(){
 
 std::string Storage::completeSearchTask(int index){
 	using namespace std;
+	using namespace std;
+	if (index > tempSearchIterator.size() || index <= 0){
+		numberOfUndoActions.push(0);
+
+		return "Wrong index.\n";
+	}
+
 	ostringstream feedbackMessage;
 	string tempDisplay = (tempSearchIterator[index - 1])->taskDetails;
 	archivedTask.push_back(*tempSearchIterator[index - 1]);
@@ -820,6 +858,12 @@ std::string Storage::completeSearchTask(int index){
 
 std::string Storage::editSearchTask(int index, std::string information, date tempStartDate, date tempEndDate, ptime tempStartTime, ptime tempEndTime){
 	using namespace std;
+	if (index > tempSearchIterator.size() || index <= 0){
+		numberOfUndoActions.push(0);
+
+		return "Wrong index.\n";
+	}
+
 	Task temporaryTask = *tempSearchIterator[index - 1];
 	//deleteSearchTask(index);
 	if (temporaryTask.specialTaskType == RECUR){
@@ -901,6 +945,12 @@ std::vector<int> Storage::findRecurIndex(std::string info, TYPE_OF_SPECIAL_TASK 
 
 std::string Storage::editTask(int index, std::string information, date tempStartDate, date tempEndDate, ptime tempStartTime, ptime tempEndTime){
 	using namespace std;
+	if (index > activeTask.size() || index <= 0){
+		numberOfUndoActions.push(0);
+
+		return "Wrong index.\n";
+	}
+
 	ostringstream feedbackMessage;
 	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
