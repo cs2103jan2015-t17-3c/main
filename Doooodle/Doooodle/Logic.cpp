@@ -80,7 +80,7 @@ int Logic::getFloatingSize(void) {
 	return storage.retrieveFloatingSize();
 }
 
-std::vector<int> getColourIndex{
+std::vector<int> Logic::getColourIndex(void){
 	return storage.retrieveColourIndex();
 }
 
