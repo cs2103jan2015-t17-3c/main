@@ -118,9 +118,9 @@ namespace DoooodleGUI {
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(588, 366);
+			this->pictureBox1->Location = System::Drawing::Point(583, 358);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(185, 38);
+			this->pictureBox1->Size = System::Drawing::Size(211, 46);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 3;
 			this->pictureBox1->TabStop = false;
@@ -162,6 +162,7 @@ namespace DoooodleGUI {
 			this->label3->BackColor = System::Drawing::Color::Transparent;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Gabriola", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
+			this->label3->ForeColor = System::Drawing::Color::Black;
 			this->label3->Location = System::Drawing::Point(8, 35);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(140, 50);
