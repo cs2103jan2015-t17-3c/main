@@ -83,7 +83,9 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 		endTime = getEndTime(pos);
 	}
 	if (commandType == "display"){
-		userTaskParsing(userTask);
+		if (!userTaskParsing(userTask)){
+			commandType = EMPTY;
+		}
 	}
 	//date or time is identifed but not correct date format
 	if (startDate == dmax || endDate == dmax || startTime==pmax || endTime==pmax){
@@ -135,12 +137,17 @@ void Parser::rigidTokenizer(std::string input){
 
 std::string Parser::getCommandType(std::string input){
 	std::string task;
-	task = tokens[POSITION_COMMAND_TYPE];
+	if (input == "") {
+		task = " ";
+	}
+	else {
+		task = tokens[POSITION_COMMAND_TYPE];
+	}
 	return task;
 }
 
 int Parser::getIndexReference(std::string input){
-	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"|| getCommandType(input)=="complete" || getCommandType(input)=="reschedule"){
+	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"|| getCommandType(input)=="complete"){
 		for (int i = 0; i < tokens.size(); i++){
 			if (isdigit(tokens[i][0])){
 				return atoi(tokens[i].c_str());
@@ -300,7 +307,8 @@ bool Parser::isDeadline(std::string input){
 	return false;
 }
 
-void Parser::userTaskParsing(std::string& input){
+bool Parser::userTaskParsing(std::string& input){
+	bool check = true;
 	if (input == "Normal" || input == "N" || input == "norm" || input == "Norm"){
 		input = "normal";
 	}else if (input == "Float" || input == "float" || input == "Floating"){
@@ -309,7 +317,10 @@ void Parser::userTaskParsing(std::string& input){
 		input = "deadline";
 	}else if (input == "Archive"){
 		input = "archive";
+	}else {
+		check=false;
 	}
+	return check;
 }
 
 void Parser::getRecurringParameter(std::string input,std::string& frequency, int& interval, int& recurrence, date& finish){
