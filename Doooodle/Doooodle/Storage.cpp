@@ -546,7 +546,7 @@ void Storage::writeToFile(){
 			tempArchive << to_iso_string(archivedTask[archiveIndex].endTime) << endl;
 			tempArchive << archivedTask[archiveIndex].taskDisplay << endl;
 			tempArchive << archivedTask[archiveIndex].taskType << endl;
-			tempArchive << archivedTask[index].specialTaskType << endl;
+			tempArchive << archivedTask[archiveIndex].specialTaskType << endl;
 		}
 		tempArchive << archivedTask[archiveIndex].taskDetails << endl;
 		tempArchive << to_iso_string(archivedTask[archiveIndex].startDate) << endl;
@@ -555,7 +555,7 @@ void Storage::writeToFile(){
 		tempArchive << to_iso_string(archivedTask[archiveIndex].endTime) << endl;
 		tempArchive << archivedTask[archiveIndex].taskDisplay << endl;
 		tempArchive << archivedTask[archiveIndex].taskType << endl;
-		tempArchive << archivedTask[index].specialTaskType;
+		tempArchive << archivedTask[archiveIndex].specialTaskType;
 		tempArchive.close();
 	}
 }
@@ -736,7 +736,7 @@ vector<string> searchedStuff;
 		return searchedStuff;
 	}
 	else {
-		searchedStuff.push_back("Item is not there\n");
+		
 		return searchedStuff;
 	}	
 }
