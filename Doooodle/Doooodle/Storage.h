@@ -110,6 +110,7 @@ private:
 	std::vector<std::vector<Task>::iterator> tempOverdueTaskIterator;
 	std::stack<int> numberOfUndoActions;
 	std::string directoryName;
+	std::vector<int> ColourIndex;
 };
 
 #endif
