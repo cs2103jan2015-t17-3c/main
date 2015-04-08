@@ -103,7 +103,7 @@ std::string Logic::executeLogicCore(std::string userInput) {
 }
 
 std::string Logic::executeRecurringTask(std::string userInput, int index) {
-	parser.processCommand(userInput, commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
 	return storage.addRecurringTask(commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
 }
 
