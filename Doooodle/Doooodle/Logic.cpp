@@ -166,7 +166,7 @@ std::string Logic::executeTask(TASK_TYPE taskType, int index) {
 		displayMessageToUI = " ";
 		break;
 	case CD:
-		storage.changeDirectory(commandDetails[index]->task);
+		displayMessage = storage.changeDirectory(commandDetails[index]->task);
 		break;
 	case HELP:
 		displayMessageToUI = " ";

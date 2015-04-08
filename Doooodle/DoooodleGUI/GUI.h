@@ -328,9 +328,7 @@ namespace DoooodleGUI {
 				colourIndex = logic->getColourIndex();
 				label3->Text = "Search Results [" + Convert::ToUInt32(displayMessage.size()) + "]:";
 				if (displayMessage.size()>0) {
-					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
-					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
-					for (int i = 1; i < displayMessage.size(); i++) {
+					for (int i = 0; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
 					}
@@ -345,9 +343,7 @@ namespace DoooodleGUI {
 				colourIndex = logic->getColourIndex();
 				label3->Text = "Below is the list of " + convertStdToManaged(cat) + " tasks:";
 				if (displayMessage.size()>0) {
-					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
-					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
-					for (int i = 1; i < displayMessage.size(); i++) {
+					for (int i = 0; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
 					}
@@ -368,9 +364,7 @@ namespace DoooodleGUI {
 				colourIndex = logic->getColourIndex();
 				displayMessage = topTen;
 				if (displayMessage.size()>0) {
-					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
-					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
-					for (int i = 1; i < displayMessage.size(); i++) {
+					for (int i = 0; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
 					}
