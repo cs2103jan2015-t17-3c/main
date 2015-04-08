@@ -147,7 +147,7 @@ std::string Parser::getCommandType(std::string input){
 }
 
 int Parser::getIndexReference(std::string input){
-	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"|| getCommandType(input)=="complete" || getCommandType(input)=="reschedule"){
+	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"|| getCommandType(input)=="complete"){
 		for (int i = 0; i < tokens.size(); i++){
 			if (isdigit(tokens[i][0])){
 				return atoi(tokens[i].c_str());
