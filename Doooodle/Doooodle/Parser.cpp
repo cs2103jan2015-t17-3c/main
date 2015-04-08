@@ -107,7 +107,6 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 		ptime t(endDate, hours(23)+minutes(59)+seconds(59));
 		endTime = t;
 	}
-	std::cout << endDate << std::endl;
 	return;
 }
 

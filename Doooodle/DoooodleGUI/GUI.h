@@ -273,7 +273,7 @@ namespace DoooodleGUI {
 			else if (index == 1) {
 				return Color::DarkOliveGreen;
 			}
-			else if (index == 4) {
+			else if (index == 2) {
 				return Color::DarkSlateBlue;
 			}
 			else
@@ -309,7 +309,7 @@ namespace DoooodleGUI {
 			//search tasks
 			if (logic->getCommandType(input) == "search") {
 				displayMessage = logic->displaySearchResults(input);
-				colourIndex = logic->getColourIndex;
+				colourIndex = logic->getColourIndex();
 				label3->Text = "Search Results [" + Convert::ToUInt32(displayMessage.size()) + "]:";
 				if (displayMessage.size()>0) {
 					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
@@ -327,7 +327,7 @@ namespace DoooodleGUI {
 			//display
 			else if (logic->getCommandType(input) == "display"){
 				displayMessage = logic->displayCategoricalTask(input, cat);
-				colourIndex = logic->getColourIndex;
+				colourIndex = logic->getColourIndex();
 				label3->Text = "Below is the list of " + convertStdToManaged(cat) + " tasks:";
 				if (displayMessage.size()>0) {
 					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
@@ -345,7 +345,7 @@ namespace DoooodleGUI {
 			//topFifteen
 			else {
 				label3->Text = "Below is the list of upcoming events in your calendar:";
-				colourIndex = logic->getColourIndex;
+				colourIndex = logic->getColourIndex();
 				displayMessage = topTen;
 				if (displayMessage.size()>0) {
 					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
