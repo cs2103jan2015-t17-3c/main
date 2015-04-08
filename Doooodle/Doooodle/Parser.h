@@ -20,6 +20,8 @@ class Parser {
 private:
 	DateParser dateparser;
 	TimeParser timeparser;
+	static const date DATE_INVALID;
+	static const ptime TIME_INVALID;
 	static const int POSITION_COMMAND_TYPE;
 	static const std::string INVALID_DATE;
 	static const std::string DELIMITERS;
@@ -28,7 +30,7 @@ private:
 	static const std::string EMPTY;
 	static const int NO_OF_START_TIME_INDICATORS;
 	static const int NO_OF_END_TIME_INDICATORS;
-	static const char RECURRING_INDENTIFIER;
+	static const std::string RECURRING_INDENTIFIER;
 	static const std::string DEFAULT_YEAR_SEARCH;
 	static const std::string DEFAULT_DAY_SEARCH;
 	std::vector<std::string> tokens;

@@ -1,8 +1,10 @@
 #include "Parser.h"
 
+const date Parser::DATE_INVALID(not_a_date_time);
+const ptime Parser::TIME_INVALID(not_a_date_time);
 const int Parser::POSITION_COMMAND_TYPE = 0;
 const std::string Parser::DELIMITERS = " ";
-const char Parser::RECURRING_INDENTIFIER = ';';
+const std::string Parser::RECURRING_INDENTIFIER = " ;";
 const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
 const std::string Parser::INVALID_DATE = "Invalid Date";
@@ -44,6 +46,10 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 	ptime startTime(not_a_date_time);
 	ptime endTime(not_a_date_time);
 	processCommand(input, commandType, userTask, startDate, endDate, startTime, endTime, dummyIndexReference);
+	if (startDate == DATE_INVALID && endDate == DATE_INVALID && startTime == TIME_INVALID && endTime == TIME_INVALID){
+		commandType = INVALID_DATE;
+		return;
+	}
 	getRecurringParameter(input, frequency, interval,recurrence, finishDate);
 	vecStartDate.push_back(startDate);
 	vecEndDate.push_back(endDate);
@@ -309,13 +315,13 @@ bool Parser::isDeadline(std::string input){
 
 bool Parser::userTaskParsing(std::string& input){
 	bool check = true;
-	if (input == "Normal" || input == "N" || input == "norm" || input == "Norm"){
+	if (input == "Normal" || input == "N" || input == "norm" || input == "Norm" || input == "normal"){
 		input = "normal";
-	}else if (input == "Float" || input == "float" || input == "Floating"){
+	}else if (input == "floating" || input == "Float" || input == "float" || input == "Floating"){
 		input = "floating";
-	}else if (input == "Deadline" || input == "d" || input == "D" || input == "dead" || input == "Dead" || input == "dateline" || input == "Dateline"){
+	}else if (input=="deadline" || input == "Deadline" || input == "d" || input == "D" || input == "dead" || input == "Dead" || input == "dateline" || input == "Dateline"){
 		input = "deadline";
-	}else if (input == "Archive"){
+	}else if (input == "Archive" || input=="archive"){
 		input = "archive";
 	}else {
 		check=false;

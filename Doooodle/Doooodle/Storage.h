@@ -89,6 +89,7 @@ public:
 	std::vector<int> findRecurIndex(std::string, TYPE_OF_SPECIAL_TASK);
 	void registerColourIndex(Task);
 	std::vector<int> retrieveColourIndex();
+	std::string undoComplete();
 
 
 private:

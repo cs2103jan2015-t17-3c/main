@@ -792,6 +792,21 @@ std::string Storage::undoDelete(){
 	return MESSAGE_UNDO;
 }
 
+std::string Storage::undoComplete(){
+	using namespace std;
+	string tempDisplay;
+	ostringstream feedbackMessage;
+	vector<Task>::iterator iter = archivedTask.begin();
+	int index = archivedTask.size();
+	tempDisplay = archivedTask[index-1].taskDetails;
+	activeTask.push_back(archivedTask[index-1]);
+	archivedTask.erase(iter + index -1);
+	feedbackMessage << tempDisplay << " is successfully archived.\n";
+	return feedbackMessage.str();
+}
+
+
+
 std::string Storage::undoEdit(){
 	if (numberOfUndoActions.top() == 0){
 		return "Nothing to undo.\n";
@@ -1030,6 +1045,10 @@ std::string Storage::editTask(int index, std::string information, date tempStart
 
 std::string Storage::addRecurringTask(std::string task, std::vector<date> vStartDate, std::vector<date> vEndDate, std::vector<ptime> vStartTime, std::vector<ptime> vEndTime){
 	using namespace std;
+	if (vStartDate.size() == 0){
+		return "Invalid recurring task.\n";
+	}
+
 	if (vStartDate[0] == nonDate && vStartTime[0] == nonTime){
 		for (int i = 0; i < vEndDate.size(); i++){
 			Task temp;
