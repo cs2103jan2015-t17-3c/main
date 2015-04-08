@@ -33,8 +33,7 @@ bool Parser::isRigid(std::string input){
 	return false;
 }
 
-void Parser::processCommand(std::string input, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
-	std::string commandType;
+void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
 	std::string frequency;
 	int recurrence=-1;
 	int interval = 1;
@@ -108,6 +107,7 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 		ptime t(endDate, hours(23)+minutes(59)+seconds(59));
 		endTime = t;
 	}
+	std::cout << endDate << std::endl;
 	return;
 }
 
@@ -357,15 +357,18 @@ void Parser::monthParsingForSearch(std::string& input){
 	size_t nextpos;
 	std::ostringstream oss;
 	oss << DEFAULT_YEAR_SEARCH;
-	for (int i = 0; i < tokens.size(); i++){
-		if (dateparser.monthToNum(tokens[i]) <= 12 && dateparser.monthToNum(tokens[i]) >= 1){
-			if (dateparser.monthToNum(tokens[i]) >= 10){
-				oss << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
-			}else{
-				oss << std::to_string(0)<<std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
+	if (tokens.size() == 2){
+		for (int i = 0; i < tokens.size(); i++){
+			if (dateparser.monthToNum(tokens[i]) <= 12 && dateparser.monthToNum(tokens[i]) >= 1){
+				if (dateparser.monthToNum(tokens[i]) >= 10){
+					oss << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
+				}
+				else{
+					oss << std::to_string(0) << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
+				}
+				tokens[i] = oss.str();
+				break;
 			}
-			tokens[i] = oss.str();
-			break;
 		}
 	}
 	return;

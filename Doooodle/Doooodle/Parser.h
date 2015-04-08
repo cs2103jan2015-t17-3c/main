@@ -59,7 +59,7 @@ public:
 	~Parser();
 	bool isRecurring(std::string);
 	void processCommand(std::string, std::string&, std::string&, date&, date&, ptime&, ptime&, int& indexReference);
-	void processCommand(std::string, std::string&, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&);
+	void processCommand(std::string, std::string&,std::string&, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&);
 };
 
 #endif
