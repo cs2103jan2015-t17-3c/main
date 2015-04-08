@@ -26,6 +26,9 @@ Storage::Storage(void){
 		string dummy;
 		while (!fl_h.eof()){
 			getline(fl_h, tempTask.taskDetails);
+			if (tempTask.taskDetails == ""){
+				break;
+			}
 			getline(fl_h, dummy);
 			if (dummy != "not-a-date-time"){
 				date d(from_undelimited_string(dummy));
@@ -461,7 +464,7 @@ std::vector<std::string> Storage::retrieveFloatingTask(){
 	using namespace std;
 	vector<string> TopTasks;
 	int count = 0;
-	int displayIndex = min(11, 1+retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size());
+	int displayIndex = min(16, 1+retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size());
 	for (int i = 0; i < activeTask.size() && count < NUMBER_OF_FLOATING_DISPLAY; i++){
 		if (activeTask[i].taskType == FLOATING){
 			ostringstream floatingTaskDisplay;
@@ -557,31 +560,31 @@ void Storage::writeToFile(){
 	}
 }
 
-void Storage::changeDirectory(std::string newDirectory){
+std::string Storage::changeDirectory(std::string newDirectory){
 	using namespace std;
-	cout << newDirectory << endl;
 #define BUFSIZE MAX_PATH
 	TCHAR Buffer[BUFSIZE];
 	DWORD dwRet;
 	dwRet = GetCurrentDirectory(BUFSIZE, Buffer);
 	if (dwRet == 0)
 	{
-		printf("GetCurrentDirectory failed (%d)\n", GetLastError());
-		return;
+		return "GetCurrentDirectory failed.\n";
 	}
 	if (dwRet > BUFSIZE)
 	{
-		printf("Buffer too small; need %d characters\n", dwRet);
-		return;
+		
+		return "Buffer too small; need more characters\n";
 	}
 	if (!SetCurrentDirectory(newDirectory.c_str()))
 	{
-		printf("SetCurrentDirectory failed (%d)\n", GetLastError());
-		return;
+		return "SetCurrentDirectory failed\n";
+		
+		
 	}
-	_tprintf(TEXT("Set current directory to "));
-		cout << newDirectory << endl;
-	return;
+	
+	string message = "Set current directory to " + newDirectory;
+	writeToFile();
+	return message ;
 }
 
 int Storage::searchTaskDisplay(std::string thingsToSearch){
@@ -607,14 +610,15 @@ std::string Storage::deleteTask(int index){
 	else {
 		tempSearchTaskIndex = index - 1 - tempTopFifteen.size() + retrieveCategoricalTask("deadline").size() + retrieveCategoricalTask("normal").size();
 	}
-	cout << activeTask[tempSearchTaskIndex].specialTaskType;
 	if (activeTask[tempSearchTaskIndex].specialTaskType == RECUR){
 		vector<int> recurIndex = findRecurIndex(activeTask[tempSearchTaskIndex].taskDetails, RECUR);
-		for (int i = 0; i < recurIndex.size(); i++){
+		for (int i = recurIndex.size()-1; i >= 0; i--){
 			vector<Task>::iterator iter = activeTask.begin();
 			tempTask.push(activeTask[recurIndex[i]]);
-			activeTask.erase(iter + tempSearchTaskIndex);
+			activeTask.erase(iter + recurIndex[i]);
 		}
+		writeToFile();
+
 		numberOfUndoActions.push(recurIndex.size());
 		return "Recurring task is successfully deleted.\n";
 	}
@@ -627,6 +631,7 @@ std::string Storage::deleteTask(int index){
 		activeTask.erase(iter + tempSearchTaskIndex);
 		numberOfUndoActions.push(1);
 		feedbackMessage << tempDisplay << " is successfully deleted.\n";
+		writeToFile();
 		return feedbackMessage.str();
 	}
 	}
@@ -713,13 +718,13 @@ vector<string> searchedStuff;
 		foundAlready = true;
 		}	
 	    // * dateToSearch has problem with year() plz note
-		if (dateToSearch != nonDate && dateToSearch.year() == specialDate.year() && dateToSearch.month() == iter->startDate.month() && !foundAlready){
+		if (iter->startDate!=nonDate && dateToSearch != nonDate && dateToSearch.year() == specialDate.year() && dateToSearch.month() == iter->startDate.month() && !foundAlready){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
 			registerColourIndex(*iter);
 
 			foundAlready = true;
 		}
-		if (dateToSearch != nonDate && dateToSearch.year() == specialDate.year() && dateToSearch.month() == iter->endDate.month() && !foundAlready){
+		if (iter->endDate!=nonDate && dateToSearch != nonDate && dateToSearch.year() == specialDate.year() && dateToSearch.month() == iter->endDate.month() && !foundAlready){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
 			registerColourIndex(*iter);
 
@@ -780,12 +785,13 @@ std::string Storage::deleteSearchTask(int index){
 	ostringstream feedbackMessage;
 	if (tempSearchIterator[index - 1]->specialTaskType == RECUR){
 		vector<int> recurIndex = findRecurIndex(tempSearchIterator[index - 1]->taskDetails, RECUR);
-		for (int i = 0; i < recurIndex.size(); i++){
+		for (int i = recurIndex.size()-1; i >= 0; i--){
 			vector<Task>::iterator iter = activeTask.begin();
 			tempTask.push(activeTask[recurIndex[i]]);
 			activeTask.erase(iter + recurIndex[i]);
 		}
 		numberOfUndoActions.push(recurIndex.size());
+		return "Recurring task is successfully deleted.\n";
 	}
 	else
 	{
@@ -818,38 +824,14 @@ std::string Storage::editSearchTask(int index, std::string information, date tem
 	//deleteSearchTask(index);
 	if (temporaryTask.specialTaskType == RECUR){
 		vector<int> recurIndex = findRecurIndex(temporaryTask.taskDetails, RECUR);
-		for (int i = 0; i < recurIndex.size(); i++){
+		for (int i = recurIndex.size()-1; i >= 0; i--){
+			temporaryTask = activeTask[recurIndex[i]];
 			vector<Task>::iterator iter = activeTask.begin();
 			activeTask.erase(iter + recurIndex[i]);
 			if (!information.empty()){
 				temporaryTask.taskDetails = information;
 			}
-			if (tempEndDate != temporaryTask.endDate && tempEndDate != nonDate){
-				if (temporaryTask.endDate == nonDate){
-					temporaryTask.taskType = DEADLINE;
-				}
-				temporaryTask.endDate = tempEndDate;
-			}
-			if (tempEndTime != temporaryTask.endTime && tempEndTime != nonTime){
-				if (temporaryTask.endTime == nonTime){
-					temporaryTask.taskType = DEADLINE;
-				}
-				temporaryTask.endTime = tempEndTime;
-			}
-			if (tempStartTime != temporaryTask.startTime && tempStartTime != nonTime){
-				if (temporaryTask.startTime == nonTime){
-					temporaryTask.taskType = NORMAL;
-				}
-				temporaryTask.startTime = tempStartTime;
-				temporaryTask.startDate = temporaryTask.endDate;
-			}
-			if (tempStartDate != temporaryTask.startDate && tempStartDate != nonDate){
-				if (temporaryTask.startDate == nonDate){
-					temporaryTask.taskType = NORMAL;
-				}
-				temporaryTask.startDate = tempStartDate;
-			}
-
+			
 			temporaryTask.taskDisplay = initializeTaskDetails(temporaryTask);
 			activeTask.push_back(temporaryTask);
 			taskDetailsHistory.push(temporaryTask.taskDetails);
@@ -934,45 +916,21 @@ std::string Storage::editTask(int index, std::string information, date tempStart
 	//check recurring task
 	if (temporaryTask.specialTaskType == RECUR){
 		vector<int> recurIndex = findRecurIndex(temporaryTask.taskDetails, temporaryTask.specialTaskType);
-		for (int i = 0; i < recurIndex.size(); i++){
+		for (int i = recurIndex.size()-1; i >= 0; i--){
+			temporaryTask = activeTask[recurIndex[i]];
 			vector<Task>::iterator iter = activeTask.begin();
 			tempTask.push(activeTask[recurIndex[i]]);
 			activeTask.erase(iter + recurIndex[i]);
 			if (!information.empty()){
 				temporaryTask.taskDetails = information;
 			}
-			if (tempEndDate != temporaryTask.endDate && tempEndDate != nonDate){
-				if (temporaryTask.endDate == nonDate){
-					temporaryTask.taskType = DEADLINE;
-				}
-				temporaryTask.endDate = tempEndDate;
-			}
-			if (tempEndTime != temporaryTask.endTime && tempEndTime != nonTime){
-				if (temporaryTask.endTime == nonTime){
-					temporaryTask.taskType = DEADLINE;
-				}
-				temporaryTask.endTime = tempEndTime;
-			}
-			if (tempStartTime != temporaryTask.startTime && tempStartTime != nonTime){
-				if (temporaryTask.startTime == nonTime){
-					temporaryTask.taskType = NORMAL;
-				}
-				temporaryTask.startTime = tempStartTime;
-				temporaryTask.startDate = temporaryTask.endDate;
-			}
-			if (tempStartDate != temporaryTask.startDate && tempStartDate != nonDate){
-				if (temporaryTask.startDate == nonDate){
-					temporaryTask.taskType = NORMAL;
-				}
-				temporaryTask.startDate = tempStartDate;
-			}
-
+			
 			temporaryTask.taskDisplay = initializeTaskDetails(temporaryTask);
 			activeTask.push_back(temporaryTask);
 			taskDetailsHistory.push(temporaryTask.taskDetails);
 		}
 		numberOfUndoActions.push(recurIndex.size());
-
+		return "Recurring task successfully edited.\n";
 	}
 	else{
 
