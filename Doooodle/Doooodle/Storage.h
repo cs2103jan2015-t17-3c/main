@@ -87,8 +87,8 @@ public:
 	int searchTaskDisplay(std::string);
 	void loadTasks(std::string , std::vector<Task>&);
 	std::vector<int> findRecurIndex(std::string, TYPE_OF_SPECIAL_TASK);
-
-
+	void registerColourIndex(Task);
+	std::vector<int> retrieveColourIndex();
 
 
 private:
@@ -110,7 +110,8 @@ private:
 	std::vector<std::vector<Task>::iterator> tempOverdueTaskIterator;
 	std::stack<int> numberOfUndoActions;
 	std::string directoryName;
-	std::vector<int> ColourIndex;
+	std::vector<int> colourIndex;
+
 };
 
 #endif
