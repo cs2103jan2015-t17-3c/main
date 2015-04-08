@@ -65,7 +65,7 @@ public:
 	std::string editTask(int, std::string, date, date, ptime, ptime);
 	std::vector<std::string> retrieveFloatingTask();
 	//can I do this with retrieve topTen?
-	void changeDirectory(std::string);
+	std::string changeDirectory(std::string);
 	std::string initializeTaskDetails(Task);
 	Task initializeNormalTask(std::string, date, date, ptime, ptime);
 	std::string taskDetailsFeedback(Task);
