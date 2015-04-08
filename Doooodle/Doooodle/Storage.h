@@ -108,7 +108,7 @@ private:
 	std::stack<std::string> taskDetailsHistory;
 	std::vector<std::vector<Task>::iterator> tempSearchIterator;
 	std::vector<std::vector<Task>::iterator> tempOverdueTaskIterator;
-
+	std::stack<int> numberOfUndoActions;
 	std::string directoryName;
 };
 
