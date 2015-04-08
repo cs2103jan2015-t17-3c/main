@@ -34,6 +34,7 @@ namespace DoooodleGUI {
 			 std::vector<std::string>* commandHistory;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::PictureBox^  pictureBox2;
 
 
 
@@ -99,7 +100,9 @@ namespace DoooodleGUI {
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// textBox1
@@ -115,9 +118,9 @@ namespace DoooodleGUI {
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(568, 350);
+			this->pictureBox1->Location = System::Drawing::Point(588, 366);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(80, 62);
+			this->pictureBox1->Size = System::Drawing::Size(185, 38);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 3;
 			this->pictureBox1->TabStop = false;
@@ -207,12 +210,23 @@ namespace DoooodleGUI {
 			this->label4->BackColor = System::Drawing::Color::Transparent;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Gabriola", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->ForeColor = System::Drawing::Color::DarkSlateBlue;
+			this->label4->ForeColor = System::Drawing::Color::Blue;
 			this->label4->Location = System::Drawing::Point(515, 35);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(28, 50);
 			this->label4->TabIndex = 13;
 			this->label4->Text = L" ";
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
+			this->pictureBox2->Location = System::Drawing::Point(16, 80);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(535, 324);
+			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox2->TabIndex = 14;
+			this->pictureBox2->TabStop = false;
+			this->pictureBox2->Visible = false;
 			// 
 			// GUI
 			// 
@@ -220,6 +234,7 @@ namespace DoooodleGUI {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(810, 450);
+			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->textBox4);
 			this->Controls->Add(this->label3);
@@ -233,6 +248,7 @@ namespace DoooodleGUI {
 			this->Name = L"GUI";
 			this->Text = L"GUI";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -264,6 +280,7 @@ namespace DoooodleGUI {
 		void clearGUI(){
 			textBox2->Clear();
 			richTextBox1->Clear();
+			pictureBox2->Hide();
 		}
 
 		Color determineColour(int index) {
@@ -274,12 +291,11 @@ namespace DoooodleGUI {
 				return Color::DarkOliveGreen;
 			}
 			else if (index == 2) {
-				return Color::DarkSlateBlue;
+				return Color::Blue;
 			}
 			else
 				return Color::Black;
 		}
-
 
 #pragma endregion
 
@@ -314,7 +330,6 @@ namespace DoooodleGUI {
 				if (displayMessage.size()>0) {
 					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
 					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
-					richTextBox1->Text = convertStdToManaged(displayMessage[0]);
 					for (int i = 1; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
@@ -332,7 +347,6 @@ namespace DoooodleGUI {
 				if (displayMessage.size()>0) {
 					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
 					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
-					richTextBox1->Text = convertStdToManaged(displayMessage[0]);
 					for (int i = 1; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
@@ -342,6 +356,12 @@ namespace DoooodleGUI {
 				label4->ForeColor = Color::Black;
 				label4->Text = "[" + Convert::ToUInt32(displayMessage.size()) + "]";
 			}
+			else if (logic->getCommandType(input) == "help") {
+				label3->Text = "Help Page:";
+				label2->Text = " ";
+				label4->Text = " ";
+				pictureBox2->Show();
+			}
 			//topFifteen
 			else {
 				label3->Text = "Below is the list of upcoming events in your calendar:";
@@ -350,7 +370,6 @@ namespace DoooodleGUI {
 				if (displayMessage.size()>0) {
 					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
 					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
-					richTextBox1->Text = convertStdToManaged(displayMessage[0]);
 					for (int i = 1; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
@@ -358,7 +377,7 @@ namespace DoooodleGUI {
 				}
 				label2->ForeColor = Color::DarkOliveGreen;
 				label2->Text = "[" + Convert::ToUInt32(logic->getDeadlineSize()) + "]";
-				label4->ForeColor = Color::DarkSlateBlue;
+				label4->ForeColor = Color::Blue;
 				label4->Text = "[" + Convert::ToUInt32(logic->getNormalSize()) + "]";
 			}
 		textBox4->Text = convertStdToManaged(message);

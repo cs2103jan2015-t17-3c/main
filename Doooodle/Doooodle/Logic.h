@@ -63,6 +63,7 @@ private:
 	static const std::string STRING_DELETE;
 	static const std::string STRING_EDIT;
 	static const std::string STRING_EXIT;
+	static const std::string STRING_HELP;
 	static const std::string STRING_INVALID;
 	static const std::string STRING_RESCHEDULE;
 	static const std::string STRING_SEARCH;
@@ -73,7 +74,7 @@ private:
 	std::vector<CommandDetails*> commandDetails;
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED, DISPLAY, CD
+		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, CHECK, RESCHEDULE, COMPLETE, COMPLETED, DISPLAY, CD, HELP
 	};
 
 	std::string executeLogicCore(std::string);
