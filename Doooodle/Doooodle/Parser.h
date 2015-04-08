@@ -46,7 +46,7 @@ private:
 	size_t intToPos(int,std::string);
 	size_t getEndOfUserTask(std::string);
 	size_t getStartOfUserTask(std::string);
-	void userTaskParsing(std::string&);
+	bool userTaskParsing(std::string&);
 	void assignToday(date&);
 	bool isRigid(std::string);
 	bool isDeadline(std::string);
