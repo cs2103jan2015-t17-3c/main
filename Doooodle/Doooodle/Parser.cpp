@@ -376,8 +376,9 @@ void Parser::frequencyParsing(std::string input,int& interval,std::string& frequ
 		if (isdigit(input[i])){
 			frequency = input.substr(0, i);
 			interval = atoi(input.substr(i, input.length() - i).c_str());
-			break;
+			return;
 		}
 	}
+	frequency = input;
 	return;
 }
