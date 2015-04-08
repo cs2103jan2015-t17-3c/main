@@ -80,6 +80,10 @@ int Logic::getFloatingSize(void) {
 	return storage.retrieveFloatingSize();
 }
 
+std::vector<int> getColourIndex{
+	return storage.retrieveColourIndex();
+}
+
 std::string Logic::receiveCommand(std::string userInput) {
 	std::string displayMessage = executeLogicCore(userInput);
 	return displayMessage;

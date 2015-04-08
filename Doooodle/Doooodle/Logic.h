@@ -38,6 +38,7 @@ public:
 	int getDeadlineSize(void);
 	int getNormalSize(void);
 	int getFloatingSize(void);
+	std::vector<int> getColourIndex;
 	Storage* getStorage(void);
 
 private:

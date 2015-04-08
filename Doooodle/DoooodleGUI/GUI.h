@@ -32,6 +32,13 @@ namespace DoooodleGUI {
 
 			 Storage* storage;
 			 std::vector<std::string>* commandHistory;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Label^  label4;
+
+
+
+
+
 			 int counter;
 
 	public:
@@ -90,6 +97,8 @@ namespace DoooodleGUI {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -97,7 +106,7 @@ namespace DoooodleGUI {
 			// 
 			this->textBox1->Location = System::Drawing::Point(17, 418);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(756, 20);
+			this->textBox1->Size = System::Drawing::Size(781, 20);
 			this->textBox1->TabIndex = 0;
 			this->textBox1->TextChanged += gcnew System::EventHandler(this, &GUI::textBox1_TextChanged);
 			this->textBox1->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &GUI::textBox1_KeyDown);
@@ -106,7 +115,7 @@ namespace DoooodleGUI {
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(560, 350);
+			this->pictureBox1->Location = System::Drawing::Point(568, 350);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(80, 62);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -137,7 +146,7 @@ namespace DoooodleGUI {
 			this->textBox2->BackColor = System::Drawing::Color::BurlyWood;
 			this->textBox2->Font = (gcnew System::Drawing::Font(L"Calibri", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox2->Location = System::Drawing::Point(552, 80);
+			this->textBox2->Location = System::Drawing::Point(572, 80);
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->ReadOnly = true;
@@ -160,31 +169,57 @@ namespace DoooodleGUI {
 			// 
 			this->textBox4->BackColor = System::Drawing::SystemColors::ScrollBar;
 			this->textBox4->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->textBox4->Location = System::Drawing::Point(17, 392);
+			this->textBox4->Location = System::Drawing::Point(17, 391);
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->ReadOnly = true;
-			this->textBox4->Size = System::Drawing::Size(502, 13);
+			this->textBox4->Size = System::Drawing::Size(534, 13);
 			this->textBox4->TabIndex = 10;
 			// 
 			// richTextBox1
 			// 
 			this->richTextBox1->BackColor = System::Drawing::Color::Moccasin;
 			this->richTextBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Calibri", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Courier New", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->richTextBox1->Location = System::Drawing::Point(17, 80);
 			this->richTextBox1->Name = L"richTextBox1";
 			this->richTextBox1->ReadOnly = true;
-			this->richTextBox1->Size = System::Drawing::Size(502, 296);
+			this->richTextBox1->Size = System::Drawing::Size(534, 296);
 			this->richTextBox1->TabIndex = 11;
 			this->richTextBox1->Text = L"";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->BackColor = System::Drawing::Color::Transparent;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Gabriola", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->ForeColor = System::Drawing::Color::DarkOliveGreen;
+			this->label2->Location = System::Drawing::Point(482, 35);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(28, 50);
+			this->label2->TabIndex = 12;
+			this->label2->Text = L" ";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->BackColor = System::Drawing::Color::Transparent;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Gabriola", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label4->ForeColor = System::Drawing::Color::DarkSlateBlue;
+			this->label4->Location = System::Drawing::Point(515, 35);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(28, 50);
+			this->label4->TabIndex = 13;
+			this->label4->Text = L" ";
 			// 
 			// GUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->ClientSize = System::Drawing::Size(790, 450);
+			this->ClientSize = System::Drawing::Size(810, 450);
 			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->textBox4);
 			this->Controls->Add(this->label3);
@@ -193,6 +228,8 @@ namespace DoooodleGUI {
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->label2);
 			this->Name = L"GUI";
 			this->Text = L"GUI";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
@@ -229,71 +266,101 @@ namespace DoooodleGUI {
 			richTextBox1->Clear();
 		}
 
-		void processIndividualTask() {
-
+		Color determineColour(int index) {
+			if (index == 0) {
+				return Color::Red;
+			}
+			else if (index == 1) {
+				return Color::DarkOliveGreen;
+			}
+			else if (index == 4) {
+				return Color::DarkSlateBlue;
+			}
+			else
+				return Color::Black;
 		}
 
 
 #pragma endregion
 
-private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-	if (e->KeyCode == Keys::Enter) {
-		clearGUI();
-		String^ userInput = textBox1->Text;
-		std::string input;
-		String^ line;
-		std::string cat;
-		std::vector<std::string> displayMessage;
-		MarshalString(userInput, input);
-		commandHistory->push_back(input);
-		std::string message = logic->receiveCommand(input);
-		storage = logic->getStorage();
-		std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
-		std::vector<std::string> topTen = storage->retrieveTopFifteen();
-
-		label1->Text = "Floating Tasks [" + Convert::ToUInt32(logic->getFloatingSize()) + "]:";
-		if (floatingTask.size() > 0) {
-			textBox2->Text = convertStdToManaged(floatingTask[0]);
-			for (int i = 1; i<floatingTask.size(); i++) {
-				textBox2->Text = textBox2->Text + "\r\n" + (convertStdToManaged(floatingTask[i]));
-			}
-		}
-
-		if (logic->getCommandType(input) == "search") {
-			displayMessage = logic->displaySearchResults(input);
-			label3->Text = "Search Results [" + Convert::ToUInt32(displayMessage.size()) + "]:";
-			if (displayMessage.size()>0) {
-				richTextBox1->Text = convertStdToManaged(displayMessage[0]);
-				for (int i = 1; i < displayMessage.size(); i++) {
-					richTextBox1->Text = richTextBox1->Text + "\r\n" + (convertStdToManaged(displayMessage[i]));
+	private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+		if (e->KeyCode == Keys::Enter) {
+			clearGUI();
+			String^ userInput = textBox1->Text;
+			std::string input;
+			String^ line;
+			std::string cat;
+			std::vector<std::string> displayMessage;
+			std::vector<int> colourIndex;
+			MarshalString(userInput, input);
+			commandHistory->push_back(input);
+			std::string message = logic->receiveCommand(input);
+			storage = logic->getStorage();
+			std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
+			std::vector<std::string> topTen = storage->retrieveTopFifteen();
+			//Floating tasks
+			label1->Text = "Floating Tasks:      [" + Convert::ToUInt32(logic->getFloatingSize()) + "]";
+			if (floatingTask.size() > 0) {
+				textBox2->Text = convertStdToManaged(floatingTask[0]);
+				for (int i = 1; i < floatingTask.size(); i++) {
+					textBox2->Text = textBox2->Text + "\r\n" + (convertStdToManaged(floatingTask[i]));
 				}
 			}
-		}
-		else if (logic->getCommandType(input) == "display"){
-			displayMessage = logic->displayCategoricalTask(input, cat);
-			label3->Text = "Below is the list of " + convertStdToManaged(cat) + " tasks [" + Convert::ToUInt32(displayMessage.size()) + "]:";
-			if (displayMessage.size()>0) {
-				richTextBox1->Text = convertStdToManaged(displayMessage[0]);
-				for (int i = 1; i < displayMessage.size(); i++) {
-					richTextBox1->Text = richTextBox1->Text + "\r\n" + (convertStdToManaged(displayMessage[i]));
-				}
-			}
-		}
-		else {
-			label3->Text = "Below is the list of upcoming events in your calendar [" + Convert::ToUInt32(logic->getDeadlineSize()) + "] [" + Convert::ToUInt32(logic->getNormalSize()) + "]:";
-			if (topTen.size()>0) {
-				for (int i = 0; i < topTen.size(); i++) {
-					if (i % 2 == 0) {
-						richTextBox1->SelectionColor = Color::Green;
-						richTextBox1->SelectedText = convertStdToManaged(topTen[i]) + "\r\n";
-					}
-					else {
-						richTextBox1->SelectionColor = Color::Red;
-						richTextBox1->SelectedText = convertStdToManaged(topTen[i]) + "\r\n";
+			//search tasks
+			if (logic->getCommandType(input) == "search") {
+				displayMessage = logic->displaySearchResults(input);
+				colourIndex = logic->getColourIndex;
+				label3->Text = "Search Results [" + Convert::ToUInt32(displayMessage.size()) + "]:";
+				if (displayMessage.size()>0) {
+					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
+					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
+					richTextBox1->Text = convertStdToManaged(displayMessage[0]);
+					for (int i = 1; i < displayMessage.size(); i++) {
+						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
+						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
 					}
 				}
+				label2->Text = " ";
+				label4->ForeColor = Color::Black;
+				label4->Text = "[" + Convert::ToUInt32(displayMessage.size()) + "]";
 			}
-		}
+			//display
+			else if (logic->getCommandType(input) == "display"){
+				displayMessage = logic->displayCategoricalTask(input, cat);
+				colourIndex = logic->getColourIndex;
+				label3->Text = "Below is the list of " + convertStdToManaged(cat) + " tasks:";
+				if (displayMessage.size()>0) {
+					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
+					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
+					richTextBox1->Text = convertStdToManaged(displayMessage[0]);
+					for (int i = 1; i < displayMessage.size(); i++) {
+						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
+						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
+					}
+				}
+				label2->Text = " ";
+				label4->ForeColor = Color::Black;
+				label4->Text = "[" + Convert::ToUInt32(displayMessage.size()) + "]";
+			}
+			//topFifteen
+			else {
+				label3->Text = "Below is the list of upcoming events in your calendar:";
+				colourIndex = logic->getColourIndex;
+				displayMessage = topTen;
+				if (displayMessage.size()>0) {
+					richTextBox1->SelectionColor = determineColour(colourIndex[0]);
+					richTextBox1->SelectedText = convertStdToManaged(displayMessage[0]) + "\r\n";
+					richTextBox1->Text = convertStdToManaged(displayMessage[0]);
+					for (int i = 1; i < displayMessage.size(); i++) {
+						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
+						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
+					}
+				}
+				label2->ForeColor = Color::DarkOliveGreen;
+				label2->Text = "[" + Convert::ToUInt32(logic->getDeadlineSize()) + "]";
+				label4->ForeColor = Color::DarkSlateBlue;
+				label4->Text = "[" + Convert::ToUInt32(logic->getNormalSize()) + "]";
+			}
 		textBox4->Text = convertStdToManaged(message);
 		textBox1->ForeColor = Color::Black;
 		counter = commandHistory->size();
