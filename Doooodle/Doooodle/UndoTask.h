@@ -18,9 +18,10 @@ public:
 
 private:
 	enum TASK_TYPE {
-		ADD, ERASE, EDIT, NIL
+		ADD, ERASE, EDIT, COMPLETE, NIL
 	};
 	static const std::string STRING_ADD;
+	static const std::string STRING_COMPLETE;
 	static const std::string STRING_DELETE;
 	static const std::string STRING_EDIT;
 	static const std::string STRING_UNDO_FAILURE;
@@ -29,6 +30,7 @@ private:
 
 	TASK_TYPE retrieveTaskTypeToUndo(std::vector<CommandDetails*>&);
 	std::string executeUndoAdd(std::vector<CommandDetails*>&, Storage&);
+	std::string executeUndoComplete(std::vector<CommandDetails*>&, Storage&);
 	std::string executeUndoDelete(std::vector<CommandDetails*>&, Storage&);
 	std::string executeUndoEdit(std::vector<CommandDetails*>&, Storage&);
 };

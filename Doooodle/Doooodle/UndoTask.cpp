@@ -2,6 +2,7 @@
 #include "UndoTask.h"
 
 const std::string UndoTask::STRING_ADD = "add";
+const std::string UndoTask::STRING_COMPLETE = "complete";
 const std::string UndoTask::STRING_DELETE = "delete";
 const std::string UndoTask::STRING_EDIT = "edit";
 const std::string UndoTask::STRING_SEARCH = "search";
@@ -23,6 +24,9 @@ std::string UndoTask::loadTask(std::vector<CommandDetails*>& CD, Storage& storag
 	case ADD:
 		displayMessage = executeUndoAdd(CD, storage);
 		break;
+	case COMPLETE:
+		displayMessage = executeUndoComplete(CD, storage);
+		break;
 	case ERASE:
 		displayMessage = executeUndoDelete(CD, storage);
 		break;
@@ -38,6 +42,11 @@ std::string UndoTask::loadTask(std::vector<CommandDetails*>& CD, Storage& storag
 std::string UndoTask::executeUndoAdd(std::vector<CommandDetails*>& CD, Storage& storage) {
 	CD.pop_back();
 	return storage.undoAdd();
+}
+
+std::string UndoTask::executeUndoComplete(std::vector<CommandDetails*>& CD, Storage& storage) {
+	CD.pop_back();
+	return storage.undoComplete();
 }
 
 std::string UndoTask::executeUndoDelete(std::vector<CommandDetails*>& CD, Storage& storage) {
@@ -71,6 +80,9 @@ UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(std::vector<CommandDetails*
 		return retrieveTaskTypeToUndo(CD);
 	}
 	else if(CD[index]->commandType==STRING_EDIT) {
+		return EDIT;
+	}
+	else if (CD[index]->commandType == STRING_COMPLETE) {
 		return EDIT;
 	}
 	else { //for invalid cases
