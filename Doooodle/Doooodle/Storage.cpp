@@ -612,7 +612,7 @@ std::string Storage::deleteTask(int index){
 	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
 	int tempSearchTaskIndex;
-	if (index < tempTopFifteen.size()){
+	if (index <= tempTopFifteen.size()){
 		 tempSearchTaskIndex = searchTaskDisplay(tempTopFifteen[index - 1]);
 	}
 	else {
@@ -657,7 +657,7 @@ std::string Storage::completeTask(int index){
 	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
 	int tempSearchTaskIndex;
-	if (index < tempTopFifteen.size()){
+	if (index <= tempTopFifteen.size()){
 		tempSearchTaskIndex = searchTaskDisplay(tempTopFifteen[index - 1]);
 	}
 	else {
@@ -970,7 +970,7 @@ std::string Storage::editTask(int index, std::string information, date tempStart
 	vector<string> tempTopFifteen = retrieveTopFifteen();
 	string tempDisplay;
 	int tempSearchTaskIndex;
-	if (index < tempTopFifteen.size()){
+	if (index <= tempTopFifteen.size()){
 		tempSearchTaskIndex = searchTaskDisplay(tempTopFifteen[index - 1]);
 	}
 	else {
