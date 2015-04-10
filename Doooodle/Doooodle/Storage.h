@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <tchar.h>
 
-//using namespace std;
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
@@ -25,6 +24,7 @@ enum TYPE_OF_TASK{
 enum TYPE_OF_SPECIAL_TASK{
 	NONRECUR,RECUR
 };
+
 struct Task{
 	std::string taskDetails;
 	date startDate;
@@ -36,15 +36,9 @@ struct Task{
 	std::string taskDisplay;
 };
 
-struct History{
-	date requestDate;
-	ptime requestTime;
-	Task commandDetails;
-	std::string commandDisplay;
-};
+
 
 class Storage{
-	
 public:
 	Storage(void);
 	~Storage(void);
@@ -61,21 +55,19 @@ public:
 	std::string undoEdit();
 	std::string deleteSearchTask(int);
 	std::string editSearchTask(int, std::string, date, date, ptime, ptime);
-	//can I do this two together? think about this.
 	std::string editTask(int, std::string, date, date, ptime, ptime);
 	std::vector<std::string> retrieveFloatingTask();
-	//can I do this with retrieve topTen?
 	std::string changeDirectory(std::string);
-	std::string initializeTaskDetails(Task);
+	void initializeTaskDetails(Task&);
 	Task initializeNormalTask(std::string, date, date, ptime, ptime);
 	std::string taskDetailsFeedback(Task);
-	History registerHistory(Task);
 	Task initializeDeadlineTask(std::string, date, ptime);
 	Task initializeFloatingTask(std::string);
 	void registerSearchedStuff(std::vector<Task>::iterator, bool&, std::vector<std::string>&, int&);
 	std::vector<std::string> retrieveArchive();
 	std::vector<std::string> retrieveOverdue();
 	std::string completeAll();
+	//no more complete all?
 	std::string reschedule(int, date, date, ptime, ptime);
 	std::vector<std::string> retrieveCategoricalTask(std::string);
 	std::string completeTask(int);
@@ -93,18 +85,24 @@ public:
 
 
 private:
-	
 	std::vector<Task> archivedTask;
 	std::vector<Task> activeTask;
-	std::vector<History> commandHistory;
 	static const std::string MESSAGE_UNDO;
 	static const std::string DEFAULT_DIRECTORY;
 	static const int DEFAULT_WIDTH;
     static const int NUMBER_OF_DISPLAY;
+	static const int NUMBER_OF_FIRST_THREE_DISPLAY;
+	static const int NUMBER_OF_FIRST_FIVE_DISPLAY;
 	static const int NUMBER_OF_FLOATING_DISPLAY;
 	static const int NUMBER_OF_ARCHIVED_DISPLAY;
-
-
+	static const std::string DEFAULT_STORAGE_NAME;
+	static const std::string DEFAULT_ARCHIVE_NAME;
+	static const std::string MESSAGE_CURRENTDIRECTORY_FAIL;
+	static const std::string MESSAGE_BUFFER_SMALL;
+	static const std::string MESSAGE_SETDIRECTORY_FAIL;
+	static const std::string MESSAGE_SETDIRECTORY_SUCCESS;
+	static const ptime nonTime;
+	static const date nonDate;
 	std::stack<Task> tempTask;
 	std::stack<std::string> taskDetailsHistory;
 	std::vector<std::vector<Task>::iterator> tempSearchIterator;
@@ -112,7 +110,6 @@ private:
 	std::stack<int> numberOfUndoActions;
 	std::string directoryName;
 	std::vector<int> colourIndex;
-
 };
 
 #endif
