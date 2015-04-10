@@ -83,7 +83,7 @@ UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(std::vector<CommandDetails*
 		return EDIT;
 	}
 	else if (CD[index]->commandType == STRING_COMPLETE) {
-		return EDIT;
+		return COMPLETE;
 	}
 	else { //for invalid cases
 		CD.pop_back();

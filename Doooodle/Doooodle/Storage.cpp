@@ -801,8 +801,7 @@ std::string Storage::undoComplete(){
 	tempDisplay = archivedTask[index-1].taskDetails;
 	activeTask.push_back(archivedTask[index-1]);
 	archivedTask.erase(iter + index -1);
-	feedbackMessage << tempDisplay << " is successfully archived.\n";
-	return feedbackMessage.str();
+	return MESSAGE_UNDO;
 }
 
 
