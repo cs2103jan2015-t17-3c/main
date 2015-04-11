@@ -291,7 +291,7 @@ void Storage::registerColourIndex(Task temp){
 	}
 
 
-std::vector<std::string> Storage::retrieveTopFifteen(){
+std::vector<std::string> Storage::retrieveTopList(){
 	using namespace std;
 	lastCommandIsDisplay = false;
 	colourIndex.clear();
@@ -603,7 +603,7 @@ void Storage::deleteRecurringTask(std::vector<int> recurIndex){
 
 int Storage::convertToActualIndex(int index){
 	using namespace std;
-	vector<string> tempTopFifteen = retrieveTopFifteen();
+	vector<string> tempTopFifteen = retrieveTopList();
 	int actualTaskIndex;
 	if (index <= tempTopFifteen.size()){
 		actualTaskIndex = searchTaskDisplay(tempTopFifteen[index - 1]);
@@ -650,7 +650,7 @@ std::string Storage::completeTask(int index){
 		return MESSAGE_WRONG_INDEX;
 	}
 	ostringstream feedbackMessage;
-	vector<string> tempTopFifteen = retrieveTopFifteen();
+	vector<string> tempTopFifteen = retrieveTopList();
 	string tempDisplay;
 	int actualTaskIndex = index - 1;
 	if (!lastCommandIsDisplay){
