@@ -129,31 +129,60 @@ int Storage::retrieveFloatingSize(){
 void Storage::initializeTaskDetails(Task &temp){
 	using namespace std;
 	ostringstream outputTask;
+	date currentDate(day_clock::local_day());
 	if (temp.taskType == NORMAL){
 		if (temp.startDate != nonDate){
 			if (temp.startTime != nonTime){
 				if (temp.endTime != nonTime){
-					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+					if (temp.startDate.year() != currentDate.year() || temp.endDate.year() != currentDate.year()){
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << temp.startDate.year() << ", " << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << ", " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+					}else{
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+					}
 				}else{
-					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << setfill(' ') << setw(6) << "]";
+					if (temp.startDate.year() != currentDate.year() || temp.endDate.year() != currentDate.year()){
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << temp.startDate.year() << ", " << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << setfill(' ') << setw(6) << "]";
+					}else{
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << setfill(' ') << setw(6) << "]";
+					}
 				}
 			}else{
 				if (temp.endTime != nonTime){
-					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << setfill(' ') << setw(9) << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
-				}else{
-					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << "      ]-["  << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << "      ]";
+					if (temp.startDate.year() != currentDate.year() || temp.endDate.year() != currentDate.year()){
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << temp.startDate.year() << setfill(' ') << setw(9) << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << ", " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+					}else{
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << setfill(' ') << setw(9) << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+				}
+			}else{
+					if (temp.startDate.year() != currentDate.year() || temp.endDate.year() != currentDate.year()){
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << " " << temp.startDate.year() << "      ]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << "      ]";
+					}else{
+						outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.startDate.day() << " " << temp.startDate.month() << "      ]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << "      ]";
+					}
 				}
 			}
 		}else{
 			if (temp.startTime != nonTime && temp.endTime != nonTime){
-				outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [      " << right << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+				if (temp.endDate.year() != currentDate.year()){
+					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [      " << right << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() <<" " << temp.endDate.year() << ", " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+				}else{
+					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [      " << right << setfill(' ') << setw(2) << temp.startTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+				}
 			}
 		}
 	}else if (temp.taskType == DEADLINE){
 			if (temp.endTime == nonTime){
-				outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << "      ]";
+				if (temp.endDate.year() != currentDate.year()){
+					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << "      ]";
+				}else{
+					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << "      ]";
+				}
 			}else{
-				outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+				if (temp.endDate.year() != currentDate.year()){
+					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << ", " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+				}else{
+					outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << right << setfill(' ') << setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << setfill(' ') << setw(2) << temp.endTime.time_of_day().hours() << ":" << setfill('0') << setw(2) << temp.endTime.time_of_day().minutes() << "]";
+				}
 			}
 		}else if (temp.taskType == FLOATING){
 				outputTask << left << setw(DEFAULT_WIDTH) << temp.taskDetails;
@@ -338,6 +367,12 @@ std::vector<std::string> Storage::retrieveTopList(){
 		oneTask << setfill('0') << setw(2) << j + 1 << ". " << activeTask[sortedTaskIndex[j]].taskDisplay;
 		topTasks.push_back(oneTask.str());
 	}
+	return topTasks;
+}
+
+std::vector<std::string> Storage::retrieveTopTask(){
+	using namespace std;
+	vector<string> topTasks = retrieveTopList();
 	return reformat(topTasks);
 }
 
@@ -681,6 +716,8 @@ std::vector<std::string> Storage::searchTask(std::string thingsToSearch,date dat
 	vector<Task>::iterator iter;
 	int count = 1;
 	bool foundAlready;
+	date currentDate(day_clock::local_day());
+	date tomorrowDate = currentDate + days(1);
 	for (iter = activeTask.begin(); iter != activeTask.end(); iter++){
 		string temp = iter->taskDisplay;
 		foundAlready = false;
@@ -698,7 +735,16 @@ std::vector<std::string> Storage::searchTask(std::string thingsToSearch,date dat
 			foundAlready = true;
 		}
 		if (!foundAlready && dateToSearch == iter->endDate && iter->endDate != nonDate) {
-			cout << dateToSearch << " " << iter->endDate;
+			registerSearchedStuff(iter, findIt, searchedStuff, count);
+			registerColourIndex(*iter);
+			foundAlready = true;
+		}
+		if (!foundAlready && dateToSearch == currentDate && iter->endDate != nonDate && iter->endDate == tomorrowDate){
+				registerSearchedStuff(iter, findIt, searchedStuff, count);
+				registerColourIndex(*iter);
+				foundAlready = true;
+		}
+		if (!foundAlready && dateToSearch == currentDate && iter->startDate != nonDate && iter->startDate == tomorrowDate){
 			registerSearchedStuff(iter, findIt, searchedStuff, count);
 			registerColourIndex(*iter);
 			foundAlready = true;
@@ -827,7 +873,7 @@ std::string Storage::completeSearchTask(int index){
 	return feedbackMessage.str();
 }
 
-//SLAP
+
 void Storage::updateRecurTask(Task &temporaryTask, std::string information, ptime tempStartTime, ptime tempEndTime){
 	if (!information.empty()){
 		temporaryTask.taskDetails = information;
@@ -1026,7 +1072,7 @@ std::vector<std::string> Storage::reformat(std::vector<std::string> input){
 				}
 				position += length;
 			}
-			oss << input[i].substr(nextpos, input[i].length() - nextpos) << std::endl;
+			oss << input[i].substr(nextpos, input[i].length() - nextpos);
 			newOutput.push_back(oss.str());
 		}
 		else{

@@ -88,6 +88,7 @@ public:
 	void updateRecurTask(Task &, std::string, ptime, ptime);
 	void updateStandardTask(Task &, std::string, date,date,ptime, ptime);
 	std::vector<std::string> reformat(std::vector<std::string>);
+	std::vector<std::string> retrieveTopTask();
 
 
 
