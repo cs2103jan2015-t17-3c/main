@@ -1,4 +1,6 @@
 
+//FloatTask deals with floating tasks
+
 #ifndef FLOATINGTASK_H_
 #define FLOATINGTASK_H_
 

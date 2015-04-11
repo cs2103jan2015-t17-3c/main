@@ -35,6 +35,12 @@ namespace DoooodleGUI {
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
+	private: System::Windows::Forms::Timer^  timer1;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::PictureBox^  pictureBox3;
+
+
+
 
 
 
@@ -53,6 +59,7 @@ namespace DoooodleGUI {
 			storage = new Storage;
 			commandHistory = new std::vector<std::string>;
 			counter = 0;
+			timer1->Start();
 		}
 
 	protected:
@@ -73,14 +80,15 @@ namespace DoooodleGUI {
 
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::DateTimePicker^  dateTimePicker1;
+
+	private: System::ComponentModel::IContainer^  components;
 
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -89,11 +97,11 @@ namespace DoooodleGUI {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(GUI::typeid));
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->dateTimePicker1 = (gcnew System::Windows::Forms::DateTimePicker());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
@@ -101,8 +109,12 @@ namespace DoooodleGUI {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// textBox1
@@ -138,13 +150,6 @@ namespace DoooodleGUI {
 			this->label1->TabIndex = 4;
 			this->label1->Text = L"Floating Task";
 			// 
-			// dateTimePicker1
-			// 
-			this->dateTimePicker1->Location = System::Drawing::Point(17, 12);
-			this->dateTimePicker1->Name = L"dateTimePicker1";
-			this->dateTimePicker1->Size = System::Drawing::Size(200, 20);
-			this->dateTimePicker1->TabIndex = 5;
-			// 
 			// textBox2
 			// 
 			this->textBox2->BackColor = System::Drawing::Color::BurlyWood;
@@ -154,6 +159,7 @@ namespace DoooodleGUI {
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->ReadOnly = true;
+			this->textBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->textBox2->Size = System::Drawing::Size(226, 264);
 			this->textBox2->TabIndex = 7;
 			// 
@@ -222,7 +228,7 @@ namespace DoooodleGUI {
 			// pictureBox2
 			// 
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(16, 80);
+			this->pictureBox2->Location = System::Drawing::Point(17, 80);
 			this->pictureBox2->Name = L"pictureBox2";
 			this->pictureBox2->Size = System::Drawing::Size(535, 324);
 			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -230,18 +236,46 @@ namespace DoooodleGUI {
 			this->pictureBox2->TabStop = false;
 			this->pictureBox2->Visible = false;
 			// 
+			// timer1
+			// 
+			this->timer1->Tick += gcnew System::EventHandler(this, &GUI::timer1_Tick);
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->BackColor = System::Drawing::Color::Transparent;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Agency FB", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label5->ForeColor = System::Drawing::Color::Black;
+			this->label5->Location = System::Drawing::Point(274, 9);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(56, 28);
+			this->label5->TabIndex = 15;
+			this->label5->Text = L"00:00";
+			// 
+			// pictureBox3
+			// 
+			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
+			this->pictureBox3->Location = System::Drawing::Point(0, 0);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(811, 421);
+			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox3->TabIndex = 16;
+			this->pictureBox3->TabStop = false;
+			// 
 			// GUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(810, 450);
+			this->Controls->Add(this->pictureBox3);
+			this->Controls->Add(this->label5);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->textBox4);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->textBox2);
-			this->Controls->Add(this->dateTimePicker1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->textBox1);
@@ -251,6 +285,7 @@ namespace DoooodleGUI {
 			this->Text = L"GUI";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -283,6 +318,9 @@ namespace DoooodleGUI {
 			textBox2->Clear();
 			richTextBox1->Clear();
 			pictureBox2->Hide();
+			label1->Text = "";
+			textBox2->Clear();
+			pictureBox3->Hide();
 		}
 
 		Color determineColour(int index) {
@@ -316,14 +354,6 @@ namespace DoooodleGUI {
 			storage = logic->getStorage();
 			std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
 			std::vector<std::string> topTen = storage->retrieveTopFifteen();
-			//Floating tasks
-			label1->Text = "Floating Tasks:      [" + Convert::ToUInt32(logic->getFloatingSize()) + "]";
-			if (floatingTask.size() > 0) {
-				textBox2->Text = convertStdToManaged(floatingTask[0]);
-				for (int i = 1; i < floatingTask.size(); i++) {
-					textBox2->Text = textBox2->Text + "\r\n" + (convertStdToManaged(floatingTask[i]));
-				}
-			}
 			//search tasks
 			if (logic->getCommandType(input) == "search") {
 				displayMessage = logic->displaySearchResults(input);
@@ -375,6 +405,15 @@ namespace DoooodleGUI {
 				label2->Text = "[" + Convert::ToUInt32(logic->getDeadlineSize()) + "]";
 				label4->ForeColor = Color::Blue;
 				label4->Text = "[" + Convert::ToUInt32(logic->getNormalSize()) + "]";
+				//Floating tasks
+				label1->Text = "Floating Tasks:      [" + Convert::ToUInt32(logic->getFloatingSize()) + "]";
+				if (floatingTask.size() > 0) {
+					textBox2->Text = convertStdToManaged(floatingTask[0]);
+					for (int i = 1; i < floatingTask.size(); i++) {
+						textBox2->Text = textBox2->Text + "\r\n" + (convertStdToManaged(floatingTask[i]));
+					}
+				}
+
 			}
 		textBox4->Text = convertStdToManaged(message);
 		textBox1->ForeColor = Color::Black;
@@ -406,6 +445,10 @@ namespace DoooodleGUI {
 
 private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 	textBox1->ForeColor = Color::Black;
+}
+private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	DateTime dateTime = DateTime::Now;
+	label5->Text = dateTime.DayOfWeek.ToString() + ", " + dateTime.ToString();
 }
 };
 }

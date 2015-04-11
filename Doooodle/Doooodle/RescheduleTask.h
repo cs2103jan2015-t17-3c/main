@@ -1,4 +1,6 @@
 
+//RescheduleTask deals with rescheduling of overdue tasks
+
 #ifndef RESCHEDULETASK_H_
 #define RESCHEDULETASK_H_
 

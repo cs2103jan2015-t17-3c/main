@@ -1,4 +1,6 @@
 
+//EditTask deals with editting a task
+
 #ifndef EDITTASK_H_
 #define EDITTASK_H_
 

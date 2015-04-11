@@ -1,4 +1,7 @@
 
+//ITASK is an Interface Class for other Logic classes such as:
+//DeadlineTask, DeleteTask, EditTask, FloatingTask, NormalTask, RescheduleTask, SearchTask, UndoTask
+
 #ifndef ITASK_H_
 #define ITASK_H_
 

@@ -1,4 +1,6 @@
 
+//NormalTask deals with normal tasks
+
 #ifndef NORMALTASK_H_
 #define NORMALTASK_H_
 
