@@ -16,8 +16,6 @@ const std::string Logic::STRING_INVALID = "ERROR!";
 const std::string Logic::STRING_RESCHEDULE = "reschedule";
 const std::string Logic::STRING_SEARCH = "search";
 const std::string Logic::STRING_UNDO = "undo";
-const int Logic::TOP15MAX = 15;
-const int Logic::FLOATMAX = 5;
 
 Logic::Logic(void) {
 }
@@ -25,15 +23,14 @@ Logic::Logic(void) {
 Logic::~Logic(void) {
 }
 
-std::vector<std::string> Logic::displayTopFifteen(void) {
-	std::vector<std::string> topTenToDisplay = storage.retrieveTopFifteen();
+std::vector<std::string> Logic::displayTopList(void) {
+	std::vector<std::string> listToDisplay = storage.retrieveTopList();
 	//assert(topTenToDisplay.size()<=TOP15MAX);
-	return topTenToDisplay; 
+	return listToDisplay; 
 }
 
 std::vector<std::string> Logic::displayFloatingTask(void) {
 	std::vector<std::string> floatingTask = storage.retrieveFloatingTask();
-	assert(floatingTask.size()<=FLOATMAX);
 	return floatingTask; 
 }
 
