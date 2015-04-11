@@ -440,14 +440,13 @@ void Parser::frequencyParsing(std::string input,int& interval,std::string& frequ
 
 std::string Parser::separateRecurringFront(std::string input){
 	size_t pos;
-	pos = input.find(RECURRING_INDENTIFIER);
+	pos = input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]);
 	return input.substr(0, pos);
 }
 
 std::string Parser::separateRecurringBack(std::string input){
 	size_t pos;
-	pos = input.find(RECURRING_INDENTIFIER);
-	std::cout << input.substr(pos, input.length() - pos) << std::endl;
+	pos = input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]);
 	return input.substr(pos, input.length()-pos);
 }
 
