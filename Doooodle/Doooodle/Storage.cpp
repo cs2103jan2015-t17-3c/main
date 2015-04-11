@@ -327,13 +327,10 @@ std::vector<std::string> Storage::retrieveTopList(){
 					break;
 				}
 			}
-			if (!repeat){
+			if (!repeat && sortedTaskIndex.size()!=0){
 				sortedTaskIndex.push_back(i);
 				registerColourIndex(activeTask[i]);
 				count++;
-			}
-			if (count == NUMBER_OF_DISPLAY){
-				break;
 			}
 		}
 	for (int j = 0; j < sortedTaskIndex.size(); j++){
@@ -341,7 +338,7 @@ std::vector<std::string> Storage::retrieveTopList(){
 		oneTask << setfill('0') << setw(2) << j + 1 << ". " << activeTask[sortedTaskIndex[j]].taskDisplay;
 		topTasks.push_back(oneTask.str());
 	}
-		return topTasks;
+	return reformat(topTasks);
 }
 
 //do we still have this?
@@ -452,14 +449,12 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask){
 std::vector<std::string> Storage::retrieveFloatingTask(){
 	using namespace std;
 	vector<string> TopTasks;
-	int count = 0;
-	int displayIndex = min(1+NUMBER_OF_DISPLAY, 1+retrieveDeadlineSize() + retrieveNormalSize());
-	for (int i = 0; i < activeTask.size() && count < NUMBER_OF_FLOATING_DISPLAY; i++){
+	int displayIndex = 1+retrieveDeadlineSize() + retrieveNormalSize();
+	for (int i = 0; i < activeTask.size() ; i++){
 		if (activeTask[i].taskType == FLOATING){
 			ostringstream floatingTaskDisplay;
 			floatingTaskDisplay << setfill('0') << setw(2) << displayIndex << ". " << activeTask[i].taskDisplay;
 			TopTasks.push_back(floatingTaskDisplay.str());
-			count++;
 			displayIndex++;
 		}
 	}
@@ -671,7 +666,7 @@ void Storage::registerSearchedStuff(std::vector<Task>::iterator iter, bool& find
 	tempSearchIterator.push_back(iter);
 	findIt = true;
 	ostringstream oneTask;
-	oneTask << count << ". " << iter->taskDisplay;
+	oneTask << setfill('0') << setw(2) << count << ". " << iter->taskDisplay;
 	searchedStuff.push_back(oneTask.str());
 	count++;
 }
@@ -1012,4 +1007,31 @@ std::string Storage::addRecurringTask(std::string task, std::vector<date> vStart
 	return MESSAGE_RECUR_SUCCESS;
 }
 
-
+std::vector<std::string> Storage::reformat(std::vector<std::string> input){
+	size_t position;
+	size_t nextpos;
+	int length = 30;
+	std::vector<std::string> newOutput;
+	for (int i = 0; i < input.size(); i++){
+		std::ostringstream oss;
+		nextpos = input[i].find("[");
+		position = 0;
+		if (nextpos >= length+1){
+			for (int j = 0; j < nextpos / length + 1; j++){
+				if (nextpos - position <= nextpos%length){
+					oss << std::left << std::setfill(' ') << std::setw(length) << input[i].substr(position, nextpos % length);
+				}
+				else{
+					oss << input[i].substr(position, length) << std::endl;
+				}
+				position += length;
+			}
+			oss << input[i].substr(nextpos, input[i].length() - nextpos) << std::endl;
+			newOutput.push_back(oss.str());
+		}
+		else{
+			newOutput.push_back(input[i]);
+		}
+	}
+	return newOutput;
+}
