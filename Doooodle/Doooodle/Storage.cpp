@@ -327,7 +327,7 @@ std::vector<std::string> Storage::retrieveTopList(){
 					break;
 				}
 			}
-			if (!repeat){
+			if (!repeat && sortedTaskIndex.size()!=0){
 				sortedTaskIndex.push_back(i);
 				registerColourIndex(activeTask[i]);
 				count++;
