@@ -1,16 +1,46 @@
 #include "Parser.h"
 
-const date Parser::DATE_INVALID(not_a_date_time);
-const ptime Parser::TIME_INVALID(not_a_date_time);
+const date Parser::DATE_INVALID(max_date_time);
+const ptime Parser::TIME_INVALID(max_date_time);
+const int Parser::DEFAULT_SIZE=1000;
+const int Parser::DEFAULT_RECURRENCE=-1;
+const int Parser::DEFAULT_INTERVAL=1;
+const int Parser::RECURRING_POSITION = 1;
+const int Parser::DEFAULT_TASK_TYPE_POSITION = 1;
+const int Parser::FIRST_PARAMETER = 0;
+const int Parser::SECOND_PARAMETER = 1;
+const int Parser::THIRD_PARAMETER = 2;
+const int Parser::NO_PARAMETER_FREQUENCY = 1;
+const int Parser::NO_PARAMETER_FREQUENCY_BOUNDARY = 2;
+const int Parser::NO_PARAMETER_ALL = 3;
+const int Parser::NO_SEARCH_MONTH = 2;
+const date Parser::DATE_EMPTY;
+const ptime Parser::TIME_EMPTY;
 const int Parser::POSITION_COMMAND_TYPE = 0;
+const int Parser::POSITION_USER_TASK = 1;
+const std::string Parser::DEADLINE_INDICATOR = "by";
 const std::string Parser::DELIMITERS = " ";
 const std::string Parser::RECURRING_INDENTIFIER = " ;";
+const std::string Parser::RIGID_INDENTIFIER = ",*";
+const std::string Parser::ALL_DELIMITER = " ,*";
 const int Parser::NO_OF_START_TIME_INDICATORS = 1;
 const int Parser::NO_OF_END_TIME_INDICATORS = 5;
+const int Parser::NO_OF_NORMAL_IDENTIFIERS = 5;
+const int Parser::NO_OF_DEADLINE_IDENTIFIERS = 4;
+const int Parser::NO_OF_FLOAT_IDENTIFIERS = 8;
+const int Parser::NO_OF_ARCHIVE_IDENTIFIERS = 2;
+const std::string Parser::DISPLAY_COMMAND="display";
+const std::string Parser::SEARCH_COMMAND="search";
+const std::string Parser::DELETE_COMMAND="delete";
+const std::string Parser::EDIT_COMMAND="edit";
 const std::string Parser::INVALID_DATE = "Invalid Date";
 const std::string Parser::EMPTY = "Empty Task";
 const std::string Parser::DEFAULT_YEAR_SEARCH="1900";
 const std::string Parser::DEFAULT_DAY_SEARCH = "01";
+const std::string Parser::NORMAL_IDENTIFIERS[NO_OF_NORMAL_IDENTIFIERS] = { "normal", "N", "norm", "Norm", "Normal"};
+const std::string Parser::DEADLINE_IDENTIFIERS[NO_OF_DEADLINE_IDENTIFIERS] = {"floating","Float", "float", "Floating" };
+const std::string Parser::FLOAT_IDENTIFIERS[NO_OF_FLOAT_IDENTIFIERS] = { "deadline", "Deadline", "d", "D", "dead", "Dead", "dateline", "Dateline" };
+const std::string Parser::ARCHIVE_IDENTIFIERS[NO_OF_ARCHIVE_IDENTIFIERS] = { "archive", "Archive" };
 const std::string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const std::string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
 
@@ -22,14 +52,15 @@ Parser::~Parser(){
 }
 
 bool Parser::isRecurring(std::string input){
-	if (input.find(RECURRING_INDENTIFIER) != std::string::npos){
+	if (input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]) != std::string::npos){
 		return true;
 	}
 	return false;
 }
 
 bool Parser::isRigid(std::string input){
-	if (input.find('*') != std::string::npos){
+	for (int i = 0; i < RIGID_INDENTIFIER.length();i++)
+		if (input.find(RIGID_INDENTIFIER[i]) != std::string::npos){
 		return true;
 	}
 	return false;
@@ -37,20 +68,21 @@ bool Parser::isRigid(std::string input){
 
 void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
 	std::string frequency;
-	int recurrence=-1;
-	int interval = 1;
+	int recurrence = DEFAULT_RECURRENCE;
+	int interval = DEFAULT_INTERVAL;
 	int dummyIndexReference;
-	date finishDate(not_a_date_time);
-	date startDate(not_a_date_time);
-	date endDate(not_a_date_time);
-	ptime startTime(not_a_date_time);
-	ptime endTime(not_a_date_time);
-	processCommand(input, commandType, userTask, startDate, endDate, startTime, endTime, dummyIndexReference);
-	if (startDate == DATE_INVALID && endDate == DATE_INVALID && startTime == TIME_INVALID && endTime == TIME_INVALID){
+	date finishDate;
+	date startDate;
+	date endDate;
+	ptime startTime;
+	ptime endTime;
+
+	processCommand(separateRecurringFront(input), commandType, userTask, startDate, endDate, startTime, endTime, dummyIndexReference);
+	if (startDate == DATE_EMPTY && endDate == DATE_EMPTY && startTime == TIME_EMPTY && endTime == TIME_EMPTY){
 		commandType = INVALID_DATE;
 		return;
 	}
-	getRecurringParameter(input, frequency, interval,recurrence, finishDate);
+	getRecurringParameter(separateRecurringBack(input), frequency, interval, recurrence, finishDate);
 	vecStartDate.push_back(startDate);
 	vecEndDate.push_back(endDate);
 	vecStartTime.push_back(startTime);
@@ -62,89 +94,79 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 
 void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, date& startDate, date& endDate, 
 	ptime& startTime, ptime& endTime, int& indexReference){
-	date d1(not_a_date_time);
-	date dmax(max_date_time);
-	ptime d2(not_a_date_time);
-	ptime pmax(max_date_time);
 	int pos;
 	if (isRigid(input)){
-		rigidTokenizer(input);
-		commandType = tokens[0];
-		userTask = tokens[1];
-		startDate = dateparser.standardiseDate(tokens[2]);
-		endDate = dateparser.standardiseDate(tokens[4]);
-		startTime = timeparser.standardTime(tokens[3]);
-		endTime = timeparser.standardTime(tokens[5]);
-	}else{
-		tokenizeInput(input);    //tokenize string by white space
+		tokenizeInput(input, RIGID_INDENTIFIER);
+		commandType = tokens[POSITION_COMMAND_TYPE];
+		userTask = tokens[POSITION_USER_TASK];
+		eraseUserTask(input, tokens[POSITION_USER_TASK]);
+	}
+	else{
+		tokenizeInput(input, DELIMITERS);    //tokenize string by white space
 		commandType = getCommandType(input);
-		if (commandType == "search"){
+		if (commandType == SEARCH_COMMAND){
 			monthParsingForSearch(input);
 		}
-		indexReference = getIndexReference(input);
 		userTask = getUserTask(input);
+	}
+		indexReference = getIndexReference(input);
 		startDate = getStartDate(pos);
 		endDate = getEndDate(pos);
 		startTime = getStartTime(pos);
 		endTime = getEndTime(pos);
-	}
-	if (commandType == "display"){
+		if (commandType == DISPLAY_COMMAND){
 		if (!userTaskParsing(userTask)){
 			commandType = EMPTY;
 		}
 	}
 	//date or time is identifed but not correct date format
-	if (startDate == dmax || endDate == dmax || startTime==pmax || endTime==pmax){
+	if (startDate == DATE_INVALID || endDate == DATE_INVALID || startTime == TIME_INVALID || endTime == TIME_INVALID){
 		commandType = INVALID_DATE;
 	}
 	//if start date time and end date time are the same, only keep the end date time
 	if (startDate == endDate && startTime == endTime){
-		startDate = d1;
-		startTime = d2;
+		startDate = DATE_EMPTY;
+		startTime = TIME_EMPTY;
 	}
 	//if only have time, the default date is today
-	if (startDate == d1 && startTime != d2 && getCommandType(input)!="edit"){
+	if (startDate == DATE_EMPTY && startTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND){
 		assignToday(startDate);
 	}
 	//if only have time, the default date is today
-	if (endDate == d1 && endTime != d2 && getCommandType(input)!="edit"){
+	if (endDate == DATE_EMPTY && endTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND){
 		assignToday(endDate);
 	}
-	//if only have date and it is a deadlin task, a default time of 2359 will be assigned
-	if (endDate != d1 && endTime == d2 && isDeadline(input)){
+	//if only have date and it is a deadline task, a default time of 2359 will be assigned
+	if (endDate != DATE_EMPTY && endTime == TIME_EMPTY && isDeadline(input)){
 		ptime t(endDate, hours(23)+minutes(59)+seconds(59));
 		endTime = t;
 	}
+	if ((endDate < startDate && startDate != DATE_EMPTY) || (endDate == startDate && endTime < startTime && startDate != DATE_EMPTY && startTime!=TIME_EMPTY)){
+		commandType = INVALID_DATE;
+	}
+
 	return;
 }
 
-void Parser::tokenizeInput(std::string input){
-	std::string buf; 
+void Parser::tokenizeInput(std::string input,std::string delimiters){
 	tokens.clear();
-	std::stringstream ss(input); // Insert the string into a stream
-	while (ss >> buf)
-		tokens.push_back(buf);
-}
-
-void Parser::rigidTokenizer(std::string input){
-	tokens.clear();
-	char str[1000]=" ";
+	char str[DEFAULT_SIZE] = " ";
 	for (int i = 0; i < input.size(); i++){
 		str[i] = input[i];
 	}
 	char * pch;
-	pch = strtok(str, "*");
+	pch = strtok(str, delimiters.c_str());
 	while (pch != NULL)
 	{
 		tokens.push_back(pch);
-		pch = strtok(NULL, "*");
+		pch = strtok(NULL, delimiters.c_str());
 	}
 }
 
 std::string Parser::getCommandType(std::string input){
 	std::string task;
 	if (input == "") {
-		task = " ";
+		task = DELIMITERS;
 	}
 	else {
 		task = tokens[POSITION_COMMAND_TYPE];
@@ -153,7 +175,7 @@ std::string Parser::getCommandType(std::string input){
 }
 
 int Parser::getIndexReference(std::string input){
-	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"|| getCommandType(input)=="complete"){
+	if (getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND || getCommandType(input) == "complete"){
 		for (int i = 0; i < tokens.size(); i++){
 			if (isdigit(tokens[i][0])){
 				return atoi(tokens[i].c_str());
@@ -241,7 +263,7 @@ ptime Parser::getEndTime(int& num){
 size_t Parser::intToPos(int num,std::string input){
 	size_t position=0;
 	for (int i = 0; i < num; i++){
-		position = input.find(" ", position+1);
+		position = input.find(DELIMITERS, position+1);
 	}
 	return position;
 }
@@ -250,7 +272,8 @@ size_t Parser::getStartOfUserTask(std::string input){
 	size_t pos;
 	pos=input.find_first_of(DELIMITERS);
 	pos++;
-	if (getCommandType(input) == "delete" || getCommandType(input) == "edit"){
+	//if the command is delete or edit, the start of the user task is one position after the index
+	if (getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND){
 		pos = input.find_first_of(DELIMITERS,pos);
 		pos++;
 	}
@@ -306,7 +329,7 @@ void Parser::assignToday(date& d){
 
 bool Parser::isDeadline(std::string input){
 	for (int i = 0; i < tokens.size(); i++){
-		if (tokens[i]=="by"){
+		if (tokens[i] ==DEADLINE_INDICATOR){
 			return true;
 		}
 	}
@@ -315,38 +338,51 @@ bool Parser::isDeadline(std::string input){
 
 bool Parser::userTaskParsing(std::string& input){
 	bool check = true;
-	if (input == "Normal" || input == "N" || input == "norm" || input == "Norm" || input == "normal"){
-		input = "normal";
-	}else if (input == "floating" || input == "Float" || input == "float" || input == "Floating"){
-		input = "floating";
-	}else if (input=="deadline" || input == "Deadline" || input == "d" || input == "D" || input == "dead" || input == "Dead" || input == "dateline" || input == "Dateline"){
-		input = "deadline";
-	}else if (input == "Archive" || input=="archive"){
-		input = "archive";
-	}else {
-		check=false;
+	for (int i = 0; i < NO_OF_NORMAL_IDENTIFIERS; i++){
+		if (input == NORMAL_IDENTIFIERS[i]){
+			input = NORMAL_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
 	}
-	return check;
+	for (int i = 0; i < NO_OF_DEADLINE_IDENTIFIERS; i++){
+		if (input == DEADLINE_IDENTIFIERS[i]){
+			input = DEADLINE_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
+	}
+	for (int i = 0; i < NO_OF_FLOAT_IDENTIFIERS; i++){
+		if (input == FLOAT_IDENTIFIERS[i]){
+			input = FLOAT_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
+	}
+	for (int i = 0; i < NO_OF_ARCHIVE_IDENTIFIERS; i++){
+		if (input == ARCHIVE_IDENTIFIERS[i]){
+			input = ARCHIVE_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
+	}
+	return false;
 }
 
 void Parser::getRecurringParameter(std::string input,std::string& frequency, int& interval, int& recurrence, date& finish){
 	std::vector<std::string> items;
 	items=recurringTokenizer(input);
-	if (items.size() >= 2){
-		frequencyParsing(items[1], interval, frequency);
+	if (items.size() >= NO_PARAMETER_FREQUENCY){
+		frequencyParsing(items[FIRST_PARAMETER], interval, frequency);
 	}
-	if (items.size() >= 3){
-		if (dateparser.isDate(items[2])){
-			finish = dateparser.standardiseDate(items[2]);
+	if (items.size() >= NO_PARAMETER_FREQUENCY_BOUNDARY){
+		if (dateparser.isDate(items[SECOND_PARAMETER])){
+			finish = dateparser.standardiseDate(items[SECOND_PARAMETER]);
 		}else{
-			recurrence = atoi(items[2].c_str());
+			recurrence = atoi(items[SECOND_PARAMETER].c_str());
 		}
 	}
-	if (items.size() >= 4){
-		if (dateparser.isDate(items[3])){
-			finish = dateparser.standardiseDate(items[3]);
+	if (items.size() >= NO_PARAMETER_ALL){
+		if (dateparser.isDate(items[THIRD_PARAMETER])){
+			finish = dateparser.standardiseDate(items[THIRD_PARAMETER]);
 		}else{
-			recurrence = atoi(items[3].c_str());
+			recurrence = atoi(items[THIRD_PARAMETER].c_str());
 		}
 	}
 	return;
@@ -354,16 +390,16 @@ void Parser::getRecurringParameter(std::string input,std::string& frequency, int
 
 std::vector<std::string> Parser::recurringTokenizer(std::string input){
 	std::vector<std::string> recurringTokens;
-	char str[1000] = " ";
+	char str[DEFAULT_SIZE] = " ";
 	for (int i = 0; i < input.size(); i++){
 		str[i] = input[i];
 	}
 	char * pch;
-	pch = strtok(str, ";");
+	pch = strtok(str, RECURRING_INDENTIFIER.c_str());
 	while (pch != NULL)
 	{
 		recurringTokens.push_back(pch);
-		pch = strtok(NULL, ";");
+		pch = strtok(NULL, RECURRING_INDENTIFIER.c_str());
 	}
 	return recurringTokens;
 }
@@ -373,10 +409,10 @@ void Parser::monthParsingForSearch(std::string& input){
 	size_t nextpos;
 	std::ostringstream oss;
 	oss << DEFAULT_YEAR_SEARCH;
-	if (tokens.size() == 2){
+	if (tokens.size() == NO_SEARCH_MONTH){
 		for (int i = 0; i < tokens.size(); i++){
-			if (dateparser.monthToNum(tokens[i]) <= 12 && dateparser.monthToNum(tokens[i]) >= 1){
-				if (dateparser.monthToNum(tokens[i]) >= 10){
+			if (dateparser.monthToNum(tokens[i]) <= Dec && dateparser.monthToNum(tokens[i]) >= Jan){
+				if (dateparser.monthToNum(tokens[i]) >= Oct){
 					oss << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
 				}
 				else{
@@ -399,5 +435,26 @@ void Parser::frequencyParsing(std::string input,int& interval,std::string& frequ
 		}
 	}
 	frequency = input;
+	return;
+}
+
+std::string Parser::separateRecurringFront(std::string input){
+	size_t pos;
+	pos = input.find(RECURRING_INDENTIFIER);
+	return input.substr(0, pos);
+}
+
+std::string Parser::separateRecurringBack(std::string input){
+	size_t pos;
+	pos = input.find(RECURRING_INDENTIFIER);
+	std::cout << input.substr(pos, input.length() - pos) << std::endl;
+	return input.substr(pos, input.length()-pos);
+}
+
+void Parser::eraseUserTask(std::string input, std::string userTask){
+	size_t pos;
+	pos=input.find(userTask);
+	input.erase(pos, userTask.length());
+	tokenizeInput(input, ALL_DELIMITER);
 	return;
 }
