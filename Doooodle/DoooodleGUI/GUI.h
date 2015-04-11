@@ -258,7 +258,7 @@ namespace DoooodleGUI {
 			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
 			this->pictureBox3->Location = System::Drawing::Point(0, 0);
 			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(811, 421);
+			this->pictureBox3->Size = System::Drawing::Size(811, 450);
 			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox3->TabIndex = 16;
 			this->pictureBox3->TabStop = false;
@@ -353,7 +353,7 @@ namespace DoooodleGUI {
 			std::string message = logic->receiveCommand(input);
 			storage = logic->getStorage();
 			std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
-			std::vector<std::string> topTen = storage->retrieveTopFifteen();
+			std::vector<std::string> topList = storage->retrieveTopList();
 			//search tasks
 			if (logic->getCommandType(input) == "search") {
 				displayMessage = logic->displaySearchResults(input);
@@ -394,7 +394,7 @@ namespace DoooodleGUI {
 			else {
 				label3->Text = "Below is the list of upcoming events in your calendar:";
 				colourIndex = logic->getColourIndex();
-				displayMessage = topTen;
+				displayMessage = topList;
 				if (displayMessage.size()>0) {
 					for (int i = 0; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
