@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
+
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
@@ -82,6 +83,12 @@ public:
 	void registerColourIndex(Task);
 	std::vector<int> retrieveColourIndex();
 	std::string undoComplete();
+	void deleteRecurringTask(std::vector<int>);
+	int convertToActualIndex(int);
+	void updateRecurTask(Task &, std::string, ptime, ptime);
+	void updateStandardTask(Task &, std::string, date,date,ptime, ptime);
+
+
 
 
 private:
@@ -101,8 +108,15 @@ private:
 	static const std::string MESSAGE_BUFFER_SMALL;
 	static const std::string MESSAGE_SETDIRECTORY_FAIL;
 	static const std::string MESSAGE_SETDIRECTORY_SUCCESS;
+	static const std::string MESSAGE_WRONG_INDEX;
+	static const std::string MESSAGE_DELETE_RECUR;
+	static const std::string MESSAGE_UNDO_EMPTY ;
+	static const std::string MESSAGE_EDIT_SUCCESS;
+	static const std::string MESSAGE_INVALID_RECUR;
+	static const std::string MESSAGE_RECUR_SUCCESS;
 	static const ptime nonTime;
 	static const date nonDate;
+	static const date specialDate;
 	std::stack<Task> tempTask;
 	std::stack<std::string> taskDetailsHistory;
 	std::vector<std::vector<Task>::iterator> tempSearchIterator;
@@ -110,6 +124,7 @@ private:
 	std::stack<int> numberOfUndoActions;
 	std::string directoryName;
 	std::vector<int> colourIndex;
+	bool lastCommandIsDisplay = false;
 };
 
 #endif
