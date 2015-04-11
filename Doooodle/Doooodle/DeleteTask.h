@@ -1,4 +1,6 @@
 
+//DeleteTask deals with deleting a task
+
 #ifndef DELETETASK_H_
 #define DELETETASK_H_
 

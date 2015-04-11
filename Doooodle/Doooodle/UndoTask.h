@@ -1,4 +1,6 @@
 
+//UndoTask deals with undoing of tasks
+
 #ifndef UNDOTASK_H_
 #define UNDOTASK_H_
 
@@ -25,8 +27,6 @@ private:
 	static const std::string STRING_DELETE;
 	static const std::string STRING_EDIT;
 	static const std::string STRING_UNDO_FAILURE;
-	static const std::string STRING_SEARCH;
-	static const std::string STRING_UNDO;
 
 	TASK_TYPE retrieveTaskTypeToUndo(std::vector<CommandDetails*>&);
 	std::string executeUndoAdd(std::vector<CommandDetails*>&, Storage&);
