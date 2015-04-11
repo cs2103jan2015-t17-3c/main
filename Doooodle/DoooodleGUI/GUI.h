@@ -365,6 +365,8 @@ namespace DoooodleGUI {
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
 					}
 				}
+				richTextBox1->SelectionStart = 0;
+				richTextBox1->ScrollToCaret();
 				label2->Text = " ";
 				label4->ForeColor = Color::Black;
 				label4->Text = "[" + Convert::ToUInt32(displayMessage.size()) + "]";
@@ -380,6 +382,8 @@ namespace DoooodleGUI {
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
 					}
 				}
+				richTextBox1->SelectionStart = 0;
+				richTextBox1->ScrollToCaret();
 				label2->Text = " ";
 				label4->ForeColor = Color::Black;
 				label4->Text = "[" + Convert::ToUInt32(displayMessage.size()) + "]";
@@ -401,6 +405,8 @@ namespace DoooodleGUI {
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
 					}
 				}
+				richTextBox1->SelectionStart = 0;
+				richTextBox1->ScrollToCaret();
 				label2->ForeColor = Color::DarkOliveGreen;
 				label2->Text = "[" + Convert::ToUInt32(logic->getDeadlineSize()) + "]";
 				label4->ForeColor = Color::Blue;
@@ -413,6 +419,8 @@ namespace DoooodleGUI {
 						textBox2->Text = textBox2->Text + "\r\n" + (convertStdToManaged(floatingTask[i]));
 					}
 				}
+				textBox2->SelectionStart = 0;
+				textBox2->ScrollToCaret();
 
 			}
 		textBox4->Text = convertStdToManaged(message);
