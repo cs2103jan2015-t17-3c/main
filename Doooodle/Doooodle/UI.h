@@ -33,7 +33,7 @@ private:
 	void printVectorToUser(std::vector<std::string>);
 	void printEmptyLine(int);
 	void printSearchLine(int);
-	bool checkOverdue(std::string);
+	//bool checkOverdue(std::string);
 
 public:
 	UI(void);

@@ -53,7 +53,7 @@ void UI::readMessage(){
 		} else {
 			SetConsoleTextAttribute(hConsole, 249);
 			std::cout << MESSAGE_TOPTEN;
-			displayMessage = logic.displayTopFifteen();
+			displayMessage = logic.displayTopList();
 			SetConsoleTextAttribute(hConsole, 252);
 			std::cout << "  [" << logic.getDeadlineSize() << "]"; 
 			SetConsoleTextAttribute(hConsole, 242);
@@ -85,7 +85,7 @@ void UI::readMessage(){
 		if (command != "check"){
 			message = logic.receiveCommand(command);
 		}
-		checkOverdue(command);
+//		checkOverdue(command);
 	}
 }
 
@@ -99,7 +99,7 @@ void UI::printVectorToUser(std::vector<std::string> vec){
 		printToUser(vec[i]);
 	}
 }
-
+/*
 bool UI::checkOverdue(std::string command){
 	std::string message=" ";
 	if (logic.displayOverdue().empty()){
@@ -133,3 +133,4 @@ bool UI::checkOverdue(std::string command){
 	std::system("CLS");
 	return true;
 }
+*/
