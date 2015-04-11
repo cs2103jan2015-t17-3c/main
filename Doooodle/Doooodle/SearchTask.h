@@ -1,4 +1,6 @@
 
+//SearchTask deals with searching of tasks
+
 #ifndef SEARCHTASK_H_
 #define SEARCHTASK_H_
 

@@ -12,6 +12,7 @@ NormalTask::NormalTask(void) {
 NormalTask::~NormalTask(void) {
 }
 
+//overwrite ITask and calls appropriate storage public API
 std::string NormalTask::loadTask(std::string task, date dateStart, date dateEnd, ptime timeStart, ptime timeEnd, Storage& storage) {
 	this->task = task;
 	this->dateStart = dateStart;

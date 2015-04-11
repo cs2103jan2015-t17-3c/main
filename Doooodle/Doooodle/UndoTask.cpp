@@ -5,8 +5,6 @@ const std::string UndoTask::STRING_ADD = "add";
 const std::string UndoTask::STRING_COMPLETE = "complete";
 const std::string UndoTask::STRING_DELETE = "delete";
 const std::string UndoTask::STRING_EDIT = "edit";
-const std::string UndoTask::STRING_SEARCH = "search";
-const std::string UndoTask::STRING_UNDO = "undo";
 const std::string UndoTask::STRING_UNDO_FAILURE = "Nothing to undo!";
 
 UndoTask::UndoTask(void) {
@@ -15,6 +13,7 @@ UndoTask::UndoTask(void) {
 UndoTask::~UndoTask(void) {
 }
 
+//overwrite ITask and calls appropriate storage public API
 std::string UndoTask::loadTask(std::vector<CommandDetails*>& CD, Storage& storage) {
 	TASK_TYPE taskType = retrieveTaskTypeToUndo(CD);
 	switch(taskType) {
@@ -61,7 +60,6 @@ std::string UndoTask::executeUndoEdit(std::vector<CommandDetails*>& CD, Storage&
 
 UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(std::vector<CommandDetails*>& CD) {
 	int index = CD.size()-1;
-	//use exception
 	if (index<0) {
 		return NIL;
 	} 
@@ -71,21 +69,13 @@ UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(std::vector<CommandDetails*
 	else if(CD[index]->commandType==STRING_DELETE) {
 		return ERASE;
 	}
-	else if(CD[index]->commandType==STRING_SEARCH) {
-		CD.pop_back(); //search will not be undone, hence pop_back and recursion to retrieve next in line
-		return retrieveTaskTypeToUndo(CD);
-	}
-	else if(CD[index]->commandType==STRING_UNDO) {
-		CD.pop_back(); //get rid of undo in CD
-		return retrieveTaskTypeToUndo(CD);
-	}
 	else if(CD[index]->commandType==STRING_EDIT) {
 		return EDIT;
 	}
 	else if (CD[index]->commandType == STRING_COMPLETE) {
 		return COMPLETE;
 	}
-	else { //for invalid cases
+	else { //for all other cases, recurssion
 		CD.pop_back();
 		return retrieveTaskTypeToUndo(CD);
 	};

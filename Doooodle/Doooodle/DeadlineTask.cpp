@@ -10,6 +10,7 @@ DeadlineTask::DeadlineTask(void) {
 DeadlineTask::~DeadlineTask(void) {
 }
 
+//overwrite ITask and calls appropriate storage public API
 std::string DeadlineTask::loadTask(std::string task, date dateEnd, ptime timeEnd, Storage& storage) {
 	this->task = task;
 	this->dateEnd = dateEnd;
