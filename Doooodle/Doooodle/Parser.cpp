@@ -263,7 +263,7 @@ ptime Parser::getEndTime(int& num){
 size_t Parser::intToPos(int num,std::string input){
 	size_t position = 0; 
 	if (tokens.size() > num){
-		position = input.find(tokens[num][0], position);
+		position = input.find(tokens[num], position);
 		return position - 1;
 	}
 	else if (tokens.size() == num && tokens.size() != 0){

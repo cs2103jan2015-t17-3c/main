@@ -121,7 +121,7 @@ namespace DoooodleGUI {
 			// 
 			this->textBox1->Location = System::Drawing::Point(17, 418);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(781, 20);
+			this->textBox1->Size = System::Drawing::Size(835, 20);
 			this->textBox1->TabIndex = 0;
 			this->textBox1->TextChanged += gcnew System::EventHandler(this, &GUI::textBox1_TextChanged);
 			this->textBox1->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &GUI::textBox1_KeyDown);
@@ -130,7 +130,7 @@ namespace DoooodleGUI {
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(583, 358);
+			this->pictureBox1->Location = System::Drawing::Point(631, 358);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(211, 46);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -144,7 +144,7 @@ namespace DoooodleGUI {
 			this->label1->Font = (gcnew System::Drawing::Font(L"Gabriola", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label1->ForeColor = System::Drawing::Color::White;
-			this->label1->Location = System::Drawing::Point(574, 35);
+			this->label1->Location = System::Drawing::Point(622, 35);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(134, 50);
 			this->label1->TabIndex = 4;
@@ -155,12 +155,12 @@ namespace DoooodleGUI {
 			this->textBox2->BackColor = System::Drawing::Color::BurlyWood;
 			this->textBox2->Font = (gcnew System::Drawing::Font(L"Calibri", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox2->Location = System::Drawing::Point(572, 80);
+			this->textBox2->Location = System::Drawing::Point(622, 80);
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->ReadOnly = true;
 			this->textBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox2->Size = System::Drawing::Size(226, 264);
+			this->textBox2->Size = System::Drawing::Size(230, 264);
 			this->textBox2->TabIndex = 7;
 			// 
 			// label3
@@ -183,7 +183,7 @@ namespace DoooodleGUI {
 			this->textBox4->Location = System::Drawing::Point(17, 391);
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->ReadOnly = true;
-			this->textBox4->Size = System::Drawing::Size(534, 13);
+			this->textBox4->Size = System::Drawing::Size(573, 13);
 			this->textBox4->TabIndex = 10;
 			// 
 			// richTextBox1
@@ -195,7 +195,7 @@ namespace DoooodleGUI {
 			this->richTextBox1->Location = System::Drawing::Point(17, 80);
 			this->richTextBox1->Name = L"richTextBox1";
 			this->richTextBox1->ReadOnly = true;
-			this->richTextBox1->Size = System::Drawing::Size(534, 296);
+			this->richTextBox1->Size = System::Drawing::Size(573, 296);
 			this->richTextBox1->TabIndex = 11;
 			this->richTextBox1->Text = L"";
 			// 
@@ -230,7 +230,7 @@ namespace DoooodleGUI {
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
 			this->pictureBox2->Location = System::Drawing::Point(17, 80);
 			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(535, 324);
+			this->pictureBox2->Size = System::Drawing::Size(573, 324);
 			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox2->TabIndex = 14;
 			this->pictureBox2->TabStop = false;
@@ -256,9 +256,9 @@ namespace DoooodleGUI {
 			// pictureBox3
 			// 
 			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(-1, 0);
+			this->pictureBox3->Location = System::Drawing::Point(0, -1);
 			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(811, 450);
+			this->pictureBox3->Size = System::Drawing::Size(866, 450);
 			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox3->TabIndex = 16;
 			this->pictureBox3->TabStop = false;
@@ -268,7 +268,7 @@ namespace DoooodleGUI {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->ClientSize = System::Drawing::Size(810, 450);
+			this->ClientSize = System::Drawing::Size(864, 450);
 			this->Controls->Add(this->pictureBox3);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->pictureBox2);
