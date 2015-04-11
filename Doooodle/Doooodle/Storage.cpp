@@ -440,6 +440,7 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask){
 	}
 	if (typeTask == "archive"){
 			for (int i = 0; i < archivedTask.size() && i < NUMBER_OF_ARCHIVED_DISPLAY; i++){
+				colourIndex.push_back(4);
 				ostringstream oneTask;
 				oneTask << i + 1 << ". " << archivedTask[i].taskDisplay;
 				displayedTasks.push_back(oneTask.str());
