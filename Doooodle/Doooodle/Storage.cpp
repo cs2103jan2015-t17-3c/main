@@ -338,7 +338,7 @@ std::vector<std::string> Storage::retrieveTopList(){
 		oneTask << setfill('0') << setw(2) << j + 1 << ". " << activeTask[sortedTaskIndex[j]].taskDisplay;
 		topTasks.push_back(oneTask.str());
 	}
-		return topTasks;
+	return reformat(topTasks);
 }
 
 //do we still have this?
@@ -1007,4 +1007,31 @@ std::string Storage::addRecurringTask(std::string task, std::vector<date> vStart
 	return MESSAGE_RECUR_SUCCESS;
 }
 
-
+std::vector<std::string> Storage::reformat(std::vector<std::string> input){
+	size_t position;
+	size_t nextpos;
+	int length = 30;
+	std::vector<std::string> newOutput;
+	for (int i = 0; i < input.size(); i++){
+		std::ostringstream oss;
+		nextpos = input[i].find("[");
+		position = 0;
+		if (nextpos >= length+1){
+			for (int j = 0; j < nextpos / length + 1; j++){
+				if (nextpos - position <= nextpos%length){
+					oss << std::left << std::setfill(' ') << std::setw(length) << input[i].substr(position, nextpos % length);
+				}
+				else{
+					oss << input[i].substr(position, length) << std::endl;
+				}
+				position += length;
+			}
+			oss << input[i].substr(nextpos, input[i].length() - nextpos) << std::endl;
+			newOutput.push_back(oss.str());
+		}
+		else{
+			newOutput.push_back(input[i]);
+		}
+	}
+	return newOutput;
+}
