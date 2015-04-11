@@ -261,11 +261,17 @@ ptime Parser::getEndTime(int& num){
 }
 
 size_t Parser::intToPos(int num,std::string input){
-	size_t position=0;
-	for (int i = 0; i < num; i++){
-		position = input.find(DELIMITERS, position+1);
+	size_t position = 0; 
+	if (tokens.size() > num){
+		position = input.find(tokens[num][0], position);
+		return position - 1;
 	}
-	return position;
+	else if (tokens.size() == num && tokens.size() != 0){
+		return input.find(tokens[num - 1]) + tokens[num - 1].length();
+	}
+	else{
+		return 0;
+	}
 }
 
 size_t Parser::getStartOfUserTask(std::string input){
@@ -311,12 +317,8 @@ size_t Parser::getEndOfUserTask(std::string input){
 	getStartTime(num);
 	pos = intToPos(num, input);
 	position = std::min(position, pos);
-	if (position == std::string::npos){
-		position = input.length();
-	}
-	else{
-		position++;
-	}
+
+	position++;
 	//return the smallest position of a time or date which is the end position of user task
 	return position;
 }
