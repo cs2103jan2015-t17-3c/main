@@ -337,6 +337,7 @@ namespace DoooodleGUI {
 				return Color::Black;
 		}
 
+
 #pragma endregion
 
 	private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
@@ -423,33 +424,41 @@ namespace DoooodleGUI {
 				textBox2->ScrollToCaret();
 
 			}
-		textBox4->Text = convertStdToManaged(message);
-		textBox1->ForeColor = Color::Black;
-		counter = commandHistory->size();
-		clearUserInput();
-	}
-	if (e->KeyCode == Keys::Up) {
-		if (commandHistory->size() > 0) {
-			if (counter > 0) {
-				counter--;
+			try {
+				if (userInput == "") {
+					throw - 1;
+				}
+				textBox4->Text = convertStdToManaged(message);
+
 			}
-			textBox1->Text = convertStdToManaged(commandHistory->at(counter));
-			textBox1->ForeColor = Color::DarkGoldenrod;
+			catch (int i){
+				textBox4->Clear();
+			}
+			textBox1->ForeColor = Color::Black;
+			counter = commandHistory->size();
+			clearUserInput();
+		}
+		if (e->KeyCode == Keys::Up) {
+			if (commandHistory->size() > 0) {
+				if (counter > 0) {
+					counter--;
+				}
+				textBox1->Text = convertStdToManaged(commandHistory->at(counter));
+				textBox1->ForeColor = Color::DarkGoldenrod;
+			}
+		}
+		if (e->KeyCode == Keys::Down) {
+			if (commandHistory->size() > 0) {
+				if (counter < commandHistory->size() - 1) {
+					counter++;
+				} else if (counter == commandHistory->size()) {
+					counter--;
+				}
+				textBox1->Text = convertStdToManaged(commandHistory->at(counter));
+				textBox1->ForeColor = Color::DarkGoldenrod;
+			}
 		}
 	}
-	if (e->KeyCode == Keys::Down) {
-		if (commandHistory->size() > 0) {
-			if (counter < commandHistory->size() - 1) {
-				counter++;
-			}
-			else if (counter == commandHistory->size()) {
-				counter--;
-			}
-			textBox1->Text = convertStdToManaged(commandHistory->at(counter));
-			textBox1->ForeColor = Color::DarkGoldenrod;
-		}
-	}
-}
 
 private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 	textBox1->ForeColor = Color::Black;
