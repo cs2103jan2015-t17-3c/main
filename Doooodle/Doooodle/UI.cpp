@@ -53,7 +53,7 @@ void UI::readMessage(){
 		} else {
 			SetConsoleTextAttribute(hConsole, 249);
 			std::cout << MESSAGE_TOPTEN;
-			displayMessage = logic.displayTopList();
+			displayMessage = logic.displayTopTask();
 			SetConsoleTextAttribute(hConsole, 252);
 			std::cout << "  [" << logic.getDeadlineSize() << "]"; 
 			SetConsoleTextAttribute(hConsole, 242);

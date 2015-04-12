@@ -353,7 +353,7 @@ namespace DoooodleGUI {
 			std::string message = logic->receiveCommand(input);
 			storage = logic->getStorage();
 			std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
-			std::vector<std::string> topList = storage->retrieveTopList();
+			std::vector<std::string> topTask = storage->retrieveTopTask();
 			//search tasks
 			if (logic->getCommandType(input) == "search") {
 				displayMessage = logic->displaySearchResults(input);
@@ -398,7 +398,7 @@ namespace DoooodleGUI {
 			else {
 				label3->Text = "Below is the list of upcoming events in your calendar:";
 				colourIndex = logic->getColourIndex();
-				displayMessage = topList;
+				displayMessage = topTask;
 				if (displayMessage.size()>0) {
 					for (int i = 0; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
