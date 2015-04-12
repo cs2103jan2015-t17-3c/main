@@ -15,6 +15,9 @@ const int Parser::NO_PARAMETER_FREQUENCY = 1;
 const int Parser::NO_PARAMETER_FREQUENCY_BOUNDARY = 2;
 const int Parser::NO_PARAMETER_ALL = 3;
 const int Parser::NO_SEARCH_MONTH = 2;
+const int Parser::DEADLINE_HOURS=23;
+const int Parser::DEADLINE_MINUTES=59;
+const int Parser::DEADLINE_SECONDS=59;
 const date Parser::DATE_EMPTY;
 const ptime Parser::TIME_EMPTY;
 const int Parser::POSITION_COMMAND_TYPE = 0;
@@ -119,16 +122,21 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 		}
 		userTask = getUserTask(input);
 	}
-		indexReference = getIndexReference(input);
-		startDate = getStartDate(pos);
-		endDate = getEndDate(pos);
-		startTime = getStartTime(pos);
-		endTime = getEndTime(pos);
-		if (commandType == DISPLAY_COMMAND){
+	indexReference = getIndexReference(input);
+	startDate = getStartDate(pos);
+	endDate = getEndDate(pos);
+	startTime = getStartTime(pos);
+	endTime = getEndTime(pos);
+	if (commandType == DISPLAY_COMMAND){
 		if (!userTaskParsing(userTask)){
 			commandType = EMPTY;
 		}
 	}
+	justify(input, commandType, startDate, endDate, startTime, endTime);
+	return;
+}
+
+void Parser::justify(std::string input, std::string& commandType, date& startDate, date& endDate, ptime& startTime, ptime& endTime) {
 	//date or time is identifed but not correct date format
 	if (startDate == DATE_INVALID || endDate == DATE_INVALID || startTime == TIME_INVALID || endTime == TIME_INVALID){
 		commandType = INVALID_DATE;
@@ -148,14 +156,12 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 	}
 	//if only have date and it is a deadline task, a default time of 2359 will be assigned
 	if (endDate != DATE_EMPTY && endTime == TIME_EMPTY && isDeadline(input)){
-		ptime t(endDate, hours(23)+minutes(59)+seconds(59));
+		ptime t(endDate, hours(DEADLINE_HOURS) + minutes(DEADLINE_MINUTES) + seconds(DEADLINE_SECONDS));
 		endTime = t;
 	}
-	if ((endDate < startDate && startDate != DATE_EMPTY) || (endDate == startDate && endTime < startTime && startDate != DATE_EMPTY && startTime!=TIME_EMPTY)){
+	if ((endDate < startDate && startDate != DATE_EMPTY) || (endDate == startDate && endTime < startTime && startDate != DATE_EMPTY && startTime != TIME_EMPTY)){
 		commandType = INVALID_DATE;
 	}
-
-	return;
 }
 
 void Parser::tokenizeInput(std::string input,std::string delimiters){
@@ -291,7 +297,7 @@ size_t Parser::getStartOfUserTask(std::string input){
 	pos=input.find_first_of(DELIMITERS);
 	pos++;
 	//if the command is delete or edit, the start of the user task is one position after the index
-	if (getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND){
+	if (getCommandType(input) == EDIT_COMMAND){
 		pos = input.find_first_of(DELIMITERS,pos);
 		pos++;
 	}

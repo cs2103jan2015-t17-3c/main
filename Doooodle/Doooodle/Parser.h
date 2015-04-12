@@ -46,6 +46,9 @@ private:
 	static const int NO_OF_DEADLINE_IDENTIFIERS;
 	static const int NO_OF_FLOAT_IDENTIFIERS;
 	static const int NO_OF_ARCHIVE_IDENTIFIERS;
+	static const int DEADLINE_HOURS;
+	static const int DEADLINE_MINUTES;
+	static const int DEADLINE_SECONDS;
 	static const std::string DEADLINE_INDICATOR;
 	static const std::string DISPLAY_COMMAND;
 	static const std::string SEARCH_COMMAND;
@@ -61,13 +64,11 @@ private:
 	static const std::string FLOAT_IDENTIFIERS[];
 	static const std::string ARCHIVE_IDENTIFIERS[];
 	static const std::string EMPTY;
-
 	static const std::string RECURRING_INDENTIFIER;
 	static const std::string RIGID_INDENTIFIER;
 	static const std::string ALL_DELIMITER;
 	static const std::string DEFAULT_YEAR_SEARCH;
 	static const std::string DEFAULT_DAY_SEARCH;
-
 
 
 	//SLAP level 1
@@ -83,6 +84,7 @@ private:
 	size_t getEndOfUserTask(std::string);
 	size_t getStartOfUserTask(std::string);
 	void getRecurringParameter(std::string, std::string&, int&, int&, date&);
+	void justify(std::string, std::string&, date&, date&, ptime&, ptime&);
 
 	//SLAP level 2
 	std::vector<std::string> recurringTokenizer(std::string);
