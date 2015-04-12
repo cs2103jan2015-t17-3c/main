@@ -31,7 +31,7 @@ public:
 	std::string receiveCommand(std::string);
 
 	//getter functions for GUI
-	std::vector<std::string> displayTopList(void);
+	std::vector<std::string> displayTopTask(void);
 	std::vector<std::string> displayFloatingTask(void);
 	std::vector<std::string> displaySearchResults(std::string);
 	std::vector<std::string> displayCategoricalTask(std::string, std::string&);

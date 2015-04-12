@@ -28,7 +28,7 @@ std::string Logic::receiveCommand(std::string userInput) {
 }
 
 //Start of getter functions 
-std::vector<std::string> Logic::displayTopList(void) {
+std::vector<std::string> Logic::displayTopTask(void) {
 	std::vector<std::string> listToDisplay = storage.retrieveTopTask();
 	return listToDisplay; 
 }
