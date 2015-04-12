@@ -8,7 +8,7 @@ namespace TestLibrary
 	{
 	public:
 
-		TEST_METHOD(testAddDeadlineTask)
+		/*TEST_METHOD(testAddDeadlineTask)
 		{
 			boost::gregorian::date d(2015, 3, 25);
 			Storage storage;
@@ -18,7 +18,7 @@ namespace TestLibrary
 			string actual = storage.addDeadlineTask(A, d, t);
 			Assert::AreEqual(expected, actual);
 			
-		}
+		}*/
 
 	};
 }

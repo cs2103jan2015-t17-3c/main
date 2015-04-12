@@ -291,7 +291,7 @@ size_t Parser::getStartOfUserTask(std::string input){
 	pos=input.find_first_of(DELIMITERS);
 	pos++;
 	//if the command is delete or edit, the start of the user task is one position after the index
-	if (getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND){
+	if (getCommandType(input) == EDIT_COMMAND){
 		pos = input.find_first_of(DELIMITERS,pos);
 		pos++;
 	}
