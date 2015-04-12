@@ -8,59 +8,59 @@ namespace TestLibrary
 	{
 	public:
 
-		TEST_METHOD(testTimeParserValid1)
+		TEST_METHOD(standardTime_1_Valid)
 		{
 			TimeParser timeparser;
-			string input = "22:04";
+			std::string input = "22:04";
 			boost::posix_time::ptime t = timeparser.standardTime(input);
 			boost::posix_time::ptime expectedT(boost::gregorian::date(boost::gregorian::day_clock::local_day()), boost::posix_time::hours(22) + boost::posix_time::minutes(4));
-			ostringstream oss1, oss2;
+			std::ostringstream  oss1, oss2;
 			oss1 << expectedT;
-			string expected = oss1.str();
+			std::string expected = oss1.str();
 			oss2 << t;
-			string actual = oss2.str();
+			std::string actual = oss2.str();
 			Assert::AreEqual(expected, actual);
 		}
 
-		TEST_METHOD(testTimeParserInvalid1)
+		TEST_METHOD(standardTime_2_Invalid)
 		{
 			TimeParser timeparser;
-			string input = "25:01";
+			std::string input = "25:01";
 			boost::posix_time::ptime t = timeparser.standardTime(input);
 			boost::posix_time::ptime expectedT(max_date_time);
-			ostringstream oss1, oss2;
+			std::ostringstream  oss1, oss2;
 			oss1 << expectedT;
-			string expected = oss1.str();
+			std::string expected = oss1.str();
 			oss2 << t;
-			string actual = oss2.str();
+			std::string actual = oss2.str();
 			Assert::AreEqual(expected, actual);
 		}
 
-		TEST_METHOD(testTimeParserInvalid2)
+		TEST_METHOD(standardTime_3_Invalid)
 		{
 			TimeParser timeparser;
-			string input = "23*22";
+			std::string input = "23*22";
 			boost::posix_time::ptime t = timeparser.standardTime(input);
 			boost::posix_time::ptime expectedT(not_a_date_time);
-			ostringstream oss1, oss2;
+			std::ostringstream  oss1, oss2;
 			oss1 << expectedT;
-			string expected = oss1.str();
+			std::string expected = oss1.str();
 			oss2 << t;
-			string actual = oss2.str();
+			std::string actual = oss2.str();
 			Assert::AreEqual(expected, actual);
 		}
 
-		TEST_METHOD(testTimeParserInvalid3)
+		TEST_METHOD(standardTime_4_Invalid)
 		{
 			TimeParser timeparser;
-			string input = "23:66";
+			std::string input = "23:66";
 			boost::posix_time::ptime t = timeparser.standardTime(input);
 			boost::posix_time::ptime expectedT(max_date_time);
-			ostringstream oss1, oss2;
+			std::ostringstream  oss1, oss2;
 			oss1 << expectedT;
-			string expected = oss1.str();
+			std::string expected = oss1.str();
 			oss2 << t;
-			string actual = oss2.str();
+			std::string actual = oss2.str();
 			Assert::AreEqual(expected, actual);
 		}
 
