@@ -80,7 +80,7 @@ void Storage::loadTasks(std::string filename, std::vector<Task>& target) {
 			getline(fl_h, dummy);
 			if(dummy == "0") {
 				tempTask.taskType = DEADLINE;
-			}else if(dummy == "1") {
+			} else if(dummy == "1") {
 				tempTask.taskType = FLOATING;
 			} else {
 				tempTask.taskType = NORMAL;
@@ -88,7 +88,7 @@ void Storage::loadTasks(std::string filename, std::vector<Task>& target) {
 			getline(fl_h, dummy);
 			if(dummy == "0") {
 				tempTask.specialTaskType = NONRECUR;
-			}else if(dummy == "1") {
+			} else if(dummy == "1") {
 				tempTask.specialTaskType = RECUR;
 			}
 			target.push_back(tempTask);
@@ -185,7 +185,7 @@ void Storage::initializeTaskDetails(Task &temp) {
 				}
 			}
 		}
-	}else if(temp.taskType == DEADLINE) {
+	} else if(temp.taskType == DEADLINE) {
 			if(temp.endTime == nonTime) {
 				if(temp.endDate.year() != currentDate.year()) {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << std::right << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << "      ]";
@@ -199,7 +199,7 @@ void Storage::initializeTaskDetails(Task &temp) {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << std::right << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << std::setfill(' ') << std::setw(2) << temp.endTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.endTime.time_of_day().minutes() << "]";
 				}
 			}
-		}else if(temp.taskType == FLOATING) {
+		} else if(temp.taskType == FLOATING) {
 			outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails;
 			}
 	temp.taskDisplay = outputTask.str();
@@ -227,13 +227,13 @@ std::string Storage::taskDetailsFeedback(Task temp) {
 				outputTask << "Normal task: " << temp.taskDetails << " [      " << temp.startTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.endTime.time_of_day().minutes() << "] successfully added.\n";
 			}
 		}
-	}else if(temp.taskType == DEADLINE) {
+	} else if(temp.taskType == DEADLINE) {
 		if(temp.endTime == nonTime) {
 			outputTask << "Deadline task: " << temp.taskDetails << " by " << temp.endDate.day() << " " << temp.endDate.month() << " successfully added.\n";
 		} else {
 			outputTask << "Deadline task: " << temp.taskDetails << " by " << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.endTime.time_of_day().minutes() << " successfully added.\n";
 		}
-	}else if(temp.taskType == FLOATING) {
+	} else if(temp.taskType == FLOATING) {
 		outputTask << "Floating task: " << temp.taskDetails << " successfully added.\n";
 	}
 	return outputTask.str();
@@ -314,19 +314,19 @@ void Storage::registerColourIndex(Task temp) {
 	if(temp.taskType == DEADLINE) {
 		if(temp.endDate < currentDate) {
 			colourIndex.push_back(0);
-		}else if(temp.endDate == currentDate && temp.endTime < currentTime) {
+		} else if(temp.endDate == currentDate && temp.endTime < currentTime) {
 				colourIndex.push_back(0);
 			} else {
 				colourIndex.push_back(1);
 			}
-	 }else if(temp.taskType == NORMAL) {
+	 } else if(temp.taskType == NORMAL) {
 		if(temp.startDate < currentDate) {
 			colourIndex.push_back(0);
-		}else if(temp.startDate == currentDate && temp.startTime < currentTime) {
+		} else if(temp.startDate == currentDate && temp.startTime < currentTime) {
 			colourIndex.push_back(0);
-		}else
+		} else
 			colourIndex.push_back(2);
-	 }else if(temp.taskType == FLOATING) {
+	 } else if(temp.taskType == FLOATING) {
 		colourIndex.push_back(3);
 	 }
 	}
@@ -398,7 +398,7 @@ std::vector<std::string> Storage::retrieveOverdue() {
 		if(iter->endDate < currentDate) {
 			displayOverdueTasks.push_back(iter->taskDisplay);
 			tempOverdueTaskIterator.push_back(iter);
-		}else if(iter->endDate == currentDate && iter->endTime < currentTime) {
+		} else if(iter->endDate == currentDate && iter->endTime < currentTime) {
 				displayOverdueTasks.push_back(iter->taskDisplay);
 				tempOverdueTaskIterator.push_back(iter);
 		}
