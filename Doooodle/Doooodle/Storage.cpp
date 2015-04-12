@@ -14,10 +14,11 @@ const std::string Storage::MESSAGE_SETDIRECTORY_FAIL = "SetCurrentDirectory fail
 const std::string Storage::MESSAGE_SETDIRECTORY_SUCCESS = "Set current directory to ";
 const std::string Storage::MESSAGE_WRONG_INDEX = "Wrong index.\n";
 const std::string Storage::MESSAGE_DELETE_RECUR = "Recurring task is successfully deleted.\n";
-const std::string Storage::MESSAGE_EDIT_SUCCESS = "task is successfuly edited\n";
+const std::string Storage::MESSAGE_EDIT_SUCCESS = "task is successfully edited\n";
 const std::string Storage::MESSAGE_INVALID_RECUR = "Invalid recurring task.\n";
 const std::string Storage::MESSAGE_RECUR_SUCCESS = "Recurring Task is successfully added!\n";
 const int Storage::DEFAULT_WIDTH = 25;
+const int Storage::DEFAULT_OUTPUT_LENGTH = 30;
 const int Storage::NUMBER_OF_FIRST_THREE_DISPLAY = 3;
 const int Storage::NUMBER_OF_FIRST_FIVE_DISPLAY = 5;
 const int Storage::NUMBER_OF_DISPLAY = 15;
@@ -1054,28 +1055,26 @@ std::string Storage::addRecurringTask(std::string task, std::vector<date> vStart
 }
 
 std::vector<std::string> Storage::reformat(std::vector<std::string> input){
+	using namespace std;
 	size_t position;
 	size_t nextpos;
-	int length = 30;
-	std::vector<std::string> newOutput;
+	vector<string> newOutput;
 	for (int i = 0; i < input.size(); i++){
-		std::ostringstream oss;
+		ostringstream oss;
 		nextpos = input[i].find("[");
 		position = 0;
-		if (nextpos >= length+1){
-			for (int j = 0; j < nextpos / length + 1; j++){
-				if (nextpos - position <= nextpos%length){
-					oss << std::left << std::setfill(' ') << std::setw(length) << input[i].substr(position, nextpos % length);
+		if (nextpos > DEFAULT_OUTPUT_LENGTH){
+			for (int j = 0; j < nextpos/DEFAULT_OUTPUT_LENGTH + 1; j++){
+				if (nextpos - position <= nextpos%DEFAULT_OUTPUT_LENGTH){
+					oss << left << setfill(' ') << setw(DEFAULT_OUTPUT_LENGTH) << input[i].substr(position, nextpos%DEFAULT_OUTPUT_LENGTH);
+				}else{
+					oss << input[i].substr(position, DEFAULT_OUTPUT_LENGTH) << std::endl;
 				}
-				else{
-					oss << input[i].substr(position, length) << std::endl;
-				}
-				position += length;
+				position += DEFAULT_OUTPUT_LENGTH;
 			}
 			oss << input[i].substr(nextpos, input[i].length() - nextpos);
 			newOutput.push_back(oss.str());
-		}
-		else{
+		}else{
 			newOutput.push_back(input[i]);
 		}
 	}

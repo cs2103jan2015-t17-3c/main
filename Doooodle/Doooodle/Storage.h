@@ -99,6 +99,7 @@ private:
 	static const std::string MESSAGE_UNDO;
 	static const std::string DEFAULT_DIRECTORY;
 	static const int DEFAULT_WIDTH;
+	static const int DEFAULT_OUTPUT_LENGTH;
     static const int NUMBER_OF_DISPLAY;
 	static const int NUMBER_OF_FIRST_THREE_DISPLAY;
 	static const int NUMBER_OF_FIRST_FIVE_DISPLAY;
