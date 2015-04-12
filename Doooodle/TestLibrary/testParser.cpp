@@ -1,3 +1,4 @@
+//@author A0114321B
 #include "stdafx.h"
 using namespace boost::gregorian;
 using namespace boost::posix_time;
@@ -18,7 +19,7 @@ public:
 		std::ostringstream oss6;
 		std::ostringstream oss7;
 		std::ostringstream oss8;
-		std::string input="add project due by 6 June";
+		std::string input = "add project due by 6 June";
 		std::string commandType;
 		std::string userTask;
 		date d1;
@@ -27,21 +28,21 @@ public:
 		ptime t2;
 		int num;
 		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
-		std::string expectCommandType="add";
-		std::string expectUserTask="project due";
+		std::string expectCommandType = "add";
+		std::string expectUserTask = "project due";
 		date expectD1;
-		date expectD2{2015,6,6};
+		date expectD2{ 2015, 6, 6 };
 		ptime expectT1;
 		ptime expectT2{ expectD2, hours(23) + minutes(59) + seconds(59) };
-		int expectNum=-1;
-		oss1<<d1;
-		oss2<<d2;
-		oss3<<t1;
-		oss4<<t2;
-		oss5<<expectD1;
-		oss6<<expectD2;
-		oss7<<expectT1;
-		oss8<<expectT2;
+		int expectNum = -1;
+		oss1 << d1;
+		oss2 << d2;
+		oss3 << t1;
+		oss4 << t2;
+		oss5 << expectD1;
+		oss6 << expectD2;
+		oss7 << expectT1;
+		oss8 << expectT2;
 		Assert::AreEqual(expectNum, num);
 		Assert::AreEqual(expectCommandType, commandType);
 		Assert::AreEqual(expectUserTask, userTask);
@@ -72,7 +73,7 @@ public:
 		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
 		std::string expectCommandType = "add";
 		std::string expectUserTask = "meeting with boss";
-		date expectD1{2015,5,5};
+		date expectD1{ 2015, 5, 5 };
 		date expectD2{ 2015, 12, 31 };
 		ptime expectT1;
 		ptime expectT2;
@@ -244,8 +245,8 @@ public:
 		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
 		std::string expectCommandType = "Invalid Date";
 		std::string expectUserTask = "task";
-		date expectD1{2015,8,8};
-		date expectD2{2015,6,5};
+		date expectD1{ 2015, 8, 8 };
+		date expectD2{ 2015, 6, 5 };
 		ptime expectT1;
 		ptime expectT2;
 		int expectNum = -1;
