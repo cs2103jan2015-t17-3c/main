@@ -68,9 +68,10 @@ private:
 	static const std::string STRING_NIL;
 	static const std::string STRING_SEARCH;
 	static const std::string STRING_UNDO;
+	static const int BAD_INDEX; //for exception
 
 	enum TASK_TYPE {
-		DEADLINE, FLOATING, NORMAL, ERASE, SEARCH, EXIT, INVALID, UNDO, EDIT, COMPLETE, DISPLAY, CD, HELP
+		CD, COMPLETE, DEADLINE, DISPLAY, EDIT, ERASE, EXIT, FLOATING, HELP, INVALID, NORMAL, SEARCH, UNDO
 	};
 
 	//SLAP level 2

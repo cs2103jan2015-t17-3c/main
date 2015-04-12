@@ -14,6 +14,7 @@ const std::string Logic::STRING_INVALID = "ERROR!";
 const std::string Logic::STRING_NIL = " ";
 const std::string Logic::STRING_SEARCH = "search";
 const std::string Logic::STRING_UNDO = "undo";
+const int Logic::BAD_INDEX = -1; //for exception
 
 Logic::Logic(void) {
 }
@@ -92,6 +93,7 @@ std::string Logic::executeLogicCore(std::string userInput) {
 int Logic::createDynamicNewCommandDetails(void) {
 	int index = commandDetails.size();
 	commandDetails.push_back(new CommandDetails());
+	assert(index >= 0);
 	return index;
 }
 
@@ -113,45 +115,50 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	//if there are no dates or time, it is a floating task
 	//if there is ONE date and/or time, it is a deadline task
 	//else it is a normal task
-	if (commandDetails[index]->commandType == STRING_ADD) {
-		if ((commandDetails[index]->timeEnd == not_a_date_time) && (commandDetails[index]->dateEnd == dateNull)) {
-			return FLOATING;
+	try {
+		if (commandDetails[index]->commandType == STRING_ADD) {
+			if ((commandDetails[index]->timeEnd == not_a_date_time) && (commandDetails[index]->dateEnd == dateNull)) {
+				return FLOATING;
+			}
+			else if ((commandDetails[index]->timeStart == not_a_date_time) && (commandDetails[index]->dateStart == dateNull)) {
+				return DEADLINE;
+			}
+			else {
+				return NORMAL;
+			}
 		}
-		else if ((commandDetails[index]->timeStart == not_a_date_time) && (commandDetails[index]->dateStart == dateNull)) {
-			return DEADLINE;
+		else if (commandDetails[index]->commandType == STRING_DELETE) {
+			return ERASE;
 		}
-		else {
-			return NORMAL;
+		else if (commandDetails[index]->commandType == STRING_SEARCH) {
+			return SEARCH;
 		}
+		else if (commandDetails[index]->commandType == STRING_EXIT) {
+			return EXIT;
+		}
+		else if (commandDetails[index]->commandType == STRING_UNDO) {
+			return UNDO;
+		}
+		else if (commandDetails[index]->commandType == STRING_EDIT) {
+			return EDIT;
+		}
+		else if (commandDetails[index]->commandType == STRING_COMPLETE) {
+			return COMPLETE;
+		}
+		else if (commandDetails[index]->commandType == STRING_DISPLAY) {
+			return DISPLAY;
+		}
+		else if (commandDetails[index]->commandType == STRING_CD) {
+			return CD;
+		}
+		else if (commandDetails[index]->commandType == STRING_HELP) {
+			return HELP;
+		}
+		else throw BAD_INDEX;
 	}
-	else if (commandDetails[index]->commandType == STRING_DELETE) {
-		return ERASE;
+	catch(int i){
+		return INVALID;
 	}
-	else if (commandDetails[index]->commandType == STRING_SEARCH) {
-		return SEARCH;
-	}
-	else if (commandDetails[index]->commandType == STRING_EXIT) {
-		return EXIT;
-	}
-	else if (commandDetails[index]->commandType == STRING_UNDO) {
-		return UNDO;
-	}
-	else if (commandDetails[index]->commandType == STRING_EDIT) {
-		return EDIT;
-	}
-	else if (commandDetails[index]->commandType == STRING_COMPLETE) {
-		return COMPLETE;
-	}
-	else if (commandDetails[index]->commandType == STRING_DISPLAY) {
-		return DISPLAY;
-	}
-	else if (commandDetails[index]->commandType == STRING_CD) {
-		return CD;
-	}
-	else if (commandDetails[index]->commandType == STRING_HELP) {
-		return HELP;
-	}
-	else return INVALID;
 }
 
 bool Logic::lastCommandIsSearch(void) {
