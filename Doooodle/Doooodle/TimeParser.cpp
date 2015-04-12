@@ -4,6 +4,12 @@ const int TimeParser::NO_OF_TYPE1_INDICATORS = 2;
 const int TimeParser::NO_OF_TYPE2_INDICATORS = 21;
 const int TimeParser::NO_OF_TYPE3_INDICATORS = 4;
 const int TimeParser::DIFFERENCE_BETWEEN_12HRS_24HRS = 12;
+const int TimeParser::DIFFERENCE_BETWEEN_SHORT_LONG = 100;
+const int TimeParser::SHORT_12HRS=12;
+const int TimeParser::MAXIMUM_MINUTES = 60;
+const int TimeParser::LONG_12HRS=1200;
+const int TimeParser::SHORT_24HRS=24;
+const int TimeParser::LONG_24HRS=2400;
 const std::string TimeParser::TYPE1_INDICATORS[NO_OF_TYPE1_INDICATORS] = {":", "."};
 const std::string TimeParser::TYPE2_INDICATORS[NO_OF_TYPE2_INDICATORS] = {"am", "Am", "AM", "aM", "pm", "Pm", "PM", "pM", "hr", "hrs", "HR", "HRS", "Hr", "Hrs", "hours", "hour", "HOURS", "Hours", "clock", ":", "."};
 const std::string TimeParser::TYPE3_INDICATORS[NO_OF_TYPE3_INDICATORS] = {"pm", "pM", "PM", "Pm"};
@@ -36,7 +42,6 @@ ptime TimeParser::standardTime(std::string input) {
 	if (!isTime(input)){
 		return d;
 	}
-
 	//to identify . or : and to remove them to use atoi
 	for(int i=0; ((i<NO_OF_TYPE1_INDICATORS) && (!isColonDotCase)); i++) {
 		position = input.find(TYPE1_INDICATORS[i]);
@@ -44,11 +49,9 @@ ptime TimeParser::standardTime(std::string input) {
 			isColonDotCase = true;
 		}
 	}
-
 	if(isColonDotCase) {
 		input.erase(input.begin()+position);
 	}
-
 	//to identify pm case (e.g. 3.15pm) so that 12 hours can be added to make it reflect 24hr clock
 	for(int i=0; ((i<NO_OF_TYPE3_INDICATORS) && (!isPmCase)); i++) {
 		position = input.find(TYPE3_INDICATORS[i]);
@@ -56,20 +59,18 @@ ptime TimeParser::standardTime(std::string input) {
 			isPmCase = true;
 		}
 	}
-
 	//transfer number(integer) to ptime
 	int timeInt = atoi(input.c_str());
-	if(timeInt<=24 && !isPmCase) {
+	if (timeInt <= SHORT_24HRS && !isPmCase) {
 		time += hours(timeInt);
-	}else if (timeInt <=12 && isPmCase){
+	}else if (timeInt <= SHORT_12HRS && isPmCase){
 		time += hours(timeInt + DIFFERENCE_BETWEEN_12HRS_24HRS);
-	}else if((timeInt<=2400) && (!isPmCase) && (timeInt%100<=60)) {
-		time += hours(timeInt/100) + minutes(timeInt%100);
-	}else if((timeInt<=1200) && (isPmCase) && (timeInt%100<=60)) {
-		time += hours(DIFFERENCE_BETWEEN_12HRS_24HRS + (timeInt / 100)) + minutes(timeInt % 100);
+	}else if ((timeInt <= LONG_24HRS) && (!isPmCase) && (timeInt % DIFFERENCE_BETWEEN_SHORT_LONG <= MAXIMUM_MINUTES)) {
+		time += hours(timeInt / DIFFERENCE_BETWEEN_SHORT_LONG) + minutes(timeInt%DIFFERENCE_BETWEEN_SHORT_LONG);
+	}else if ((timeInt <= LONG_12HRS) && (isPmCase) && (timeInt % DIFFERENCE_BETWEEN_SHORT_LONG <= MAXIMUM_MINUTES)) {
+		time += hours(DIFFERENCE_BETWEEN_12HRS_24HRS + (timeInt / DIFFERENCE_BETWEEN_SHORT_LONG)) + minutes(timeInt % DIFFERENCE_BETWEEN_SHORT_LONG);
 	}else{
 		time = INVALID_TIME;
 	}
-
 	return time;
 }

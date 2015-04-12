@@ -1,4 +1,4 @@
-
+//@author A0114321B
 #ifndef PARSER_H_
 #define PARSER_H_
 
@@ -34,6 +34,9 @@ private:
 	static const int DEFAULT_INTERVAL;
 	static const int DEFAULT_TASK_TYPE_POSITION;
 	static const int RECURRING_POSITION;
+	static const int DEADLINE_HOURS;
+	static const int DEADLINE_MINUTES;
+	static const int DEADLINE_SECONDS;
 	static const date DATE_INVALID;
 	static const date DATE_EMPTY;
 	static const ptime TIME_INVALID;
@@ -46,6 +49,7 @@ private:
 	static const int NO_OF_DEADLINE_IDENTIFIERS;
 	static const int NO_OF_FLOAT_IDENTIFIERS;
 	static const int NO_OF_ARCHIVE_IDENTIFIERS;
+	static const int DEFAULT_INDEX;
 	static const std::string DEADLINE_INDICATOR;
 	static const std::string DISPLAY_COMMAND;
 	static const std::string SEARCH_COMMAND;
@@ -61,7 +65,6 @@ private:
 	static const std::string FLOAT_IDENTIFIERS[];
 	static const std::string ARCHIVE_IDENTIFIERS[];
 	static const std::string EMPTY;
-
 	static const std::string RECURRING_INDENTIFIER;
 	static const std::string RIGID_INDENTIFIER;
 	static const std::string ALL_DELIMITER;
@@ -89,9 +92,9 @@ private:
 	size_t intToPos(int, std::string);
 	bool userTaskParsing(std::string&);
 	bool isDeadline(std::string);
+	void monthParsingForSearch(std::string&);
 
 	//SLAP level 3
-	void monthParsingForSearch(std::string&);
 	void frequencyParsing(std::string,int&,std::string&);
 	std::string separateRecurringFront(std::string);
 	std::string separateRecurringBack(std::string);

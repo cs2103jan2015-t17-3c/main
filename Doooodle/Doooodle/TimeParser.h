@@ -19,6 +19,12 @@ private:
 	static const std::string TYPE2_INDICATORS[];
 	static const std::string TYPE3_INDICATORS[];
 	static const int DIFFERENCE_BETWEEN_12HRS_24HRS;
+	static const int DIFFERENCE_BETWEEN_SHORT_LONG;
+	static const int MAXIMUM_MINUTES;
+	static const int SHORT_12HRS;
+	static const int LONG_12HRS;
+	static const int SHORT_24HRS;
+	static const int LONG_24HRS;
 	static const ptime INVALID_TIME;
 public:
 	TimeParser();
