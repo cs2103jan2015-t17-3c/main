@@ -1,4 +1,4 @@
-
+//@author A0108562H
 #include "ITask.h"
 
 const std::string ITask::STRING_TEMPLATE = "Interface Class";

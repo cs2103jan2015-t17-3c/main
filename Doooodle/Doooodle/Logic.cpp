@@ -1,4 +1,4 @@
-
+//@author A0108562H
 #include "Logic.h"
 
 const std::string Logic::STRING_ADD = "add";

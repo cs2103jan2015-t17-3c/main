@@ -1,3 +1,4 @@
+//@author A0114321B
 #include "Parser.h"
 
 const date Parser::DATE_INVALID(max_date_time);
@@ -49,29 +50,29 @@ const std::string Parser::ARCHIVE_IDENTIFIERS[NO_OF_ARCHIVE_IDENTIFIERS] = { "ar
 const std::string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
 const std::string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
 
-Parser::Parser(){
+Parser::Parser() {
 
 }
-Parser::~Parser(){
+Parser::~Parser() {
 
 }
 
-bool Parser::isRecurring(std::string input){
-	if (input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]) != std::string::npos){
+bool Parser::isRecurring(std::string input) {
+	if(input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]) != std::string::npos) {
 		return true;
 	}
 	return false;
 }
 
-bool Parser::isRigid(std::string input){
+bool Parser::isRigid(std::string input) {
 	for (int i = 0; i < RIGID_INDENTIFIER.length();i++)
-		if (input.find(RIGID_INDENTIFIER[i]) != std::string::npos){
+		if(input.find(RIGID_INDENTIFIER[i]) != std::string::npos) {
 		return true;
 	}
 	return false;
 }
-
-void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime){
+//process recurring task
+void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime) {
 	std::string frequency;
 	int recurrence = DEFAULT_RECURRENCE;
 	int interval = DEFAULT_INTERVAL;
@@ -81,9 +82,10 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 	date endDate;
 	ptime startTime;
 	ptime endTime;
-
+	//process the first part of the string as per normal
 	processCommand(separateRecurringFront(input), commandType, userTask, startDate, endDate, startTime, endTime, dummyIndexReference);
-	if (startDate == DATE_EMPTY && endDate == DATE_EMPTY && startTime == TIME_EMPTY && endTime == TIME_EMPTY){
+	//must initialze at least one date, otherwise return invalid date to logic
+	if(startDate == DATE_EMPTY && endDate == DATE_EMPTY && startTime == TIME_EMPTY && endTime == TIME_EMPTY) {
 		commandType = INVALID_DATE;
 		return;
 	}
@@ -93,31 +95,29 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 	vecStartTime.push_back(startTime);
 	vecEndTime.push_back(endTime);
 	dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime,recurrence,interval,finishDate);
-	
 	return;
 }
-
-void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, date& startDate, date& endDate, 
-	ptime& startTime, ptime& endTime, int& indexReference){
+//process normal task
+void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, date& startDate, date& endDate, ptime& startTime, ptime& endTime, int& indexReference) {
 	int pos;
-	if (isRigid(input)){
+	if(isRigid(input)) {
 		tokenizeInput(input, RIGID_INDENTIFIER);
 		try{
-			if (tokens.size() < 2){
+			if(tokens.size() < THIRD_PARAMETER) {
 				throw ERROR_MESSAGE;
-			}else{
+			} else {
 				commandType = tokens[POSITION_COMMAND_TYPE];
 				userTask = tokens[POSITION_USER_TASK];
 				eraseUserTask(input, tokens[POSITION_USER_TASK]);
 			}
 		}
-		catch(...){
+		catch(...) {
 			commandType = EMPTY;
 		}
-	}else{
+	} else {
 		tokenizeInput(input, DELIMITERS);    //tokenize string by white space
 		commandType = getCommandType(input);
-		if (commandType == SEARCH_COMMAND){
+		if(commandType == SEARCH_COMMAND) {
 			monthParsingForSearch(input);
 		}
 		userTask = getUserTask(input);
@@ -127,47 +127,47 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 	endDate = getEndDate(pos);
 	startTime = getStartTime(pos);
 	endTime = getEndTime(pos);
-	if (commandType == DISPLAY_COMMAND){
-		if (!userTaskParsing(userTask)){
+	if(commandType == DISPLAY_COMMAND) {
+		if(!userTaskParsing(userTask)) {
 			commandType = EMPTY;
 		}
 	}
 	justify(input, commandType, startDate, endDate, startTime, endTime);
 	return;
 }
-
+//furthure process the date and time taken from the input string
 void Parser::justify(std::string input, std::string& commandType, date& startDate, date& endDate, ptime& startTime, ptime& endTime) {
 	//date or time is identifed but not correct date format
-	if (startDate == DATE_INVALID || endDate == DATE_INVALID || startTime == TIME_INVALID || endTime == TIME_INVALID){
+	if(startDate == DATE_INVALID || endDate == DATE_INVALID || startTime == TIME_INVALID || endTime == TIME_INVALID) {
 		commandType = INVALID_DATE;
 	}
 	//if start date time and end date time are the same, only keep the end date time
-	if (startDate == endDate && startTime == endTime){
+	if(startDate == endDate && startTime == endTime) {
 		startDate = DATE_EMPTY;
 		startTime = TIME_EMPTY;
 	}
 	//if only have time, the default date is today
-	if (startDate == DATE_EMPTY && startTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND){
+	if(startDate == DATE_EMPTY && startTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND) {
 		assignToday(startDate);
 	}
 	//if only have time, the default date is today
-	if (endDate == DATE_EMPTY && endTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND){
+	if(endDate == DATE_EMPTY && endTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND) {
 		assignToday(endDate);
 	}
 	//if only have date and it is a deadline task, a default time of 2359 will be assigned
-	if (endDate != DATE_EMPTY && endTime == TIME_EMPTY && isDeadline(input)){
+	if(endDate != DATE_EMPTY && endTime == TIME_EMPTY && isDeadline(input)) {
 		ptime t(endDate, hours(DEADLINE_HOURS) + minutes(DEADLINE_MINUTES) + seconds(DEADLINE_SECONDS));
 		endTime = t;
 	}
-	if ((endDate < startDate && startDate != DATE_EMPTY) || (endDate == startDate && endTime < startTime && startDate != DATE_EMPTY && startTime != TIME_EMPTY)){
+	if((endDate < startDate && startDate != DATE_EMPTY) || (endDate == startDate && endTime < startTime && startDate != DATE_EMPTY && startTime != TIME_EMPTY)) {
 		commandType = INVALID_DATE;
 	}
 }
-
-void Parser::tokenizeInput(std::string input,std::string delimiters){
+//tokenize the string according to the delimiter string passed in
+void Parser::tokenizeInput(std::string input,std::string delimiters) {
 	tokens.clear();
 	char str[DEFAULT_SIZE] = " ";
-	for (int i = 0; i < input.size(); i++){
+	for (int i = 0; i < input.size(); i++) {
 		str[i] = input[i];
 	}
 	char * pch;
@@ -179,21 +179,20 @@ void Parser::tokenizeInput(std::string input,std::string delimiters){
 	}
 }
 
-std::string Parser::getCommandType(std::string input){
+std::string Parser::getCommandType(std::string input) {
 	std::string task;
-	if (tokens.empty()) {
+	if(tokens.empty()) {
 		task = DELIMITERS;
-	}
-	else {
+	} else {
 		task = tokens[POSITION_COMMAND_TYPE];
 	}
 	return task;
 }
 
-int Parser::getIndexReference(std::string input){
-	if (getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND || getCommandType(input) == COMPLETE_COMMAND){
-		for (int i = 0; i < tokens.size(); i++){
-			if (isdigit(tokens[i][0])){
+int Parser::getIndexReference(std::string input) {
+	if(getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND || getCommandType(input) == COMPLETE_COMMAND) {
+		for (int i = 0; i < tokens.size(); i++) {
+			if(isdigit(tokens[i][0])) {
 				return atoi(tokens[i].c_str());
 			}
 		}
@@ -201,9 +200,9 @@ int Parser::getIndexReference(std::string input){
 	return -1;
 }
 
-std::string Parser::getUserTask(std::string input){
-	size_t positionA=0;
-	size_t positionB=0;
+std::string Parser::getUserTask(std::string input) {
+	size_t positionA = POSITION_COMMAND_TYPE;
+	size_t positionB = POSITION_COMMAND_TYPE;
 	std::string task;
 	positionA = getStartOfUserTask(input);
 	positionB = getEndOfUserTask(input);
@@ -212,115 +211,109 @@ std::string Parser::getUserTask(std::string input){
 }
 
 
-date Parser::getStartDate(int& num){
-	date d(not_a_date_time);
+date Parser::getStartDate(int& num) {
 	std::string task;
 	std::string str;
-	for (int i = 0; i < tokens.size(); i++){
-		if (dateparser.isDate(tokens[i])){
+	for (int i = 0; i < tokens.size(); i++) {
+		if(dateparser.isDate(tokens[i])) {
 			num = i;
 			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
-			if (i == 0){
+			if(i == 0) {
 				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
-			}else if (i == tokens.size() - 1){
+			} else if(i == tokens.size() - 1) {
 				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i],num,i);
-			}else{
+			} else {
 				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i + 1],num,i);
 			}
 		}
 	}
 	num = tokens.size();
-	return d;
+	return DATE_EMPTY;
 }
 
-date Parser::getEndDate(int& num){
-	date d(not_a_date_time);
+date Parser::getEndDate(int& num) {
 	std::string task;
-	for (int i = tokens.size()-1; i > 0; i--){
-		if (dateparser.isDate(tokens[i])){
+	for (int i = tokens.size()-1; i > 0; i--) {
+		if(dateparser.isDate(tokens[i])) {
 			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
-			if (i == 0){
+			if(i == 0) {
 				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
-			}else if (i == tokens.size() - 1){
+			} else if(i == tokens.size() - 1) {
 				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i],num,i);
-			}else{
+			} else {
 				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i + 1],num,i);
 			}
 		}
 	}
 	num = tokens.size();
-	return d;
+	return DATE_EMPTY;
 }
 
-ptime Parser::getStartTime(int& num){
-	ptime d(not_a_date_time);
+ptime Parser::getStartTime(int& num) {
 	std::string task;
-	for (int i = 0; i < tokens.size(); i++){
-		if (timeparser.isTime(tokens[i])){
+	for (int i = 0; i < tokens.size(); i++) {
+		if(timeparser.isTime(tokens[i])) {
 			num = i;
 			return timeparser.standardTime(tokens[i]);	
 		}
 	}
 	num = tokens.size();
-	return d;
+	return TIME_EMPTY;
 }
 
-ptime Parser::getEndTime(int& num){
-	ptime d(not_a_date_time);
+ptime Parser::getEndTime(int& num) {
 	std::string task;
-	for (int i = tokens.size()-1; i > 0; i--){
-		if (timeparser.isTime(tokens[i])){
+	for (int i = tokens.size()-1; i > 0; i--) {
+		if(timeparser.isTime(tokens[i])) {
 			return timeparser.standardTime(tokens[i]);
 			num = i;
 		}
 	}
 	num = tokens.size();
-	return d;
+	return TIME_EMPTY;
 }
-
-size_t Parser::intToPos(int num,std::string input){
+//transfer token's position to its real position in the input string
+size_t Parser::intToPos(int num,std::string input) {
 	size_t position = 0; 
-	if (tokens.size() > num){
+	if(tokens.size() > num) {
 		position = input.find(tokens[num], position);
 		return position - 1;
-	}
-	else if (tokens.size() == num && tokens.size() != 0){
+	} else if(tokens.size() == num && tokens.size() != 0) {
 		return input.find(tokens[num - 1]) + tokens[num - 1].length();
-	}
-	else{
+	} else {
 		return 0;
 	}
 }
 
-size_t Parser::getStartOfUserTask(std::string input){
+size_t Parser::getStartOfUserTask(std::string input) {
 	size_t pos;
 	pos=input.find_first_of(DELIMITERS);
 	pos++;
-	//if the command is delete or edit, the start of the user task is one position after the index
-	if (getCommandType(input) == EDIT_COMMAND){
+	//if the command is edit, the start of the user task is one position after the index
+	if(getCommandType(input) == EDIT_COMMAND) {
 		pos = input.find_first_of(DELIMITERS,pos);
 		pos++;
 	}
 	return pos;
 }
 
-size_t Parser::getEndOfUserTask(std::string input){
+size_t Parser::getEndOfUserTask(std::string input) {
 	size_t pos=std::string::npos;
 	size_t position=std::string::npos;
 	int num;
 	//check for start time indicators
-	for (int i = 0; i < NO_OF_START_TIME_INDICATORS; i++){
+	for (int i = 0; i < NO_OF_START_TIME_INDICATORS; i++) {
 		pos = input.find(START_TIME_INDICATORS[i]);
-		if (pos != std::string::npos){
+		if(pos != std::string::npos) {
 			break;
 		}
 	}
 	position = std::min(position, pos);
 
 	//check for end time indicators
-	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++){
+	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++) {
 		pos = input.find(END_TIME_INDICATORS[i]);
-		if (pos != std::string::npos){
+		if(pos != std::string::npos) {
 			break;
 		}
 	}
@@ -340,43 +333,43 @@ size_t Parser::getEndOfUserTask(std::string input){
 	return position;
 }
 
-void Parser::assignToday(date& d){
+void Parser::assignToday(date& d) {
 	date today(day_clock::local_day());
 	d = today;
 	return;
 }
 
-bool Parser::isDeadline(std::string input){
-	for (int i = 0; i < tokens.size(); i++){
-		if (tokens[i] ==DEADLINE_INDICATOR){
+bool Parser::isDeadline(std::string input) {
+	for (int i = 0; i < tokens.size(); i++) {
+		if(tokens[i] ==DEADLINE_INDICATOR) {
 			return true;
 		}
 	}
 	return false;
 }
 
-bool Parser::userTaskParsing(std::string& input){
+bool Parser::userTaskParsing(std::string& input) {
 	bool check = true;
-	for (int i = 0; i < NO_OF_NORMAL_IDENTIFIERS; i++){
-		if (input == NORMAL_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_NORMAL_IDENTIFIERS; i++) {
+		if(input == NORMAL_IDENTIFIERS[i]) {
 			input = NORMAL_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
 			return check;
 		}
 	}
-	for (int i = 0; i < NO_OF_DEADLINE_IDENTIFIERS; i++){
-		if (input == DEADLINE_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_DEADLINE_IDENTIFIERS; i++) {
+		if(input == DEADLINE_IDENTIFIERS[i]) {
 			input = DEADLINE_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
 			return check;
 		}
 	}
-	for (int i = 0; i < NO_OF_FLOAT_IDENTIFIERS; i++){
-		if (input == FLOAT_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_FLOAT_IDENTIFIERS; i++) {
+		if(input == FLOAT_IDENTIFIERS[i]) {
 			input = FLOAT_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
 			return check;
 		}
 	}
-	for (int i = 0; i < NO_OF_ARCHIVE_IDENTIFIERS; i++){
-		if (input == ARCHIVE_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_ARCHIVE_IDENTIFIERS; i++) {
+		if(input == ARCHIVE_IDENTIFIERS[i]) {
 			input = ARCHIVE_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
 			return check;
 		}
@@ -384,33 +377,33 @@ bool Parser::userTaskParsing(std::string& input){
 	return false;
 }
 
-void Parser::getRecurringParameter(std::string input,std::string& frequency, int& interval, int& recurrence, date& finish){
+void Parser::getRecurringParameter(std::string input,std::string& frequency, int& interval, int& recurrence, date& finish) {
 	std::vector<std::string> items;
 	items=recurringTokenizer(input);
-	if (items.size() >= NO_PARAMETER_FREQUENCY){
+	if(items.size() >= NO_PARAMETER_FREQUENCY) {
 		frequencyParsing(items[FIRST_PARAMETER], interval, frequency);
 	}
-	if (items.size() >= NO_PARAMETER_FREQUENCY_BOUNDARY){
-		if (dateparser.isDate(items[SECOND_PARAMETER])){
+	if(items.size() >= NO_PARAMETER_FREQUENCY_BOUNDARY) {
+		if(dateparser.isDate(items[SECOND_PARAMETER])) {
 			finish = dateparser.standardiseDate(items[SECOND_PARAMETER]);
-		}else{
+		} else {
 			recurrence = atoi(items[SECOND_PARAMETER].c_str());
 		}
 	}
-	if (items.size() >= NO_PARAMETER_ALL){
-		if (dateparser.isDate(items[THIRD_PARAMETER])){
+	if(items.size() >= NO_PARAMETER_ALL) {
+		if(dateparser.isDate(items[THIRD_PARAMETER])) {
 			finish = dateparser.standardiseDate(items[THIRD_PARAMETER]);
-		}else{
+		} else {
 			recurrence = atoi(items[THIRD_PARAMETER].c_str());
 		}
 	}
 	return;
 }
 
-std::vector<std::string> Parser::recurringTokenizer(std::string input){
+std::vector<std::string> Parser::recurringTokenizer(std::string input) {
 	std::vector<std::string> recurringTokens;
 	char str[DEFAULT_SIZE] = " ";
-	for (int i = 0; i < input.size(); i++){
+	for (int i = 0; i < input.size(); i++) {
 		str[i] = input[i];
 	}
 	char * pch;
@@ -422,19 +415,18 @@ std::vector<std::string> Parser::recurringTokenizer(std::string input){
 	}
 	return recurringTokens;
 }
-
-void Parser::monthParsingForSearch(std::string& input){
+//return special date to logic for month searching
+void Parser::monthParsingForSearch(std::string& input) {
 	size_t pos;
 	size_t nextpos;
 	std::ostringstream oss;
 	oss << DEFAULT_YEAR_SEARCH;
-	if (tokens.size() == NO_SEARCH_MONTH){
-		for (int i = 0; i < tokens.size(); i++){
-			if (dateparser.monthToNum(tokens[i]) <= Dec && dateparser.monthToNum(tokens[i]) >= Jan){
-				if (dateparser.monthToNum(tokens[i]) >= Oct){
+	if(tokens.size() == NO_SEARCH_MONTH) {
+		for (int i = 0; i < tokens.size(); i++) {
+			if(dateparser.monthToNum(tokens[i]) <= Dec && dateparser.monthToNum(tokens[i]) >= Jan) {
+				if(dateparser.monthToNum(tokens[i]) >= Oct) {
 					oss << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
-				}
-				else{
+				} else {
 					oss << std::to_string(0) << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
 				}
 				tokens[i] = oss.str();
@@ -445,9 +437,9 @@ void Parser::monthParsingForSearch(std::string& input){
 	return;
 }
 
-void Parser::frequencyParsing(std::string input,int& interval,std::string& frequency){
-	for (int i = 0; i < input.length(); i++){
-		if (isdigit(input[i])){
+void Parser::frequencyParsing(std::string input,int& interval,std::string& frequency) {
+	for (int i = 0; i < input.length(); i++) {
+		if(isdigit(input[i])) {
 			frequency = input.substr(0, i);
 			interval = atoi(input.substr(i, input.length() - i).c_str());
 			return;
@@ -456,20 +448,20 @@ void Parser::frequencyParsing(std::string input,int& interval,std::string& frequ
 	frequency = input;
 	return;
 }
-
-std::string Parser::separateRecurringFront(std::string input){
+//take the first half of a recurring task command
+std::string Parser::separateRecurringFront(std::string input) {
 	size_t pos;
 	pos = input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]);
 	return input.substr(0, pos);
 }
-
-std::string Parser::separateRecurringBack(std::string input){
+//take the second halp of a recurring task command
+std::string Parser::separateRecurringBack(std::string input) {
 	size_t pos;
 	pos = input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]);
 	return input.substr(pos, input.length()-pos);
 }
 
-void Parser::eraseUserTask(std::string input, std::string userTask){
+void Parser::eraseUserTask(std::string input, std::string userTask) {
 	size_t pos;
 	pos=input.find(userTask);
 	input.erase(pos, userTask.length());

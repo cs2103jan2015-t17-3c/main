@@ -1,3 +1,4 @@
+//@author A0114321B
 #ifndef TIMEPARSER_H_
 #define TIMEPARSER_H_
 
@@ -19,6 +20,12 @@ private:
 	static const std::string TYPE2_INDICATORS[];
 	static const std::string TYPE3_INDICATORS[];
 	static const int DIFFERENCE_BETWEEN_12HRS_24HRS;
+	static const int DIFFERENCE_BETWEEN_LONG_SHORT;
+	static const int SHORT_12HRS;
+	static const int LONG_12HRS;
+	static const int SHORT_24HRS;
+	static const int LONG_24HRS;
+	static const int MAXIMUM_MINUTES;
 	static const ptime INVALID_TIME;
 public:
 	TimeParser();

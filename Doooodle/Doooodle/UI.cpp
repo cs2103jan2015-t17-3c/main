@@ -1,3 +1,4 @@
+//@author A0115016X -unused
 #include "UI.h"
 
 const std::string UI::MESSAGE_DEFAULT = "Commands available:add, delete, edit, search, undo, complete, display\nEnter Command:";

@@ -1,4 +1,4 @@
-
+//@author A0108562H
 //NormalTask deals with normal tasks
 
 #ifndef NORMALTASK_H_

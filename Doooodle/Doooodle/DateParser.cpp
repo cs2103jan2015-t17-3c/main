@@ -1,3 +1,4 @@
+//@author A0114321B
 #include "DateParser.h"
 
 const int DateParser::NO_OF_DAILY=3;
@@ -51,244 +52,179 @@ const std::string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIER
 
 const std::string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\","/"};
 
-DateParser::DateParser(){
+DateParser::DateParser() {
 
 }
-DateParser::~DateParser(){
+DateParser::~DateParser() {
 
 }
-int DateParser::weekdaysToNum(std::string input){
-	for (int i = Sunday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+int DateParser::weekdaysToNum(std::string input) {
+	for (int i = Sunday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			return Sunday;
 		}
 	}
-	for (int i = Monday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+	for (int i = Monday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			return Monday;
 		}
 	}
-	for (int i = Tuesday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+	for (int i = Tuesday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			return Tuesday;
 		}
 	}
-	for (int i = Wednesday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+	for (int i = Wednesday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			return Wednesday;
 		}
 	}
-	for (int i = Thursday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+	for (int i = Thursday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			return Thursday;
 		}
 	}
-	for (int i = Friday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+	for (int i = Friday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			return Friday;
 		}
 	}
-	for (int i = Saturday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+	for (int i = Saturday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			return Saturday;
 		}
 	}
 }
 
-int DateParser::monthToNum(std::string input){
-	for (int i = January; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+int DateParser::monthToNum(std::string input) {
+	for (int i = January; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Jan;
 		}
 	}
-	for (int i = February; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = February; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Feb;
 		}
 	}
-	for (int i = March; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = March; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Mar;
 		}
 	}
-	for (int i = April; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = April; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Apr;
 		}
 	}
-	for (int i = May; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = May; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return boost::date_time::months_of_year::May;
 		}
 	}
-	for (int i = June; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = June; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Jun;
 		}
 	}
-	for (int i = July; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = July; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Jul;
 		}
 	}
-	for (int i = August; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = August; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Aug;
 		}
 	}
-	for (int i = September; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = September; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Sep;
 		}
 	}
-	for (int i = October; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = October; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Oct;
 		}
 	}
-	for (int i = November; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = November; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Nov;
 		}
 	}	
-	for (int i = December; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = December; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			return Dec;
 		}
 	}
 }
 
-int DateParser::nearfutureToNum(std::string input){
-	for (int i = Today; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE){
-		if (input == NEARFUTURE_IDENTIFIERS[i]){
+int DateParser::nearfutureToNum(std::string input) {
+	for (int i = Today; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE) {
+		if(input == NEARFUTURE_IDENTIFIERS[i]) {
 			return Today;
 		}
 	}
-	for (int i = Tomorrow; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE){
-		if (input == NEARFUTURE_IDENTIFIERS[i]){
+	for (int i = Tomorrow; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE) {
+		if(input == NEARFUTURE_IDENTIFIERS[i]) {
 			return Tomorrow;
 		}
 	}
 }
 
-bool DateParser::isDate(std::string input){
+bool DateParser::isDate(std::string input) {
 	removeSlash(input);
 	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++)
-		if (input == TIME_IDENTIFIERS[i]){
+		if(input == TIME_IDENTIFIERS[i]) {
 			return true;
-		}else if (((atoi(input.c_str()) > SHORT_MINIMUN_DATE && input.length() == SHORT_DATE_LENGTH)) || ((atoi(input.c_str()) >= MINIMUN_DATE && input.length() == LONG_DATE_LENGTH))){
+		} else if(((atoi(input.c_str()) > SHORT_MINIMUN_DATE && input.length() == SHORT_DATE_LENGTH)) || ((atoi(input.c_str()) >= MINIMUN_DATE && input.length() == LONG_DATE_LENGTH))) {
 			return true;
 			}
 	return false;
 }
 
-date DateParser::standardiseDate(std::string input){
+//for yyyymmdd or mmdd cases
+date DateParser::standardiseDate(std::string input) {
 	date d;
 	removeSlash(input);
-	if (atoi(input.c_str()) > MINIMUN_DATE){
+	if(atoi(input.c_str()) > MINIMUN_DATE) {
 		try{
 			d = from_undelimited_string(input);
 		}
-		catch (...){
+		catch (...) {
 			return INVALID_DATE;
 		}
-	}else if (input.length() == SHORT_DATE_LENGTH){
+	} else if(input.length() == SHORT_DATE_LENGTH) {
 		std::string modified = DEFAULT_YEAR + input;
 		try{
 			d = from_undelimited_string(modified);
 		}
-		catch (...){
+		catch (...) {
 			return INVALID_DATE;
 		}
 	}
-
 	return d;
 }
-
-date DateParser::standardiseDate(std::string before,std::string input,std::string after,int& num,int reference){
-	if (standardiseMonth(before, input, after, num, reference) != EMPTY_DATE){
+//for all possible dates formats supported by doooodle
+date DateParser::standardiseDate(std::string before,std::string input,std::string after,int& num,int reference) {
+	if(standardiseMonth(before, input, after, num, reference) != EMPTY_DATE) {
 		return standardiseMonth(before, input, after, num, reference);
 	}
-	if (standardiseWeekday(input) != EMPTY_DATE){
+	if(standardiseWeekday(input) != EMPTY_DATE) {
 		return standardiseWeekday(input);
 	}
-	if (standardiseNearFuture(input) != EMPTY_DATE){
+	if(standardiseNearFuture(input) != EMPTY_DATE) {
 		return 	standardiseNearFuture(input);
 	}
 	return standardiseDate(input);
-	/*for (int i = 0; i < NO_OF_MONTH_IDENTIFIERS; i++){
-		if (input == MONTH_IDENTIFIERS[i]){
-			greg_month m = monthToNum(MONTH_IDENTIFIERS[i]);
-			if (isdigit(before[0])){
-				num = NUM_IN_FRONT + reference;
-				try{
-					greg_day day = atoi(before.c_str());
-				}
-				catch (...){
-					return INVALID_DATE;
-				}
-				day = atoi(before.c_str());
-			}
-			else if (isdigit(after[0])){
-				try{
-					greg_day day = atoi(after.c_str());
-				}
-				catch (...){
-					return INVALID_DATE;
-				}
-				day = atoi(after.c_str());
-			}
-			try{
-				date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
-			}
-			catch (...){
-				return INVALID_DATE;
-			}
-			date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
-			return d1;
-		}
-	}
-	
-	for (int i = 0; i < NO_OF_WEEKDAYS_IDENTIFIERS; i++){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
-			greg_weekday wd = weekdaysToNum(WEEKDAYS_IDENTIFIERS[i]);
-			//Calculate something like First Sunday after Jan 1, 2002
-			first_day_of_the_week_after fdaf(wd);
-			d = fdaf.get_date(date(today));
-		}
-	}
-
-	for (int i = 0; i < NO_OF_NEARFUTURE_IDENTIFIERS; i++){
-		if (input == NEARFUTURE_IDENTIFIERS[i]){
-			d=today+days(nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]));
-		}
-	}
-	removeSlash(input);
-	if (atoi(input.c_str()) > MINIMUN_DATE){
-		try{
-			d = from_undelimited_string(input);
-		}
-		catch (...){
-			return INVALID_DATE;
-		}
-	}
-	else if (input.length() == SHORT_DATE_LENGTH){
-		std::string modified = DEFAULT_YEAR + input;
-		try{
-			d = from_undelimited_string(modified);
-		}
-		catch (...){
-			return INVALID_DATE;
-		}
-	}*/
 }
 
-void DateParser::removeSlash(std::string& input){
+void DateParser::removeSlash(std::string& input) {
 	size_t position;
-	for (int i = 0; i < 2; i++){
+	for (int i = 0; i < NO_OF_DELIMITERS; i++) {
 		for (int i = 0; i < NO_OF_DELIMITERS; i++) {
 			position = input.find(DELIMITERS[i]);
-			if (position != std::string::npos) {
+			if(position != std::string::npos) {
 				input.erase(input.begin() + position);
 			}
 		}
@@ -297,86 +233,91 @@ void DateParser::removeSlash(std::string& input){
 }
 
 
-void DateParser::completeRecurring(std::string frequency, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime, int recurrence,int interval, date finishDate){
+void DateParser::completeRecurring(std::string frequency, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime, int recurrence,int interval, date finishDate) {
 	date d;
-	switch (frequencyCat(frequency)){
+	switch (frequencyCat(frequency)) {
+		//for daily recurrence parsing
 	case DAILY:
-		if (recurrence == NO_SPECAIL_RECURRENCE){
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
 			recurrence = NO_OF_RECURRING_DAILY_DEFAULT;
 		}
-		for (int i = 0; i < recurrence; i++){
+		for (int i = 0; i < recurrence; i++) {
 			d = vecEndDate[i] + days(interval);
-			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
 				vecEndDate.push_back(d);
-			}else{
+			} else {
 				break;
 			}
-			if (vecStartDate[i] == EMPTY_DATE){
+			if(vecStartDate[i] == EMPTY_DATE) {
 				vecStartDate.push_back(EMPTY_DATE);
-			}else {
+			} else {
 				d = vecStartDate[i] + days(interval);
 				vecStartDate.push_back(d);
 			}
 		}
 		break;
+		//for weekly recurrence parsing
 	case WEEKLY:
-		if (recurrence == NO_SPECAIL_RECURRENCE){
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
 			recurrence = NO_OF_RECURRING_WEEKLY_DEFAULT;
 		}
-		for (int i = 0; i < recurrence; i++){
+		for (int i = 0; i < recurrence; i++) {
 			d = vecEndDate[i] + weeks(interval);
-			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
 				vecEndDate.push_back(d);
-			}else{
+			} else {
 				break;
 			}
-			if (vecStartDate[i] == EMPTY_DATE){
+			if(vecStartDate[i] == EMPTY_DATE) {
 				vecStartDate.push_back(EMPTY_DATE);
-			}else {
+			} else {
 				d = vecStartDate[i] + weeks(interval);
 				vecStartDate.push_back(d);
 			}
 		}
 		break;
+		//for monthly recurrence parsing
 	case MONTHLY:
-		if (recurrence == NO_SPECAIL_RECURRENCE){
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
 			recurrence = NO_OF_RECURRING_MONTHLY_DEFAULT;
 		}
-		for (int i = 0; i < recurrence; i++){
+		for (int i = 0; i < recurrence; i++) {
 			d = vecEndDate[i] + months(interval);
-			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
 				vecEndDate.push_back(d);
-			}else{
+			} else {
 				break;
 			}
-			if (vecStartDate[i] == EMPTY_DATE){
+			if(vecStartDate[i] == EMPTY_DATE) {
 				vecStartDate.push_back(EMPTY_DATE);
-			}else {
+			} else {
 				d = vecStartDate[i] + months(interval);
 				vecStartDate.push_back(d);
 			}
 		}
 		break;
+		//for yearly recurrence parsing
 	case YEARLY:
-		if (recurrence == NO_SPECAIL_RECURRENCE){
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
 			recurrence = NO_OF_RECURRING_YEARLY_DEFAULT;
 		}
-		for (int i = 0; i < recurrence; i++){
+		for (int i = 0; i < recurrence; i++) {
 			d = vecEndDate[i] + years(interval);
-			if ((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE){
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
 				vecEndDate.push_back(d);
-			}else{
+			} else {
 				break;
 			}
-			if (vecStartDate[i] == EMPTY_DATE){
+			if(vecStartDate[i] == EMPTY_DATE) {
 				vecStartDate.push_back(EMPTY_DATE);
-			}else {
+			} else {
 				d = vecStartDate[i] + years(interval);
 				vecStartDate.push_back(d);
 			}
 		}
 	}
-	for (int i = 1; i < vecStartDate.size(); i++){
+	//use the same time as the first task of the recurring task list
+	for (int i = 1; i < vecStartDate.size(); i++) {
 		vecStartTime.push_back(vecStartTime[0]);
 		vecEndTime.push_back(vecEndTime[0]);
 	}
@@ -384,49 +325,49 @@ void DateParser::completeRecurring(std::string frequency, std::vector<date>& vec
 	return;
 }
 
-int DateParser::frequencyCat(std::string input){
-	for (int i = 0; i < NO_OF_DAILY; i++){
-		if (input == DAILY_IDENTIFIERS[i]){
+int DateParser::frequencyCat(std::string input) {
+	for (int i = 0; i < NO_OF_DAILY; i++) {
+		if(input == DAILY_IDENTIFIERS[i]) {
 			return DAILY;
 		}
 	}
-	for (int i = 0; i < NO_OF_WEEKLY; i++){
-		if (input == WEEKLY_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_WEEKLY; i++) {
+		if(input == WEEKLY_IDENTIFIERS[i]) {
 			return WEEKLY;
 		}
 	}
-	for (int i = 0; i < NO_OF_MONTHLY; i++){
-		if (input == MONTHLY_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_MONTHLY; i++) {
+		if(input == MONTHLY_IDENTIFIERS[i]) {
 			return MONTHLY;
 		}
 	}
-	for (int i = 0; i < NO_OF_YEARLY; i++){
-		if (input == YEARLY_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_YEARLY; i++) {
+		if(input == YEARLY_IDENTIFIERS[i]) {
 			return YEARLY;
 		}
 	}
 }
-
-date DateParser::standardiseMonth(std::string before, std::string input, std::string after, int& num, int reference){
+//for ddmmm or mmmdd paring
+date DateParser::standardiseMonth(std::string before, std::string input, std::string after, int& num, int reference) {
 	greg_day day = DEFAULT_DAY;
 	num = reference;
-	for (int i = 0; i < NO_OF_MONTH_IDENTIFIERS; i++){
-		if (input == MONTH_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_MONTH_IDENTIFIERS; i++) {
+		if(input == MONTH_IDENTIFIERS[i]) {
 			greg_month m = monthToNum(MONTH_IDENTIFIERS[i]);
-			if (isdigit(before[0])){
+			if(isdigit(before[0])) {
 				num = NUM_IN_FRONT + reference;
 				try{
 					greg_day day = atoi(before.c_str());
 				}
-				catch (...){
+				catch (...) {
 					return INVALID_DATE;
 				}
 				day = atoi(before.c_str());
-			}else if (isdigit(after[0])){
+			} else if(isdigit(after[0])) {
 				try{
 					greg_day day = atoi(after.c_str());
 				}
-				catch (...){
+				catch (...) {
 					return INVALID_DATE;
 				}
 				day = atoi(after.c_str());
@@ -434,7 +375,7 @@ date DateParser::standardiseMonth(std::string before, std::string input, std::st
 			try{
 				date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
 			}
-			catch (...){
+			catch (...) {
 				return INVALID_DATE;
 			}
 			date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
@@ -443,11 +384,11 @@ date DateParser::standardiseMonth(std::string before, std::string input, std::st
 	}
 	return EMPTY_DATE;
 }
-
-date DateParser::standardiseWeekday(std::string input){
+//for weekday parsing
+date DateParser::standardiseWeekday(std::string input) {
 	date today(day_clock::local_day());
-	for (int i = 0; i < NO_OF_WEEKDAYS_IDENTIFIERS; i++){
-		if (input == WEEKDAYS_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_WEEKDAYS_IDENTIFIERS; i++) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
 			greg_weekday wd = weekdaysToNum(WEEKDAYS_IDENTIFIERS[i]);
 			//Calculate something like First Sunday after Jan 1, 2002
 			first_day_of_the_week_after fdaf(wd);
@@ -457,11 +398,11 @@ date DateParser::standardiseWeekday(std::string input){
 	}
 	return EMPTY_DATE;
 }
-
-date DateParser::standardiseNearFuture(std::string input){
+//parsing today and tomorrow
+date DateParser::standardiseNearFuture(std::string input) {
 	date today(day_clock::local_day());
-	for (int i = 0; i < NO_OF_NEARFUTURE_IDENTIFIERS; i++){
-		if (input == NEARFUTURE_IDENTIFIERS[i]){
+	for (int i = 0; i < NO_OF_NEARFUTURE_IDENTIFIERS; i++) {
+		if(input == NEARFUTURE_IDENTIFIERS[i]) {
 			int test = nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]);
 			date d = today + days(nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]));
 			return d;
