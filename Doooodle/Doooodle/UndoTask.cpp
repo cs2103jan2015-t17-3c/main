@@ -59,23 +59,18 @@ std::string UndoTask::executeUndoEdit(std::vector<CommandDetails*>& CD, Storage&
 }
 
 UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(std::vector<CommandDetails*>& CD) {
-	int index = CD.size()-1;
+	int index = CD.size() - 1;
 	if (index<0) {
 		return NIL;
-	} 
-	else if(CD[index]->commandType==STRING_ADD) {
+	} else if(CD[index]->commandType==STRING_ADD) {
 		return ADD;
-	}
-	else if(CD[index]->commandType==STRING_DELETE) {
+	} else if(CD[index]->commandType==STRING_DELETE) {
 		return ERASE;
-	}
-	else if(CD[index]->commandType==STRING_EDIT) {
+	} else if(CD[index]->commandType==STRING_EDIT) {
 		return EDIT;
-	}
-	else if (CD[index]->commandType == STRING_COMPLETE) {
+	} else if(CD[index]->commandType == STRING_COMPLETE) {
 		return COMPLETE;
-	}
-	else { //for all other cases, recurssion
+	} else { //for all other cases, recurssion
 		CD.pop_back();
 		return retrieveTaskTypeToUndo(CD);
 	};

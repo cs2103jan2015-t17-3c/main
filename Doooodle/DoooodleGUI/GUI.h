@@ -437,7 +437,8 @@ namespace DoooodleGUI {
 			textBox1->ForeColor = Color::Black;
 			counter = commandHistory->size();
 			clearUserInput();
-		}
+		} //up and down accesses commandHistory to display most recent counter. Counter keeps track of where
+		  //up and down is currently at
 		if (e->KeyCode == Keys::Up) {
 			if (commandHistory->size() > 0) {
 				if (counter > 0) {
