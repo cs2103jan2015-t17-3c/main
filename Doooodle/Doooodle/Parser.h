@@ -21,6 +21,7 @@ private:
 	DateParser dateparser;
 	TimeParser timeparser;
 	std::vector<std::string> tokens;
+	static const int ERROR_MESSAGE;
 	static const int FIRST_PARAMETER;
 	static const int SECOND_PARAMETER;
 	static const int THIRD_PARAMETER;
@@ -50,6 +51,7 @@ private:
 	static const std::string SEARCH_COMMAND;
 	static const std::string DELETE_COMMAND;
 	static const std::string EDIT_COMMAND;
+	static const std::string COMPLETE_COMMAND;
 	static const std::string INVALID_DATE;
 	static const std::string DELIMITERS;
 	static const std::string START_TIME_INDICATORS[];

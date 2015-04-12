@@ -4,6 +4,7 @@ const date Parser::DATE_INVALID(max_date_time);
 const ptime Parser::TIME_INVALID(max_date_time);
 const int Parser::DEFAULT_SIZE=1000;
 const int Parser::DEFAULT_RECURRENCE=-1;
+const int Parser::ERROR_MESSAGE = -1;
 const int Parser::DEFAULT_INTERVAL=1;
 const int Parser::RECURRING_POSITION = 1;
 const int Parser::DEFAULT_TASK_TYPE_POSITION = 0;
@@ -32,6 +33,7 @@ const int Parser::NO_OF_ARCHIVE_IDENTIFIERS = 2;
 const std::string Parser::DISPLAY_COMMAND="display";
 const std::string Parser::SEARCH_COMMAND="search";
 const std::string Parser::DELETE_COMMAND="delete";
+const std::string Parser::COMPLETE_COMMAND = "complete";
 const std::string Parser::EDIT_COMMAND="edit";
 const std::string Parser::INVALID_DATE = "Invalid Date";
 const std::string Parser::EMPTY = "Empty Task";
@@ -97,11 +99,19 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 	int pos;
 	if (isRigid(input)){
 		tokenizeInput(input, RIGID_INDENTIFIER);
-		commandType = tokens[POSITION_COMMAND_TYPE];
-		userTask = tokens[POSITION_USER_TASK];
-		eraseUserTask(input, tokens[POSITION_USER_TASK]);
-	}
-	else{
+		try{
+			if (tokens.size() < 2){
+				throw ERROR_MESSAGE;
+			}else{
+				commandType = tokens[POSITION_COMMAND_TYPE];
+				userTask = tokens[POSITION_USER_TASK];
+				eraseUserTask(input, tokens[POSITION_USER_TASK]);
+			}
+		}
+		catch(...){
+			commandType = EMPTY;
+		}
+	}else{
 		tokenizeInput(input, DELIMITERS);    //tokenize string by white space
 		commandType = getCommandType(input);
 		if (commandType == SEARCH_COMMAND){
@@ -165,7 +175,7 @@ void Parser::tokenizeInput(std::string input,std::string delimiters){
 
 std::string Parser::getCommandType(std::string input){
 	std::string task;
-	if (input == "") {
+	if (tokens.empty()) {
 		task = DELIMITERS;
 	}
 	else {
@@ -175,7 +185,7 @@ std::string Parser::getCommandType(std::string input){
 }
 
 int Parser::getIndexReference(std::string input){
-	if (getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND || getCommandType(input) == "complete"){
+	if (getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND || getCommandType(input) == COMPLETE_COMMAND){
 		for (int i = 0; i < tokens.size(); i++){
 			if (isdigit(tokens[i][0])){
 				return atoi(tokens[i].c_str());
@@ -203,6 +213,7 @@ date Parser::getStartDate(int& num){
 	for (int i = 0; i < tokens.size(); i++){
 		if (dateparser.isDate(tokens[i])){
 			num = i;
+			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
 			if (i == 0){
 				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
 			}else if (i == tokens.size() - 1){
@@ -221,6 +232,7 @@ date Parser::getEndDate(int& num){
 	std::string task;
 	for (int i = tokens.size()-1; i > 0; i--){
 		if (dateparser.isDate(tokens[i])){
+			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
 			if (i == 0){
 				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
 			}else if (i == tokens.size() - 1){
