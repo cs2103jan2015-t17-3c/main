@@ -203,6 +203,7 @@ date Parser::getStartDate(int& num){
 	for (int i = 0; i < tokens.size(); i++){
 		if (dateparser.isDate(tokens[i])){
 			num = i;
+			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
 			if (i == 0){
 				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
 			}else if (i == tokens.size() - 1){
@@ -221,6 +222,7 @@ date Parser::getEndDate(int& num){
 	std::string task;
 	for (int i = tokens.size()-1; i > 0; i--){
 		if (dateparser.isDate(tokens[i])){
+			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
 			if (i == 0){
 				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
 			}else if (i == tokens.size() - 1){
