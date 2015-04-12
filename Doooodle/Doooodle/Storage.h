@@ -8,12 +8,13 @@
 #include <algorithm>
 #include <fstream>
 #include <boost/date_time.hpp>
+#include <boost/log/trivial.hpp>
 #include <iomanip>
 #include <stack>
 #include <windows.h> 
 #include <stdio.h>
 #include <tchar.h>
-
+#include <assert.h>
 
 using namespace boost::gregorian;
 using namespace boost::posix_time;
@@ -37,6 +38,12 @@ struct Task{
 	std::string taskDisplay;
 };
 
+struct History{
+	date requestDate;
+	ptime requestTime;
+	Task commandDetails;
+	std::string commandDisplay;
+};
 
 
 class Storage{
@@ -59,17 +66,11 @@ public:
 	std::string editTask(int, std::string, date, date, ptime, ptime);
 	std::vector<std::string> retrieveFloatingTask();
 	std::string changeDirectory(std::string);
-	void initializeTaskDetails(Task&);
-	Task initializeNormalTask(std::string, date, date, ptime, ptime);
-	std::string taskDetailsFeedback(Task);
-	Task initializeDeadlineTask(std::string, date, ptime);
-	Task initializeFloatingTask(std::string);
-	void registerSearchedStuff(std::vector<Task>::iterator, bool&, std::vector<std::string>&, int&);
 	std::vector<std::string> retrieveArchive();
 	std::vector<std::string> retrieveOverdue();
 	std::string completeAll();
 	//no more complete all?
-	std::string reschedule(int, date, date, ptime, ptime);
+	//std::string reschedule(int, date, date, ptime, ptime);
 	std::vector<std::string> retrieveCategoricalTask(std::string);
 	std::string completeTask(int);
 	std::string completeSearchTask(int);
@@ -77,17 +78,9 @@ public:
 	int retrieveDeadlineSize();
 	int retrieveNormalSize();
 	int retrieveFloatingSize();
-	int searchTaskDisplay(std::string);
-	void loadTasks(std::string , std::vector<Task>&);
-	std::vector<int> findRecurIndex(std::string, TYPE_OF_SPECIAL_TASK);
-	void registerColourIndex(Task);
 	std::vector<int> retrieveColourIndex();
 	std::string undoComplete();
 	void deleteRecurringTask(std::vector<int>);
-	int convertToActualIndex(int);
-	void updateRecurTask(Task &, std::string, ptime, ptime);
-	void updateStandardTask(Task &, std::string, date,date,ptime, ptime);
-	std::vector<std::string> reformat(std::vector<std::string>);
 	std::vector<std::string> retrieveTopTask();
 
 
@@ -96,6 +89,8 @@ public:
 private:
 	std::vector<Task> archivedTask;
 	std::vector<Task> activeTask;
+	std::vector<History> addHistory;
+	History registerHistory(Task);
 	static const std::string MESSAGE_UNDO;
 	static const std::string DEFAULT_DIRECTORY;
 	static const int DEFAULT_WIDTH;
@@ -117,6 +112,7 @@ private:
 	static const std::string MESSAGE_EDIT_SUCCESS;
 	static const std::string MESSAGE_INVALID_RECUR;
 	static const std::string MESSAGE_RECUR_SUCCESS;
+	static const std::string MESSAGE_COMPLETE_ALL;
 	static const ptime nonTime;
 	static const date nonDate;
 	static const date specialDate;
@@ -128,6 +124,20 @@ private:
 	std::string directoryName;
 	std::vector<int> colourIndex;
 	bool lastCommandIsDisplay = false;
+	void initializeTaskDetails(Task&);
+	Task initializeNormalTask(std::string, date, date, ptime, ptime);
+	std::string taskDetailsFeedback(Task);
+	Task initializeDeadlineTask(std::string, date, ptime);
+	Task initializeFloatingTask(std::string);
+	void registerSearchedStuff(std::vector<Task>::iterator, bool&, std::vector<std::string>&, int&);
+	int searchTaskDisplay(std::string);
+	void loadTasks(std::string, std::vector<Task>&);
+	std::vector<int> findRecurIndex(std::string, TYPE_OF_SPECIAL_TASK);
+	void registerColourIndex(Task);
+	int convertToActualIndex(int);
+	void updateRecurTask(Task &, std::string, ptime, ptime);
+	void updateStandardTask(Task &, std::string, date, date, ptime, ptime);
+	std::vector<std::string> reformat(std::vector<std::string>);
 };
 
 #endif
