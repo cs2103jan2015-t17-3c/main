@@ -3,7 +3,7 @@
 const date Storage::nonDate(not_a_date_time);
 const ptime Storage::nonTime(not_a_date_time);
 const date Storage::specialDate(1900, Jan, 10);
-const std::string Storage::MESSAGE_UNDO = "Undo is successfully performed";
+const std::string Storage::MESSAGE_UNDO = "Undo is successfully performed.\n";
 const std::string Storage::MESSAGE_UNDO_EMPTY = "Nothing to undo.\n";
 const std::string Storage::DEFAULT_DIRECTORY = "dooodle.txt";
 const std::string Storage::DEFAULT_STORAGE_NAME = "storageFile.txt";
@@ -125,8 +125,6 @@ int Storage::retrieveFloatingSize(){
 	return count;
 }
 
-
-
 History Storage::registerHistory(Task temp){
 	History trace;
 	ptime currentTime;
@@ -138,8 +136,6 @@ History Storage::registerHistory(Task temp){
 	trace.commandDisplay = addCommandDisplay.str();
 	return trace;
 }
-
-
 
 void Storage::initializeTaskDetails(Task &temp){
 	std::ostringstream outputTask;
@@ -203,7 +199,6 @@ void Storage::initializeTaskDetails(Task &temp){
 			}
 	temp.taskDisplay = outputTask.str();
 }
-
 std::string Storage::taskDetailsFeedback(Task temp){
 	std::ostringstream outputTask;
 	if (temp.taskType == NORMAL){
@@ -341,6 +336,7 @@ std::vector<std::string> Storage::retrieveTopList(){
 	std::vector<std::string> topTasks;
 	int i;
 	int count = 0;
+	//find the top three most upcoming deadline tasks
 	for (i = 0; i < activeTask.size(); i++){
 		if (activeTask[i].taskType == DEADLINE){
 			sortedTaskIndex.push_back(i);
@@ -351,6 +347,7 @@ std::vector<std::string> Storage::retrieveTopList(){
 			break;
 		}
 	}
+	//following this, find the top two most upcoming normal tasks
 	for (i = 0; i < activeTask.size(); i++){
 		if (activeTask[i].taskType == NORMAL){
 			sortedTaskIndex.push_back(i);
@@ -361,6 +358,7 @@ std::vector<std::string> Storage::retrieveTopList(){
 			break;
 		}
 	}
+	//display all other tasks
 		for (i = 0; i < activeTask.size(); i++){
 			bool repeat = false;
 			for (int j = 0; j < sortedTaskIndex.size(); j++){
@@ -416,28 +414,6 @@ int index;
 	return MESSAGE_COMPLETE_ALL;
 }
 
-/*//do we still have this?
-std::string Storage::reschedule(int index, date tempStartDate, date tempEndDate, ptime tempStartTime, ptime tempEndTime){
-	using namespace std;
-	Task temporaryTask = *tempOverdueTaskIterator[index - 1];
-	activeTask.erase(tempOverdueTaskIterator[index-1]);
-	if (tempStartDate != temporaryTask.startDate && tempStartDate != nonDate){
-		temporaryTask.startDate = tempStartDate;
-	}
-	if (tempEndDate != temporaryTask.endDate && tempEndDate != nonDate){
-		temporaryTask.endDate = tempEndDate;
-	}
-	if (tempStartTime != temporaryTask.startTime && tempStartTime != nonTime){
-		temporaryTask.startTime = tempStartTime;
-	}
-	if (tempEndTime != temporaryTask.endTime && tempEndTime != nonTime){
-		temporaryTask.endTime = tempEndTime;
-	}
-	initializeTaskDetails(temporaryTask);
-	activeTask.push_back(temporaryTask);
-	return "task is successfuly rescheduled";
-}
-*/
 
 std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask){
 	colourIndex.clear();

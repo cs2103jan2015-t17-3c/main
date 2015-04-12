@@ -16,7 +16,7 @@ namespace TestLibrary {
 		TEST_METHOD(receiveCommand_2_addNormalTask) {
 			Logic logic;
 			std::string displayMessage = logic.receiveCommand("add meeting 31 December 2pm to 4pm");
-			std::string expected = "Normal task: meeting  [31 Dec 14:00]-[31 Dec 16:00] successfully added.\n";
+			std::string expected = "Normal task: meeting [31 Dec 14:00]-[31 Dec 16:00] successfully added.\n";
 			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
@@ -32,7 +32,7 @@ namespace TestLibrary {
 		TEST_METHOD(receiveCommand_4_addNormalTask) {
 			Logic logic;
 			std::string displayMessage = logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
-			std::string expected = "Normal task: bintan holiday  [24 Aug      ]-[28 Aug      ] successfully added.\n";
+			std::string expected = "Normal task: bintan holiday [24 Aug      ]-[28 Aug      ] successfully added.\n";
 			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
@@ -73,7 +73,7 @@ namespace TestLibrary {
 			logic.receiveCommand("add swimming");
 			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
 			displayMessage = logic.receiveCommand("delete 1");
-			std::string expected = "bintan holiday  is successfully deleted.\n";
+			std::string expected = "bintan holiday is successfully deleted.\n";
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
@@ -101,7 +101,7 @@ namespace TestLibrary {
 			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
 			logic.receiveCommand("add swimming");
 			displayMessage = logic.receiveCommand("complete 1");
-			std::string expected = "bintan holiday  is successfully archived.\n";
+			std::string expected = "bintan holiday is successfully archived.\n";
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
@@ -144,7 +144,7 @@ namespace TestLibrary {
 			logic.receiveCommand("add swimming");
 			logic.receiveCommand("complete 3");
 			displayMessage = logic.receiveCommand("undo");
-			std::string expected = "Undo is successfully performed";
+			std::string expected = "Undo is successfully performed.\n";
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
@@ -164,7 +164,7 @@ namespace TestLibrary {
 		TEST_METHOD(receiveCommand_14_AddDeadlineTask) {
 			Logic logic;
 			std::string displayMessage = logic.receiveCommand("add project submission by 10 Nov");
-			std::string expected = "Deadline task: project submission  by 10 Nov 23:59 successfully added.\n";
+			std::string expected = "Deadline task: project submission by 10 Nov 23:59 successfully added.\n";
 			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
