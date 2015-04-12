@@ -6,7 +6,7 @@ namespace TestLibrary
 {
 	TEST_CLASS(testLogic) {
 	public:
-		//Black Box integrated testing
+		//Black Box integrated testing for Logic
 		TEST_METHOD(receiveCommand_1_Error) {
 			Logic logic;
 			std::string displayMessage = logic.receiveCommand("");
@@ -92,7 +92,6 @@ namespace TestLibrary
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
 
@@ -150,7 +149,6 @@ namespace TestLibrary
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
 
@@ -161,8 +159,6 @@ namespace TestLibrary
 			logic.receiveCommand("undo");
 			displayMessage = logic.receiveCommand("undo");
 			std::string expected = "Nothing to undo!";
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
 
@@ -188,7 +184,7 @@ namespace TestLibrary
 
 		TEST_METHOD(receiveCommand_16_AddRecurringTask2) {
 			Logic logic;
-			std::string displayMessage = logic.receiveCommand("add gym workout 30 apr; weekly2; 30 Jun");
+			std::string displayMessage = logic.receiveCommand("add gym workout 30 apr; weekly2; 0730");
 			std::string expected = "Recurring Task is successfully added!\n";
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
@@ -219,7 +215,7 @@ namespace TestLibrary
 			std::string displayMessage;
 			logic.receiveCommand("add gym workout 30 apr; weekly; 4");
 			displayMessage = logic.receiveCommand("edit 1 cardio workout");
-			std::string expected = "task is successfully edited.\n";
+			std::string expected = "task is successfully edited\n";
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
@@ -234,11 +230,6 @@ namespace TestLibrary
 			logic.receiveCommand("undo");
 			int size = logic.getDeadlineSize();
 			int expected = 0;
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, size);
 		}
 
@@ -268,7 +259,6 @@ namespace TestLibrary
 			Logic logic;
 			std::string displayMessage = logic.receiveCommand("display archive");
 			std::string expected = " ";
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
 
@@ -276,7 +266,6 @@ namespace TestLibrary
 			Logic logic;
 			std::string displayMessage = logic.receiveCommand("display normal");
 			std::string expected = " ";
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
 
@@ -284,7 +273,6 @@ namespace TestLibrary
 			Logic logic;
 			std::string displayMessage = logic.receiveCommand("display deadline");
 			std::string expected = " ";
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, displayMessage);
 		}
 
@@ -312,14 +300,11 @@ namespace TestLibrary
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, size);
 		}
 
 		TEST_METHOD(getFloatingSize_26) {
 			Logic logic;
-			logic.receiveCommand("delete 1");
 			logic.receiveCommand("add cycling 1 jun 2pm to 4pm");
 			logic.receiveCommand("add cycling 2 jun 2pm to 4pm");
 			logic.receiveCommand("add cycling 3 jun 2pm to 4pm");
@@ -332,8 +317,6 @@ namespace TestLibrary
 			logic.receiveCommand("add shopping for John");
 			int size = logic.getFloatingSize();
 			int expected = 2;
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
@@ -371,8 +354,6 @@ namespace TestLibrary
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
 			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
-			logic.receiveCommand("delete 1");
 			Assert::AreEqual(expected, size);
 		}
 
@@ -385,7 +366,6 @@ namespace TestLibrary
 
 		TEST_METHOD(getFloatingSize_29_Boundary) {
 			Logic logic;
-			logic.receiveCommand("delete 1");
 			int size = logic.getFloatingSize();
 			int expected = 0;
 			Assert::AreEqual(expected, size);
