@@ -99,11 +99,10 @@ int Logic::createDynamicNewCommandDetails(void) {
 
 //Parser public function works differently based on parameter passed. 1 for Recurring and 1 for every other commands
 std::string Logic::determineParserCase(std::string userInput, int index) {
-	if (parser.isRecurring(userInput)) {
+	if(parser.isRecurring(userInput)) {
 		parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
 		return executeRecurringTask(userInput, index);
-	}
-	else {
+	} else {
 		parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
 		TASK_TYPE taskType = determineSpecificTaskType(index);
 		return executeTask(taskType, index);
@@ -116,48 +115,40 @@ Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
 	//if there is ONE date and/or time, it is a deadline task
 	//else it is a normal task
 	try {
-		if (commandDetails[index]->commandType == STRING_ADD) {
-			if ((commandDetails[index]->timeEnd == not_a_date_time) && (commandDetails[index]->dateEnd == dateNull)) {
+		if(commandDetails[index]->commandType == STRING_ADD) {
+			if((commandDetails[index]->timeEnd == not_a_date_time) && (commandDetails[index]->dateEnd == dateNull)) {
 				return FLOATING;
-			}
-			else if ((commandDetails[index]->timeStart == not_a_date_time) && (commandDetails[index]->dateStart == dateNull)) {
+			} else if((commandDetails[index]->timeStart == not_a_date_time) && (commandDetails[index]->dateStart == dateNull)) {
 				return DEADLINE;
-			}
-			else {
+			} else {
 				return NORMAL;
 			}
-		}
-		else if (commandDetails[index]->commandType == STRING_DELETE) {
+		} else if(commandDetails[index]->commandType == STRING_DELETE) {
 			return ERASE;
-		}
-		else if (commandDetails[index]->commandType == STRING_SEARCH) {
+		} else if(commandDetails[index]->commandType == STRING_SEARCH) {
 			return SEARCH;
-		}
-		else if (commandDetails[index]->commandType == STRING_EXIT) {
+		} else if(commandDetails[index]->commandType == STRING_EXIT) {
 			return EXIT;
-		}
-		else if (commandDetails[index]->commandType == STRING_UNDO) {
+		} else if(commandDetails[index]->commandType == STRING_UNDO) {
 			return UNDO;
-		}
-		else if (commandDetails[index]->commandType == STRING_EDIT) {
+		} else if(commandDetails[index]->commandType == STRING_EDIT) {
 			return EDIT;
-		}
-		else if (commandDetails[index]->commandType == STRING_COMPLETE) {
+		} else if(commandDetails[index]->commandType == STRING_COMPLETE) {
 			return COMPLETE;
 		}
-		else if (commandDetails[index]->commandType == STRING_DISPLAY) {
+		else if(commandDetails[index]->commandType == STRING_DISPLAY) {
 			return DISPLAY;
 		}
-		else if (commandDetails[index]->commandType == STRING_CD) {
+		else if(commandDetails[index]->commandType == STRING_CD) {
 			return CD;
 		}
-		else if (commandDetails[index]->commandType == STRING_HELP) {
+		else if(commandDetails[index]->commandType == STRING_HELP) {
 			return HELP;
 		}
 		else throw BAD_INDEX;
 	}
 	catch(int i){
-		return INVALID;
+		return INVALID; //if user do not type what Doooodle can handle, invalid case will be shown
 	}
 }
 
@@ -182,10 +173,9 @@ std::string Logic::executeTask(TASK_TYPE taskType, int index) {
 		displayMessageToUI = floatingTask.loadTask(commandDetails[index]->task, storage);
 		break;
 	case ERASE:
-		if (lastCommandIsSearch()) {
+		if(lastCommandIsSearch()) {
 			displayMessageToUI = deleteTask.deleteSearchTask(commandDetails[index]->indexReference, storage);
-		}
-		else{
+		} else {
 			displayMessageToUI = deleteTask.loadTask(commandDetails[index]->indexReference, storage);
 		}
 		break;
@@ -199,18 +189,16 @@ std::string Logic::executeTask(TASK_TYPE taskType, int index) {
 		displayMessageToUI = undoTask.loadTask(commandDetails, storage);
 		break;
 	case EDIT:
-		if (lastCommandIsSearch()) {
+		if(lastCommandIsSearch()) {
 			displayMessageToUI = editTask.editSearchTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
-		}
-		else{
+		} else {
 			displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
 		}
 		break;
 	case COMPLETE:
-		if (lastCommandIsSearch()) {
+		if(lastCommandIsSearch()) {
 			displayMessageToUI = overdueTask.completeSearchTask(commandDetails[index]->indexReference, storage);
-		}
-		else{
+		} else {
 			displayMessageToUI = overdueTask.completeTask(commandDetails[index]->indexReference, storage);
 		}
 		break;
