@@ -5,12 +5,10 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TestLibrary
 {		
-	TEST_CLASS(TestDateParser)
-	{
+	TEST_CLASS(TestDateParser){
 	public:
 		
-		TEST_METHOD(standardiseDate_1_Valid)
-		{
+		TEST_METHOD(standardiseDate_1_Valid){
 			DateParser dateparser;
 			std::string input = "2015/02/03";
 			int dummy=0;
@@ -209,6 +207,122 @@ namespace TestLibrary
 			std::string actual = oss2.str();
 			Assert::AreEqual(expected, actual);
 		}
-
+		TEST_METHOD(completeRecurring_15_Valid)
+		{
+			DateParser dateparser;
+			date d1 = { 2015, 4, 24 };
+			date d2 = { 2015, 4, 25 };
+			ptime t1;
+			std::vector<date> expectVecEndDate;
+			std::vector<date> expectVecStartDate;
+			std::string frequency = "weekly";
+			std::vector<date> vecStartDate;
+			std::vector<date> vecEndDate;
+			std::vector <ptime> vecStartTime;
+			std::vector<ptime> vecEndTime;
+			vecStartTime.push_back(t1);
+			vecEndTime.push_back(t1);
+			int recurrence=3;
+			int interval=2; 
+			date finishDate = { 2015, 8, 8 };
+			vecStartDate.push_back(d1);
+			expectVecStartDate.push_back(d1);
+			vecEndDate.push_back(d2);
+			expectVecEndDate.push_back(d2);
+			dateparser.completeRecurring(frequency,vecStartDate,vecEndDate,vecStartTime,vecEndTime,recurrence,interval,finishDate);
+			std::ostringstream oss1, oss2;
+			for (int i = 0; i < recurrence; i++){
+				d1 = d1 + weeks(interval);
+				d2 = d2 + weeks(interval);
+				expectVecStartDate.push_back(d1);
+				expectVecEndDate.push_back(d2);
+			}
+			for (int i = 0; i < vecEndDate.size(); i++){
+				oss1 << expectVecStartDate[i];
+				oss2 << vecStartDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+				oss1 << expectVecEndDate[i];
+				oss2 << vecEndDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+			}
+		}
+		TEST_METHOD(completeRecurring_16_Valid)
+		{
+			DateParser dateparser;
+			date d1 = { 2015, 4, 24 };
+			date d2 = { 2015, 4, 25 };
+			ptime t1;
+			std::vector<date> expectVecEndDate;
+			std::vector<date> expectVecStartDate;
+			std::string frequency = "every year";
+			std::vector<date> vecStartDate;
+			std::vector<date> vecEndDate;
+			std::vector <ptime> vecStartTime;
+			std::vector<ptime> vecEndTime;
+			vecStartTime.push_back(t1);
+			vecEndTime.push_back(t1);
+			int recurrence = 4;
+			int interval = 4;
+			date finishDate = { 2020, 8, 8 };
+			vecStartDate.push_back(d1);
+			expectVecStartDate.push_back(d1);
+			vecEndDate.push_back(d2);
+			expectVecEndDate.push_back(d2);
+			dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime, recurrence, interval, finishDate);
+			std::ostringstream oss1, oss2;
+			for (int i = 0; i < recurrence; i++){
+				d1 = d1 + years(interval);
+				d2 = d2 + years(interval);
+				expectVecStartDate.push_back(d1);
+				expectVecEndDate.push_back(d2);
+			}
+			for (int i = 0; i < vecEndDate.size(); i++){
+				oss1 << expectVecStartDate[i];
+				oss2 << vecStartDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+				oss1 << expectVecEndDate[i];
+				oss2 << vecEndDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+			}
+		}
+		TEST_METHOD(completeRecurring_17_Valid)
+		{
+			DateParser dateparser;
+			date d1 = { 2015, 6, 24 };
+			date d2 = { 2015, 6, 25 };
+			ptime t1;
+			std::vector<date> expectVecEndDate;
+			std::vector<date> expectVecStartDate;
+			std::string frequency = "monthly";
+			std::vector<date> vecStartDate;
+			std::vector<date> vecEndDate;
+			std::vector <ptime> vecStartTime;
+			std::vector<ptime> vecEndTime;
+			vecStartTime.push_back(t1);
+			vecEndTime.push_back(t1);
+			int recurrence = -1;
+			int interval = 1;
+			date finishDate = { 2020, 8, 8 };
+			vecStartDate.push_back(d1);
+			expectVecStartDate.push_back(d1);
+			vecEndDate.push_back(d2);
+			expectVecEndDate.push_back(d2);
+			dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime, recurrence, interval, finishDate);
+			std::ostringstream oss1, oss2;
+			for (int i = 0; i < 24; i++){
+				d1 = d1 + months(interval);
+				d2 = d2 + months(interval);
+				expectVecStartDate.push_back(d1);
+				expectVecEndDate.push_back(d2);
+			}
+			for (int i = 0; i < vecEndDate.size(); i++){
+				oss1 << expectVecStartDate[i];
+				oss2 << vecStartDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+				oss1 << expectVecEndDate[i];
+				oss2 << vecEndDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+			}
+		}
 	};
 }

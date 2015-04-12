@@ -47,7 +47,7 @@ const std::string DateParser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Mond
 const std::string DateParser::WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
 
-const std::string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS] = { "today", "Today", "Tomorrow", "tomorrow"};
+const std::string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS] = { "today", "Tomorrow","Today", "tomorrow"};
 
 const std::string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\","/"};
 
@@ -160,12 +160,12 @@ int DateParser::monthToNum(std::string input){
 
 int DateParser::nearfutureToNum(std::string input){
 	for (int i = Today; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+		if (input == NEARFUTURE_IDENTIFIERS[i]){
 			return Today;
 		}
 	}
 	for (int i = Tomorrow; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE){
-		if (input == MONTH_IDENTIFIERS[i]){
+		if (input == NEARFUTURE_IDENTIFIERS[i]){
 			return Tomorrow;
 		}
 	}
@@ -462,6 +462,7 @@ date DateParser::standardiseNearFuture(std::string input){
 	date today(day_clock::local_day());
 	for (int i = 0; i < NO_OF_NEARFUTURE_IDENTIFIERS; i++){
 		if (input == NEARFUTURE_IDENTIFIERS[i]){
+			int test = nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]);
 			date d = today + days(nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]));
 			return d;
 		}

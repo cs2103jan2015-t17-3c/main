@@ -330,7 +330,6 @@ size_t Parser::getEndOfUserTask(std::string input){
 	pos = intToPos(num, input);
 	position = std::min(position, pos);
 
-	position++;
 	//return the smallest position of a time or date which is the end position of user task
 	return position;
 }
