@@ -3,7 +3,7 @@
 const date Storage::nonDate(not_a_date_time);
 const ptime Storage::nonTime(not_a_date_time);
 const date Storage::specialDate(1900, Jan, 10);
-const std::string Storage::MESSAGE_UNDO = "Undo is successfully performed";
+const std::string Storage::MESSAGE_UNDO = "Undo is successfully performed.\n";
 const std::string Storage::MESSAGE_UNDO_EMPTY = "Nothing to undo.\n";
 const std::string Storage::DEFAULT_DIRECTORY = "dooodle.txt";
 const std::string Storage::DEFAULT_STORAGE_NAME = "storageFile.txt";
