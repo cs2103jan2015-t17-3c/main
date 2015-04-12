@@ -1,0 +1,1943 @@
+//@author: a0114321b
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DateParser.cpp
+	 */
+
+#include "DateParser.h"
+
+const int DateParser::NO_OF_DAILY=3;
+const std::string DateParser::DAILY_IDENTIFIERS[NO_OF_DAILY] = {"everyday","every day","daily"};
+const int DateParser::NO_OF_WEEKLY=2;
+const std::string DateParser::WEEKLY_IDENTIFIERS[NO_OF_WEEKLY] = {"every week","weekly"};
+const int DateParser::NO_OF_MONTHLY=2;
+const std::string DateParser::MONTHLY_IDENTIFIERS[NO_OF_MONTHLY] = {"every month","monthly"};
+const int DateParser::NO_OF_YEARLY=2;
+const std::string DateParser::YEARLY_IDENTIFIERS[NO_OF_YEARLY] = { "every year", "yearly" };
+const int DateParser::NUM_IN_FRONT = -1;
+const int DateParser::SHORT_DATE_LENGTH = 4;
+const int DateParser::LONG_DATE_LENGTH = 8;
+const int DateParser::NO_OF_DELIMITERS = 2;
+const int DateParser::NO_SPECAIL_RECURRENCE=-1;
+const int DateParser::NO_OF_NEARFUTURE_IDENTIFIERS = 4;
+const int DateParser::NO_OF_WEEKDAYS_IDENTIFIERS = 14;
+const int DateParser::NO_OF_TIME_IDENTIFIERS = 66;
+const int DateParser::WEEKDAY_CYCLE=7;
+const int DateParser::MONTH_CYCLE = 12;
+const int DateParser::NEARFUTURE_CYCLE = 2;
+const int DateParser::NO_OF_MONTH_IDENTIFIERS=48;
+const int DateParser::MINIMUN_DATE = 19000100;
+const int DateParser::SHORT_MINIMUN_DATE = 0100;
+const std::string DateParser::DEFAULT_YEAR = "2015";
+const int DateParser::NO_OF_RECURRING_DAILY_DEFAULT = 365;
+const int DateParser::NO_OF_RECURRING_WEEKLY_DEFAULT = 52;
+const int DateParser::NO_OF_RECURRING_MONTHLY_DEFAULT = 24;
+const int DateParser::NO_OF_RECURRING_YEARLY_DEFAULT = 40;
+const date DateParser::EMPTY_DATE;
+const ptime DateParser::EMPTY_TIME;
+const date DateParser::INVALID_DATE(max_date_time);
+const ptime DateParser::INVALID_TIME(max_date_time);
+const int DateParser::DEFAULT_DAY=1;
+const std::string DateParser::MONTH_IDENTIFIERS[NO_OF_MONTH_IDENTIFIERS] = {"January","February","March","April","May","June","July","August","Septemper","October","November","December",
+                                                                       "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",
+																	   "january","february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december",
+																	   "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
+const std::string DateParser::TIME_IDENTIFIERS[NO_OF_TIME_IDENTIFIERS] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+                                                                      "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+                                                                      "Tomorrow", "tomorrow", "today" ,"Today",
+																	  "January", "February", "March", "April", "May", "June", "July", "August", "Septemper", "October", "November", "December",
+																	  "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+																	  "january", "february", "march", "april", "may", "june", "july", "august", "septemper", "october", "november", "december",
+																	  "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
+
+const std::string DateParser::WEEKDAYS_IDENTIFIERS[NO_OF_WEEKDAYS_IDENTIFIERS] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+
+const std::string DateParser::NEARFUTURE_IDENTIFIERS[NO_OF_NEARFUTURE_IDENTIFIERS] = { "today", "Tomorrow","Today", "tomorrow"};
+
+const std::string DateParser::DELIMITERS[NO_OF_DELIMITERS] = {"\\","/"};
+
+DateParser::DateParser() {
+
+}
+DateParser::~DateParser() {
+
+}
+int DateParser::weekdaysToNum(std::string input) {
+	for (int i = Sunday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			return Sunday;
+		}
+	}
+	for (int i = Monday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			return Monday;
+		}
+	}
+	for (int i = Tuesday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			return Tuesday;
+		}
+	}
+	for (int i = Wednesday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			return Wednesday;
+		}
+	}
+	for (int i = Thursday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			return Thursday;
+		}
+	}
+	for (int i = Friday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			return Friday;
+		}
+	}
+	for (int i = Saturday; i < NO_OF_WEEKDAYS_IDENTIFIERS; i = i + WEEKDAY_CYCLE) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			return Saturday;
+		}
+	}
+}
+
+int DateParser::monthToNum(std::string input) {
+	for (int i = January; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Jan;
+		}
+	}
+	for (int i = February; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Feb;
+		}
+	}
+	for (int i = March; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Mar;
+		}
+	}
+	for (int i = April; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Apr;
+		}
+	}
+	for (int i = May; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return boost::date_time::months_of_year::May;
+		}
+	}
+	for (int i = June; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Jun;
+		}
+	}
+	for (int i = July; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Jul;
+		}
+	}
+	for (int i = August; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Aug;
+		}
+	}
+	for (int i = September; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Sep;
+		}
+	}
+	for (int i = October; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Oct;
+		}
+	}
+	for (int i = November; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Nov;
+		}
+	}	
+	for (int i = December; i < NO_OF_MONTH_IDENTIFIERS; i = i + MONTH_CYCLE) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			return Dec;
+		}
+	}
+}
+
+int DateParser::nearfutureToNum(std::string input) {
+	for (int i = Today; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE) {
+		if(input == NEARFUTURE_IDENTIFIERS[i]) {
+			return Today;
+		}
+	}
+	for (int i = Tomorrow; i < NO_OF_NEARFUTURE_IDENTIFIERS; i = i + NEARFUTURE_CYCLE) {
+		if(input == NEARFUTURE_IDENTIFIERS[i]) {
+			return Tomorrow;
+		}
+	}
+}
+
+bool DateParser::isDate(std::string input) {
+	removeSlash(input);
+	for (int i = 0; i < NO_OF_TIME_IDENTIFIERS; i++)
+		if(input == TIME_IDENTIFIERS[i]) {
+			return true;
+		} else if(((atoi(input.c_str()) > SHORT_MINIMUN_DATE && input.length() == SHORT_DATE_LENGTH)) || ((atoi(input.c_str()) >= MINIMUN_DATE && input.length() == LONG_DATE_LENGTH))) {
+			return true;
+			}
+	return false;
+}
+
+//for yyyymmdd or mmdd cases
+date DateParser::standardiseDate(std::string input) {
+	date d;
+	removeSlash(input);
+	if(atoi(input.c_str()) > MINIMUN_DATE) {
+		try{
+			d = from_undelimited_string(input);
+		}
+		catch (...) {
+			return INVALID_DATE;
+		}
+	} else if(input.length() == SHORT_DATE_LENGTH) {
+		std::string modified = DEFAULT_YEAR + input;
+		try{
+			d = from_undelimited_string(modified);
+		}
+		catch (...) {
+			return INVALID_DATE;
+		}
+	}
+	return d;
+}
+//for all possible dates formats supported by doooodle
+date DateParser::standardiseDate(std::string before,std::string input,std::string after,int& num,int reference) {
+	if(standardiseMonth(before, input, after, num, reference) != EMPTY_DATE) {
+		return standardiseMonth(before, input, after, num, reference);
+	}
+	if(standardiseWeekday(input) != EMPTY_DATE) {
+		return standardiseWeekday(input);
+	}
+	if(standardiseNearFuture(input) != EMPTY_DATE) {
+		return 	standardiseNearFuture(input);
+	}
+	return standardiseDate(input);
+}
+
+void DateParser::removeSlash(std::string& input) {
+	size_t position;
+	for (int i = 0; i < NO_OF_DELIMITERS; i++) {
+		for (int i = 0; i < NO_OF_DELIMITERS; i++) {
+			position = input.find(DELIMITERS[i]);
+			if(position != std::string::npos) {
+				input.erase(input.begin() + position);
+			}
+		}
+	}
+	return;
+}
+
+
+void DateParser::completeRecurring(std::string frequency, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime, int recurrence,int interval, date finishDate) {
+	date d;
+	switch (frequencyCat(frequency)) {
+		//for daily recurrence parsing
+	case DAILY:
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
+			recurrence = NO_OF_RECURRING_DAILY_DEFAULT;
+		}
+		for (int i = 0; i < recurrence; i++) {
+			d = vecEndDate[i] + days(interval);
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
+				vecEndDate.push_back(d);
+			} else {
+				break;
+			}
+			if(vecStartDate[i] == EMPTY_DATE) {
+				vecStartDate.push_back(EMPTY_DATE);
+			} else {
+				d = vecStartDate[i] + days(interval);
+				vecStartDate.push_back(d);
+			}
+		}
+		break;
+		//for weekly recurrence parsing
+	case WEEKLY:
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
+			recurrence = NO_OF_RECURRING_WEEKLY_DEFAULT;
+		}
+		for (int i = 0; i < recurrence; i++) {
+			d = vecEndDate[i] + weeks(interval);
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
+				vecEndDate.push_back(d);
+			} else {
+				break;
+			}
+			if(vecStartDate[i] == EMPTY_DATE) {
+				vecStartDate.push_back(EMPTY_DATE);
+			} else {
+				d = vecStartDate[i] + weeks(interval);
+				vecStartDate.push_back(d);
+			}
+		}
+		break;
+		//for monthly recurrence parsing
+	case MONTHLY:
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
+			recurrence = NO_OF_RECURRING_MONTHLY_DEFAULT;
+		}
+		for (int i = 0; i < recurrence; i++) {
+			d = vecEndDate[i] + months(interval);
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
+				vecEndDate.push_back(d);
+			} else {
+				break;
+			}
+			if(vecStartDate[i] == EMPTY_DATE) {
+				vecStartDate.push_back(EMPTY_DATE);
+			} else {
+				d = vecStartDate[i] + months(interval);
+				vecStartDate.push_back(d);
+			}
+		}
+		break;
+		//for yearly recurrence parsing
+	case YEARLY:
+		if(recurrence == NO_SPECAIL_RECURRENCE) {
+			recurrence = NO_OF_RECURRING_YEARLY_DEFAULT;
+		}
+		for (int i = 0; i < recurrence; i++) {
+			d = vecEndDate[i] + years(interval);
+			if((finishDate != EMPTY_DATE && d < finishDate) || finishDate == EMPTY_DATE) {
+				vecEndDate.push_back(d);
+			} else {
+				break;
+			}
+			if(vecStartDate[i] == EMPTY_DATE) {
+				vecStartDate.push_back(EMPTY_DATE);
+			} else {
+				d = vecStartDate[i] + years(interval);
+				vecStartDate.push_back(d);
+			}
+		}
+	}
+	//use the same time as the first task of the recurring task list
+	for (int i = 1; i < vecStartDate.size(); i++) {
+		vecStartTime.push_back(vecStartTime[0]);
+		vecEndTime.push_back(vecEndTime[0]);
+	}
+	assert(vecEndTime.size() == vecEndDate.size());
+	return;
+}
+
+int DateParser::frequencyCat(std::string input) {
+	for (int i = 0; i < NO_OF_DAILY; i++) {
+		if(input == DAILY_IDENTIFIERS[i]) {
+			return DAILY;
+		}
+	}
+	for (int i = 0; i < NO_OF_WEEKLY; i++) {
+		if(input == WEEKLY_IDENTIFIERS[i]) {
+			return WEEKLY;
+		}
+	}
+	for (int i = 0; i < NO_OF_MONTHLY; i++) {
+		if(input == MONTHLY_IDENTIFIERS[i]) {
+			return MONTHLY;
+		}
+	}
+	for (int i = 0; i < NO_OF_YEARLY; i++) {
+		if(input == YEARLY_IDENTIFIERS[i]) {
+			return YEARLY;
+		}
+	}
+}
+//for ddmmm or mmmdd paring
+date DateParser::standardiseMonth(std::string before, std::string input, std::string after, int& num, int reference) {
+	greg_day day = DEFAULT_DAY;
+	num = reference;
+	for (int i = 0; i < NO_OF_MONTH_IDENTIFIERS; i++) {
+		if(input == MONTH_IDENTIFIERS[i]) {
+			greg_month m = monthToNum(MONTH_IDENTIFIERS[i]);
+			if(isdigit(before[0])) {
+				num = NUM_IN_FRONT + reference;
+				try{
+					greg_day day = atoi(before.c_str());
+				}
+				catch (...) {
+					return INVALID_DATE;
+				}
+				day = atoi(before.c_str());
+			} else if(isdigit(after[0])) {
+				try{
+					greg_day day = atoi(after.c_str());
+				}
+				catch (...) {
+					return INVALID_DATE;
+				}
+				day = atoi(after.c_str());
+			}
+			try{
+				date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
+			}
+			catch (...) {
+				return INVALID_DATE;
+			}
+			date d1(atoi(DEFAULT_YEAR.c_str()), m, day);
+			return d1;
+		}
+	}
+	return EMPTY_DATE;
+}
+//for weekday parsing
+date DateParser::standardiseWeekday(std::string input) {
+	date today(day_clock::local_day());
+	for (int i = 0; i < NO_OF_WEEKDAYS_IDENTIFIERS; i++) {
+		if(input == WEEKDAYS_IDENTIFIERS[i]) {
+			greg_weekday wd = weekdaysToNum(WEEKDAYS_IDENTIFIERS[i]);
+			//Calculate something like First Sunday after Jan 1, 2002
+			first_day_of_the_week_after fdaf(wd);
+			date d = fdaf.get_date(date(today));
+			return d;
+		}
+	}
+	return EMPTY_DATE;
+}
+//parsing today and tomorrow
+date DateParser::standardiseNearFuture(std::string input) {
+	date today(day_clock::local_day());
+	for (int i = 0; i < NO_OF_NEARFUTURE_IDENTIFIERS; i++) {
+		if(input == NEARFUTURE_IDENTIFIERS[i]) {
+			int test = nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]);
+			date d = today + days(nearfutureToNum(NEARFUTURE_IDENTIFIERS[i]));
+			return d;
+		}
+	}
+	return EMPTY_DATE;
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DateParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DateParser.h
+	 */
+
+#ifndef DATEPARSER_H                  
+#define DATEPARSER_H
+
+#include <string>
+#include <boost/date_time.hpp>
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class DateParser {
+
+private:
+	enum frequencyCategory{ DAILY, WEEKLY, MONTHLY, YEARLY };
+	enum month { January, February, March, April, May, June, July, August, September,October,November,December};
+	enum nearfuture { Today,Tomorrow };
+	static const int DEFAULT_DAY;
+	static const int NO_OF_RECURRING_DAILY_DEFAULT;
+	static const int NO_OF_RECURRING_WEEKLY_DEFAULT;
+	static const int NO_OF_RECURRING_MONTHLY_DEFAULT;
+	static const int NO_OF_RECURRING_YEARLY_DEFAULT;
+	static const int NO_SPECAIL_RECURRENCE;
+	static const int SHORT_DATE_LENGTH;
+	static const int LONG_DATE_LENGTH;
+	static const int MINIMUN_DATE;
+	static const int SHORT_MINIMUN_DATE;
+	static const int NUM_IN_FRONT;
+	static const int WEEKDAY_CYCLE;
+	static const int MONTH_CYCLE;
+	static const int NEARFUTURE_CYCLE;
+	static const int NO_OF_TIME_IDENTIFIERS;
+	static const std::string TIME_IDENTIFIERS[];
+	static const int NO_OF_WEEKDAYS_IDENTIFIERS;
+	static const std::string WEEKDAYS_IDENTIFIERS[];
+	static const int NO_OF_NEARFUTURE_IDENTIFIERS;
+	static const std::string NEARFUTURE_IDENTIFIERS[];
+	static const int NO_OF_MONTH_IDENTIFIERS;
+	static const std::string MONTH_IDENTIFIERS[];
+	static const int NO_OF_DELIMITERS;
+	static const std::string DELIMITERS[];
+	static const int NO_OF_DAILY;
+	static const std::string DAILY_IDENTIFIERS[];
+	static const int NO_OF_WEEKLY;
+	static const std::string WEEKLY_IDENTIFIERS[];
+	static const int NO_OF_MONTHLY;
+	static const std::string MONTHLY_IDENTIFIERS[];
+	static const int NO_OF_YEARLY;
+	static const std::string YEARLY_IDENTIFIERS[];
+	static const std::string DEFAULT_YEAR;
+	static const date EMPTY_DATE;
+	static const ptime EMPTY_TIME;
+	static const date INVALID_DATE;
+	static const ptime INVALID_TIME;
+	int weekdaysToNum(std::string);
+	int nearfutureToNum(std::string);
+	void removeSlash(std::string&);
+	int getDay(std::string);
+	int frequencyCat(std::string);
+	date standardiseMonth(std::string, std::string, std::string, int&, int);
+	date standardiseWeekday(std::string);
+	date standardiseNearFuture(std::string);
+
+public:
+	DateParser();
+	~DateParser();
+
+	int monthToNum(std::string);
+	date standardiseDate(std::string, std::string, std::string,int&,int);
+	date standardiseDate(std::string);
+	void completeRecurring(std::string, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&,int,int,date);
+	bool isDate(std::string);
+};
+
+#endif
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DateParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.cpp
+	 */
+
+#include "Parser.h"
+
+const date Parser::DATE_INVALID(max_date_time);
+const ptime Parser::TIME_INVALID(max_date_time);
+const int Parser::DEFAULT_SIZE=1000;
+const int Parser::DEFAULT_RECURRENCE=-1;
+const int Parser::ERROR_MESSAGE = -1;
+const int Parser::DEFAULT_INTERVAL=1;
+const int Parser::RECURRING_POSITION = 1;
+const int Parser::DEFAULT_TASK_TYPE_POSITION = 0;
+const int Parser::FIRST_PARAMETER = 0;
+const int Parser::SECOND_PARAMETER = 1;
+const int Parser::THIRD_PARAMETER = 2;
+const int Parser::NO_PARAMETER_FREQUENCY = 1;
+const int Parser::NO_PARAMETER_FREQUENCY_BOUNDARY = 2;
+const int Parser::NO_PARAMETER_ALL = 3;
+const int Parser::NO_SEARCH_MONTH = 2;
+const int Parser::DEADLINE_HOURS=23;
+const int Parser::DEADLINE_MINUTES=59;
+const int Parser::DEADLINE_SECONDS=59;
+const date Parser::DATE_EMPTY;
+const ptime Parser::TIME_EMPTY;
+const int Parser::POSITION_COMMAND_TYPE = 0;
+const int Parser::POSITION_USER_TASK = 1;
+const std::string Parser::DEADLINE_INDICATOR = "by";
+const std::string Parser::DELIMITERS = " ";
+const std::string Parser::RECURRING_INDENTIFIER = " ;";
+const std::string Parser::RIGID_INDENTIFIER = ",*";
+const std::string Parser::ALL_DELIMITER = " ,*";
+const int Parser::NO_OF_START_TIME_INDICATORS = 1;
+const int Parser::NO_OF_END_TIME_INDICATORS = 5;
+const int Parser::NO_OF_NORMAL_IDENTIFIERS = 5;
+const int Parser::NO_OF_DEADLINE_IDENTIFIERS = 4;
+const int Parser::NO_OF_FLOAT_IDENTIFIERS = 8;
+const int Parser::NO_OF_ARCHIVE_IDENTIFIERS = 2;
+const std::string Parser::DISPLAY_COMMAND="display";
+const std::string Parser::SEARCH_COMMAND="search";
+const std::string Parser::DELETE_COMMAND="delete";
+const std::string Parser::COMPLETE_COMMAND = "complete";
+const std::string Parser::EDIT_COMMAND="edit";
+const std::string Parser::INVALID_DATE = "Invalid Date";
+const std::string Parser::EMPTY = "Empty Task";
+const std::string Parser::DEFAULT_YEAR_SEARCH="1900";
+const std::string Parser::DEFAULT_DAY_SEARCH = "01";
+const std::string Parser::NORMAL_IDENTIFIERS[NO_OF_NORMAL_IDENTIFIERS] = { "normal", "N", "norm", "Norm", "Normal"};
+const std::string Parser::DEADLINE_IDENTIFIERS[NO_OF_DEADLINE_IDENTIFIERS] = {"floating","Float", "float", "Floating" };
+const std::string Parser::FLOAT_IDENTIFIERS[NO_OF_FLOAT_IDENTIFIERS] = { "deadline", "Deadline", "d", "D", "dead", "Dead", "dateline", "Dateline" };
+const std::string Parser::ARCHIVE_IDENTIFIERS[NO_OF_ARCHIVE_IDENTIFIERS] = { "archive", "Archive" };
+const std::string Parser::START_TIME_INDICATORS[NO_OF_START_TIME_INDICATORS] = { " from "};
+const std::string Parser::END_TIME_INDICATORS[NO_OF_END_TIME_INDICATORS] = { " by ", " at ", " on ", " in ", " to " };
+
+Parser::Parser() {
+
+}
+Parser::~Parser() {
+
+}
+
+bool Parser::isRecurring(std::string input) {
+	if(input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]) != std::string::npos) {
+		return true;
+	}
+	return false;
+}
+
+bool Parser::isRigid(std::string input) {
+	for (int i = 0; i < RIGID_INDENTIFIER.length();i++)
+		if(input.find(RIGID_INDENTIFIER[i]) != std::string::npos) {
+		return true;
+	}
+	return false;
+}
+//process recurring task
+void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, std::vector<date>& vecStartDate, std::vector<date>& vecEndDate, std::vector<ptime>& vecStartTime, std::vector<ptime>& vecEndTime) {
+	std::string frequency;
+	int recurrence = DEFAULT_RECURRENCE;
+	int interval = DEFAULT_INTERVAL;
+	int dummyIndexReference;
+	date finishDate;
+	date startDate;
+	date endDate;
+	ptime startTime;
+	ptime endTime;
+	//process the first part of the string as per normal
+	processCommand(separateRecurringFront(input), commandType, userTask, startDate, endDate, startTime, endTime, dummyIndexReference);
+	//must initialze at least one date, otherwise return invalid date to logic
+	if(startDate == DATE_EMPTY && endDate == DATE_EMPTY && startTime == TIME_EMPTY && endTime == TIME_EMPTY) {
+		commandType = INVALID_DATE;
+		return;
+	}
+	getRecurringParameter(separateRecurringBack(input), frequency, interval, recurrence, finishDate);
+	vecStartDate.push_back(startDate);
+	vecEndDate.push_back(endDate);
+	vecStartTime.push_back(startTime);
+	vecEndTime.push_back(endTime);
+	dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime,recurrence,interval,finishDate);
+	return;
+}
+//process normal task
+void Parser::processCommand(std::string input, std::string& commandType, std::string& userTask, date& startDate, date& endDate, ptime& startTime, ptime& endTime, int& indexReference) {
+	int pos;
+	if(isRigid(input)) {
+		tokenizeInput(input, RIGID_INDENTIFIER);
+		try{
+			if(tokens.size() < THIRD_PARAMETER) {
+				throw ERROR_MESSAGE;
+			} else {
+				commandType = tokens[POSITION_COMMAND_TYPE];
+				userTask = tokens[POSITION_USER_TASK];
+				eraseUserTask(input, tokens[POSITION_USER_TASK]);
+			}
+		}
+		catch(...) {
+			commandType = EMPTY;
+		}
+	} else {
+		tokenizeInput(input, DELIMITERS);    //tokenize string by white space
+		commandType = getCommandType(input);
+		if(commandType == SEARCH_COMMAND) {
+			monthParsingForSearch(input);
+		}
+		userTask = getUserTask(input);
+	}
+	indexReference = getIndexReference(input);
+	startDate = getStartDate(pos);
+	endDate = getEndDate(pos);
+	startTime = getStartTime(pos);
+	endTime = getEndTime(pos);
+	if(commandType == DISPLAY_COMMAND) {
+		if(!userTaskParsing(userTask)) {
+			commandType = EMPTY;
+		}
+	}
+	justify(input, commandType, startDate, endDate, startTime, endTime);
+	return;
+}
+//furthure process the date and time taken from the input string
+void Parser::justify(std::string input, std::string& commandType, date& startDate, date& endDate, ptime& startTime, ptime& endTime) {
+	//date or time is identifed but not correct date format
+	if(startDate == DATE_INVALID || endDate == DATE_INVALID || startTime == TIME_INVALID || endTime == TIME_INVALID) {
+		commandType = INVALID_DATE;
+	}
+	//if start date time and end date time are the same, only keep the end date time
+	if(startDate == endDate && startTime == endTime) {
+		startDate = DATE_EMPTY;
+		startTime = TIME_EMPTY;
+	}
+	//if only have time, the default date is today
+	if(startDate == DATE_EMPTY && startTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND) {
+		assignToday(startDate);
+	}
+	//if only have time, the default date is today
+	if(endDate == DATE_EMPTY && endTime != TIME_EMPTY && getCommandType(input) != EDIT_COMMAND) {
+		assignToday(endDate);
+	}
+	//if only have date and it is a deadline task, a default time of 2359 will be assigned
+	if(endDate != DATE_EMPTY && endTime == TIME_EMPTY && isDeadline(input)) {
+		ptime t(endDate, hours(DEADLINE_HOURS) + minutes(DEADLINE_MINUTES) + seconds(DEADLINE_SECONDS));
+		endTime = t;
+	}
+	if((endDate < startDate && startDate != DATE_EMPTY) || (endDate == startDate && endTime < startTime && startDate != DATE_EMPTY && startTime != TIME_EMPTY)) {
+		commandType = INVALID_DATE;
+	}
+}
+//tokenize the string according to the delimiter string passed in
+void Parser::tokenizeInput(std::string input,std::string delimiters) {
+	tokens.clear();
+	char str[DEFAULT_SIZE] = " ";
+	for (int i = 0; i < input.size(); i++) {
+		str[i] = input[i];
+	}
+	char * pch;
+	pch = strtok(str, delimiters.c_str());
+	while (pch != NULL)
+	{
+		tokens.push_back(pch);
+		pch = strtok(NULL, delimiters.c_str());
+	}
+}
+
+std::string Parser::getCommandType(std::string input) {
+	std::string task;
+	if(tokens.empty()) {
+		task = DELIMITERS;
+	} else {
+		task = tokens[POSITION_COMMAND_TYPE];
+	}
+	return task;
+}
+
+int Parser::getIndexReference(std::string input) {
+	if(getCommandType(input) == DELETE_COMMAND || getCommandType(input) == EDIT_COMMAND || getCommandType(input) == COMPLETE_COMMAND) {
+		for (int i = 0; i < tokens.size(); i++) {
+			if(isdigit(tokens[i][0])) {
+				return atoi(tokens[i].c_str());
+			}
+		}
+	}
+	return -1;
+}
+
+std::string Parser::getUserTask(std::string input) {
+	size_t positionA = POSITION_COMMAND_TYPE;
+	size_t positionB = POSITION_COMMAND_TYPE;
+	std::string task;
+	positionA = getStartOfUserTask(input);
+	positionB = getEndOfUserTask(input);
+	task = input.substr(positionA, positionB - positionA);
+	return task;
+}
+
+
+date Parser::getStartDate(int& num) {
+	std::string task;
+	std::string str;
+	for (int i = 0; i < tokens.size(); i++) {
+		if(dateparser.isDate(tokens[i])) {
+			num = i;
+			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
+			if(i == 0) {
+				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
+			} else if(i == tokens.size() - 1) {
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i],num,i);
+			} else {
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i + 1],num,i);
+			}
+		}
+	}
+	num = tokens.size();
+	return DATE_EMPTY;
+}
+
+date Parser::getEndDate(int& num) {
+	std::string task;
+	for (int i = tokens.size()-1; i > 0; i--) {
+		if(dateparser.isDate(tokens[i])) {
+			//pass in adjacent 3 strings for cases like 4 Apr, 6 Decemeber etc.
+			if(i == 0) {
+				return dateparser.standardiseDate(tokens[i], tokens[i], tokens[i + 1],num,i);
+			} else if(i == tokens.size() - 1) {
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i],num,i);
+			} else {
+				return dateparser.standardiseDate(tokens[i - 1], tokens[i], tokens[i + 1],num,i);
+			}
+		}
+	}
+	num = tokens.size();
+	return DATE_EMPTY;
+}
+
+ptime Parser::getStartTime(int& num) {
+	std::string task;
+	for (int i = 0; i < tokens.size(); i++) {
+		if(timeparser.isTime(tokens[i])) {
+			num = i;
+			return timeparser.standardTime(tokens[i]);	
+		}
+	}
+	num = tokens.size();
+	return TIME_EMPTY;
+}
+
+ptime Parser::getEndTime(int& num) {
+	std::string task;
+	for (int i = tokens.size()-1; i > 0; i--) {
+		if(timeparser.isTime(tokens[i])) {
+			return timeparser.standardTime(tokens[i]);
+			num = i;
+		}
+	}
+	num = tokens.size();
+	return TIME_EMPTY;
+}
+//transfer token's position to its real position in the input string
+size_t Parser::intToPos(int num,std::string input) {
+	size_t position = 0; 
+	if(tokens.size() > num) {
+		position = input.find(tokens[num], position);
+		return position - 1;
+	} else if(tokens.size() == num && tokens.size() != 0) {
+		return input.find(tokens[num - 1]) + tokens[num - 1].length();
+	} else {
+		return 0;
+	}
+}
+
+size_t Parser::getStartOfUserTask(std::string input) {
+	size_t pos;
+	pos=input.find_first_of(DELIMITERS);
+	pos++;
+	//if the command is edit, the start of the user task is one position after the index
+	if(getCommandType(input) == EDIT_COMMAND) {
+		pos = input.find_first_of(DELIMITERS,pos);
+		pos++;
+	}
+	return pos;
+}
+
+size_t Parser::getEndOfUserTask(std::string input) {
+	size_t pos=std::string::npos;
+	size_t position=std::string::npos;
+	int num;
+	//check for start time indicators
+	for (int i = 0; i < NO_OF_START_TIME_INDICATORS; i++) {
+		pos = input.find(START_TIME_INDICATORS[i]);
+		if(pos != std::string::npos) {
+			break;
+		}
+	}
+	position = std::min(position, pos);
+
+	//check for end time indicators
+	for (int i = 0; i < NO_OF_END_TIME_INDICATORS; i++) {
+		pos = input.find(END_TIME_INDICATORS[i]);
+		if(pos != std::string::npos) {
+			break;
+		}
+	}
+	position = std::min(position, pos);
+
+	//check for date
+	getStartDate(num);
+	pos = intToPos(num, input);
+	position = std::min(position, pos);
+
+	//check for time;
+	getStartTime(num);
+	pos = intToPos(num, input);
+	position = std::min(position, pos);
+
+	//return the smallest position of a time or date which is the end position of user task
+	return position;
+}
+
+void Parser::assignToday(date& d) {
+	date today(day_clock::local_day());
+	d = today;
+	return;
+}
+
+bool Parser::isDeadline(std::string input) {
+	for (int i = 0; i < tokens.size(); i++) {
+		if(tokens[i] ==DEADLINE_INDICATOR) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Parser::userTaskParsing(std::string& input) {
+	bool check = true;
+	for (int i = 0; i < NO_OF_NORMAL_IDENTIFIERS; i++) {
+		if(input == NORMAL_IDENTIFIERS[i]) {
+			input = NORMAL_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
+	}
+	for (int i = 0; i < NO_OF_DEADLINE_IDENTIFIERS; i++) {
+		if(input == DEADLINE_IDENTIFIERS[i]) {
+			input = DEADLINE_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
+	}
+	for (int i = 0; i < NO_OF_FLOAT_IDENTIFIERS; i++) {
+		if(input == FLOAT_IDENTIFIERS[i]) {
+			input = FLOAT_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
+	}
+	for (int i = 0; i < NO_OF_ARCHIVE_IDENTIFIERS; i++) {
+		if(input == ARCHIVE_IDENTIFIERS[i]) {
+			input = ARCHIVE_IDENTIFIERS[DEFAULT_TASK_TYPE_POSITION];
+			return check;
+		}
+	}
+	return false;
+}
+
+void Parser::getRecurringParameter(std::string input,std::string& frequency, int& interval, int& recurrence, date& finish) {
+	std::vector<std::string> items;
+	items=recurringTokenizer(input);
+	if(items.size() >= NO_PARAMETER_FREQUENCY) {
+		frequencyParsing(items[FIRST_PARAMETER], interval, frequency);
+	}
+	if(items.size() >= NO_PARAMETER_FREQUENCY_BOUNDARY) {
+		if(dateparser.isDate(items[SECOND_PARAMETER])) {
+			finish = dateparser.standardiseDate(items[SECOND_PARAMETER]);
+		} else {
+			recurrence = atoi(items[SECOND_PARAMETER].c_str());
+		}
+	}
+	if(items.size() >= NO_PARAMETER_ALL) {
+		if(dateparser.isDate(items[THIRD_PARAMETER])) {
+			finish = dateparser.standardiseDate(items[THIRD_PARAMETER]);
+		} else {
+			recurrence = atoi(items[THIRD_PARAMETER].c_str());
+		}
+	}
+	return;
+}
+
+std::vector<std::string> Parser::recurringTokenizer(std::string input) {
+	std::vector<std::string> recurringTokens;
+	char str[DEFAULT_SIZE] = " ";
+	for (int i = 0; i < input.size(); i++) {
+		str[i] = input[i];
+	}
+	char * pch;
+	pch = strtok(str, RECURRING_INDENTIFIER.c_str());
+	while (pch != NULL)
+	{
+		recurringTokens.push_back(pch);
+		pch = strtok(NULL, RECURRING_INDENTIFIER.c_str());
+	}
+	return recurringTokens;
+}
+//return special date to logic for month searching
+void Parser::monthParsingForSearch(std::string& input) {
+	size_t pos;
+	size_t nextpos;
+	std::ostringstream oss;
+	oss << DEFAULT_YEAR_SEARCH;
+	if(tokens.size() == NO_SEARCH_MONTH) {
+		for (int i = 0; i < tokens.size(); i++) {
+			if(dateparser.monthToNum(tokens[i]) <= Dec && dateparser.monthToNum(tokens[i]) >= Jan) {
+				if(dateparser.monthToNum(tokens[i]) >= Oct) {
+					oss << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
+				} else {
+					oss << std::to_string(0) << std::to_string(dateparser.monthToNum(tokens[i])) << DEFAULT_DAY_SEARCH;
+				}
+				tokens[i] = oss.str();
+				break;
+			}
+		}
+	}
+	return;
+}
+
+void Parser::frequencyParsing(std::string input,int& interval,std::string& frequency) {
+	for (int i = 0; i < input.length(); i++) {
+		if(isdigit(input[i])) {
+			frequency = input.substr(0, i);
+			interval = atoi(input.substr(i, input.length() - i).c_str());
+			return;
+		}
+	}
+	frequency = input;
+	return;
+}
+//take the first half of a recurring task command
+std::string Parser::separateRecurringFront(std::string input) {
+	size_t pos;
+	pos = input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]);
+	return input.substr(0, pos);
+}
+//take the second halp of a recurring task command
+std::string Parser::separateRecurringBack(std::string input) {
+	size_t pos;
+	pos = input.find(RECURRING_INDENTIFIER[RECURRING_POSITION]);
+	return input.substr(pos, input.length()-pos);
+}
+
+void Parser::eraseUserTask(std::string input, std::string userTask) {
+	size_t pos;
+	pos=input.find(userTask);
+	input.erase(pos, userTask.length());
+	tokenizeInput(input, ALL_DELIMITER);
+	return;
+}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.h
+	 */
+
+#ifndef PARSER_H_
+#define PARSER_H_
+
+#include "DateParser.h"
+#include "TimeParser.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <algorithm>
+#include <boost/date_time.hpp>
+#include <ostream>
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class Parser {
+
+private:
+	DateParser dateparser;
+	TimeParser timeparser;
+	std::vector<std::string> tokens;
+	static const int ERROR_MESSAGE;
+	static const int FIRST_PARAMETER;
+	static const int SECOND_PARAMETER;
+	static const int THIRD_PARAMETER;
+	static const int NO_PARAMETER_FREQUENCY;
+	static const int NO_PARAMETER_FREQUENCY_BOUNDARY;
+	static const int NO_PARAMETER_ALL;
+	static const int NO_SEARCH_MONTH;
+	static const int DEFAULT_SIZE;
+	static const int DEFAULT_RECURRENCE;
+	static const int DEFAULT_INTERVAL;
+	static const int DEFAULT_TASK_TYPE_POSITION;
+	static const int RECURRING_POSITION;
+	static const date DATE_INVALID;
+	static const date DATE_EMPTY;
+	static const ptime TIME_INVALID;
+	static const ptime TIME_EMPTY;
+	static const int POSITION_COMMAND_TYPE;
+	static const int POSITION_USER_TASK;
+	static const int NO_OF_START_TIME_INDICATORS;
+	static const int NO_OF_END_TIME_INDICATORS;
+	static const int NO_OF_NORMAL_IDENTIFIERS;
+	static const int NO_OF_DEADLINE_IDENTIFIERS;
+	static const int NO_OF_FLOAT_IDENTIFIERS;
+	static const int NO_OF_ARCHIVE_IDENTIFIERS;
+	static const int DEADLINE_HOURS;
+	static const int DEADLINE_MINUTES;
+	static const int DEADLINE_SECONDS;
+	static const std::string DEADLINE_INDICATOR;
+	static const std::string DISPLAY_COMMAND;
+	static const std::string SEARCH_COMMAND;
+	static const std::string DELETE_COMMAND;
+	static const std::string EDIT_COMMAND;
+	static const std::string COMPLETE_COMMAND;
+	static const std::string INVALID_DATE;
+	static const std::string DELIMITERS;
+	static const std::string START_TIME_INDICATORS[];
+	static const std::string END_TIME_INDICATORS[];
+	static const std::string NORMAL_IDENTIFIERS[];
+	static const std::string DEADLINE_IDENTIFIERS[];
+	static const std::string FLOAT_IDENTIFIERS[];
+	static const std::string ARCHIVE_IDENTIFIERS[];
+	static const std::string EMPTY;
+	static const std::string RECURRING_INDENTIFIER;
+	static const std::string RIGID_INDENTIFIER;
+	static const std::string ALL_DELIMITER;
+	static const std::string DEFAULT_YEAR_SEARCH;
+	static const std::string DEFAULT_DAY_SEARCH;
+
+
+	//SLAP level 1
+	bool isRigid(std::string);
+	void tokenizeInput(std::string, std::string);
+	std::string getCommandType(std::string);
+	std::string getUserTask(std::string);
+	int getIndexReference(std::string);
+	date getStartDate(int&);
+	date getEndDate(int&);
+	ptime getStartTime(int&);
+	ptime getEndTime(int&);
+	size_t getEndOfUserTask(std::string);
+	size_t getStartOfUserTask(std::string);
+	void getRecurringParameter(std::string, std::string&, int&, int&, date&);
+	void justify(std::string, std::string&, date&, date&, ptime&, ptime&);
+
+	//SLAP level 2
+	std::vector<std::string> recurringTokenizer(std::string);
+	size_t intToPos(int, std::string);
+	bool userTaskParsing(std::string&);
+	bool isDeadline(std::string);
+
+	//SLAP level 3
+	void monthParsingForSearch(std::string&);
+	void frequencyParsing(std::string,int&,std::string&);
+	std::string separateRecurringFront(std::string);
+	std::string separateRecurringBack(std::string);
+	void eraseUserTask(std::string, std::string);
+	void assignToday(date&);
+
+public:
+	Parser();
+	~Parser();
+	bool isRecurring(std::string);
+	void processCommand(std::string, std::string&, std::string&, date&, date&, ptime&, ptime&, int& indexReference);
+	void processCommand(std::string, std::string&,std::string&, std::vector<date>&, std::vector<date>&, std::vector<ptime>&, std::vector<ptime>&);
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\TimeParser.cpp
+	 */
+
+#include "TimeParser.h"
+
+const int TimeParser::NO_OF_TYPE1_INDICATORS = 2;
+const int TimeParser::NO_OF_TYPE2_INDICATORS = 21;
+const int TimeParser::NO_OF_TYPE3_INDICATORS = 4;
+const int TimeParser::DIFFERENCE_BETWEEN_12HRS_24HRS = 12;
+const int TimeParser::DIFFERENCE_BETWEEN_LONG_SHORT=100;
+const int TimeParser::SHORT_12HRS=12;
+const int TimeParser::LONG_12HRS=1200;
+const int TimeParser::SHORT_24HRS=24;
+const int TimeParser::LONG_24HRS=2400;
+const int TimeParser::MAXIMUM_MINUTES=60;
+const std::string TimeParser::TYPE1_INDICATORS[NO_OF_TYPE1_INDICATORS] = {":", "."};
+const std::string TimeParser::TYPE2_INDICATORS[NO_OF_TYPE2_INDICATORS] = {"am", "Am", "AM", "aM", "pm", "Pm", "PM", "pM", "hr", "hrs", "HR", "HRS", "Hr", "Hrs", "hours", "hour", "HOURS", "Hours", "clock", ":", "."};
+const std::string TimeParser::TYPE3_INDICATORS[NO_OF_TYPE3_INDICATORS] = {"pm", "pM", "PM", "Pm"};
+const ptime TimeParser::INVALID_TIME(max_date_time);
+
+TimeParser::TimeParser() {
+}
+
+TimeParser::~TimeParser() {
+}
+
+bool TimeParser::isTime(std::string input) {
+	size_t position = 0;
+	for(int i = 0; i<NO_OF_TYPE2_INDICATORS; i++) {
+		position = input.find(TYPE2_INDICATORS[i]);
+		if(position != std::string::npos && isdigit(input[0])) {
+			return true;
+		}
+	}
+	return false;
+}
+//if not_a_date_time is returned, the input is not a date or time
+//if max_date_time is returned, the date time format of the input is invalid
+ptime TimeParser::standardTime(std::string input) {
+	ptime time(date(day_clock::local_day()), hours(0) + minutes(0));
+	ptime d(not_a_date_time);
+	size_t position = 0;
+	bool isColonDotCase = false;
+	bool isPmCase = false;
+	if(!isTime(input)) {
+		return d;
+	}
+
+	//to identify . or : and to remove them to use atoi
+	for(int i=0; ((i<NO_OF_TYPE1_INDICATORS) && (!isColonDotCase)); i++) {
+		position = input.find(TYPE1_INDICATORS[i]);
+		if(position != std::string::npos) {
+			isColonDotCase = true;
+		}
+	}
+
+	if(isColonDotCase) {
+		input.erase(input.begin()+position);
+	}
+
+	//to identify pm case (e.g. 3.15pm) so that 12 hours can be added to make it reflect 24hr clock
+	for(int i=0; ((i<NO_OF_TYPE3_INDICATORS) && (!isPmCase)); i++) {
+		position = input.find(TYPE3_INDICATORS[i]);
+		if(position != std::string::npos) {
+			isPmCase = true;
+		}
+	}
+
+	//transfer number(integer) to ptime
+	int timeInt = atoi(input.c_str());
+	if(timeInt <= SHORT_24HRS && !isPmCase) {
+		time += hours(timeInt);
+	} else if(timeInt <= SHORT_12HRS && isPmCase) {
+		time += hours(timeInt + DIFFERENCE_BETWEEN_12HRS_24HRS);
+	} else if((timeInt <= LONG_24HRS) && (!isPmCase) && (timeInt%DIFFERENCE_BETWEEN_LONG_SHORT <= MAXIMUM_MINUTES)) {
+		time += hours(timeInt / DIFFERENCE_BETWEEN_LONG_SHORT) + minutes(timeInt%DIFFERENCE_BETWEEN_LONG_SHORT);
+	} else if((timeInt <= LONG_12HRS) && (isPmCase) && (timeInt%DIFFERENCE_BETWEEN_LONG_SHORT <= MAXIMUM_MINUTES)) {
+		time += hours(DIFFERENCE_BETWEEN_12HRS_24HRS + (timeInt / DIFFERENCE_BETWEEN_LONG_SHORT)) + minutes(timeInt % DIFFERENCE_BETWEEN_LONG_SHORT);
+	} else {
+		time = INVALID_TIME;
+	}
+
+	return time;
+}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\TimeParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\TimeParser.h
+	 */
+
+#ifndef TIMEPARSER_H_
+#define TIMEPARSER_H_
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <boost/date_time.hpp>
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class TimeParser{
+
+private:
+	static const int NO_OF_TYPE1_INDICATORS;
+	static const int NO_OF_TYPE2_INDICATORS;
+	static const int NO_OF_TYPE3_INDICATORS;
+	static const std::string TYPE1_INDICATORS[];
+	static const std::string TYPE2_INDICATORS[];
+	static const std::string TYPE3_INDICATORS[];
+	static const int DIFFERENCE_BETWEEN_12HRS_24HRS;
+	static const int DIFFERENCE_BETWEEN_LONG_SHORT;
+	static const int SHORT_12HRS;
+	static const int LONG_12HRS;
+	static const int SHORT_24HRS;
+	static const int LONG_24HRS;
+	static const int MAXIMUM_MINUTES;
+	static const ptime INVALID_TIME;
+public:
+	TimeParser();
+	~TimeParser();
+	bool isTime(std::string);
+	ptime standardTime(std::string);
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\TimeParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testDateParser.cpp
+	 */
+
+#include "stdafx.h"
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace TestLibrary
+{		
+	TEST_CLASS(TestDateParser){
+	public:
+		
+		TEST_METHOD(standardiseDate_1_Valid){
+			DateParser dateparser;
+			std::string input = "2015/02/03";
+			int dummy=0;
+			date d=dateparser.standardiseDate(input,input,input,dummy,dummy);
+			date expectedD(2015,02,03);
+			std::ostringstream oss1,oss2;
+			oss1 << expectedD;
+			std::string expected=oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_2_Valid)
+		{
+			DateParser dateparser;
+			std::string input = "March";
+			std::string input1 = "3";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input1, dummy, dummy);
+			boost::gregorian::date expectedD(2015, 03, 03);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_3_Valid)
+		{
+			DateParser dateparser;
+			std::string input = "dec";
+			std::string input1 = "2";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input1, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(2015, 12, 02);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_4_Valid)
+		{
+			DateParser dateparser;
+			std::string input = "2015/02/28";
+			int dummy=0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(2015, 02, 28);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_5_Valid)
+		{
+			DateParser dateparser;
+			std::string input = "2100/12/31";
+			int dummy=0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(2100, 12, 31);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_6_Invalid)
+		{
+			DateParser dateparser;
+			std::string input = "2015*02*28";
+			int dummy=0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(not_a_date_time);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_7_Invalid)
+		{
+			DateParser dateparser;
+			std::string input = "1899/03/22";
+			int dummy=0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(not_a_date_time);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_8_Invalid)
+		{
+			DateParser dateparser;
+			std::string input = "2017/04/31";
+			int dummy=0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(max_date_time);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_9_Invalid)
+		{
+			DateParser dateparser;
+			std::string input = "Feb";
+			std::string input1 = "29";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input1, dummy, dummy);
+			boost::gregorian::date expectedD(max_date_time);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_10_Invalid)
+		{
+			DateParser dateparser;
+			std::string input = "wed";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(not_a_date_time);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		//Valid until 18 April
+		TEST_METHOD(standardiseDate_11_Valid)
+		{
+			DateParser dateparser;
+			std::string input = "saturday";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input, input, input, dummy, dummy);
+			boost::gregorian::date expectedD(2015,4,18);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_12_Valid)
+		{
+			DateParser dateparser;
+			std::string input = "0505";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input);
+			boost::gregorian::date expectedD(2015,5,5);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_13_Valid)
+		{
+			DateParser dateparser;
+			std::string input = "20160622";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input);
+			boost::gregorian::date expectedD(2016, 6, 22);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(standardiseDate_14_Invalid)
+		{
+			DateParser dateparser;
+			std::string input = "20160631";
+			int dummy = 0;
+			boost::gregorian::date d = dateparser.standardiseDate(input);
+			boost::gregorian::date expectedD(max_date_time);
+			std::ostringstream oss1, oss2;
+			oss1 << expectedD;
+			std::string expected = oss1.str();
+			oss2 << d;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(completeRecurring_15_Valid)
+		{
+			DateParser dateparser;
+			date d1 = { 2015, 4, 24 };
+			date d2 = { 2015, 4, 25 };
+			ptime t1;
+			std::vector<date> expectVecEndDate;
+			std::vector<date> expectVecStartDate;
+			std::string frequency = "weekly";
+			std::vector<date> vecStartDate;
+			std::vector<date> vecEndDate;
+			std::vector <ptime> vecStartTime;
+			std::vector<ptime> vecEndTime;
+			vecStartTime.push_back(t1);
+			vecEndTime.push_back(t1);
+			int recurrence=3;
+			int interval=2; 
+			date finishDate = { 2015, 8, 8 };
+			vecStartDate.push_back(d1);
+			expectVecStartDate.push_back(d1);
+			vecEndDate.push_back(d2);
+			expectVecEndDate.push_back(d2);
+			dateparser.completeRecurring(frequency,vecStartDate,vecEndDate,vecStartTime,vecEndTime,recurrence,interval,finishDate);
+			std::ostringstream oss1, oss2;
+			for (int i = 0; i < recurrence; i++){
+				d1 = d1 + weeks(interval);
+				d2 = d2 + weeks(interval);
+				expectVecStartDate.push_back(d1);
+				expectVecEndDate.push_back(d2);
+			}
+			for (int i = 0; i < vecEndDate.size(); i++){
+				oss1 << expectVecStartDate[i];
+				oss2 << vecStartDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+				oss1 << expectVecEndDate[i];
+				oss2 << vecEndDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+			}
+		}
+		TEST_METHOD(completeRecurring_16_Valid)
+		{
+			DateParser dateparser;
+			date d1 = { 2015, 4, 24 };
+			date d2 = { 2015, 4, 25 };
+			ptime t1;
+			std::vector<date> expectVecEndDate;
+			std::vector<date> expectVecStartDate;
+			std::string frequency = "every year";
+			std::vector<date> vecStartDate;
+			std::vector<date> vecEndDate;
+			std::vector <ptime> vecStartTime;
+			std::vector<ptime> vecEndTime;
+			vecStartTime.push_back(t1);
+			vecEndTime.push_back(t1);
+			int recurrence = 4;
+			int interval = 4;
+			date finishDate = { 2020, 8, 8 };
+			vecStartDate.push_back(d1);
+			expectVecStartDate.push_back(d1);
+			vecEndDate.push_back(d2);
+			expectVecEndDate.push_back(d2);
+			dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime, recurrence, interval, finishDate);
+			std::ostringstream oss1, oss2;
+			for (int i = 0; i < recurrence; i++){
+				d1 = d1 + years(interval);
+				d2 = d2 + years(interval);
+				expectVecStartDate.push_back(d1);
+				expectVecEndDate.push_back(d2);
+			}
+			for (int i = 0; i < vecEndDate.size(); i++){
+				oss1 << expectVecStartDate[i];
+				oss2 << vecStartDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+				oss1 << expectVecEndDate[i];
+				oss2 << vecEndDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+			}
+		}
+		TEST_METHOD(completeRecurring_17_Valid)
+		{
+			DateParser dateparser;
+			date d1 = { 2015, 6, 24 };
+			date d2 = { 2015, 6, 25 };
+			ptime t1;
+			std::vector<date> expectVecEndDate;
+			std::vector<date> expectVecStartDate;
+			std::string frequency = "monthly";
+			std::vector<date> vecStartDate;
+			std::vector<date> vecEndDate;
+			std::vector <ptime> vecStartTime;
+			std::vector<ptime> vecEndTime;
+			vecStartTime.push_back(t1);
+			vecEndTime.push_back(t1);
+			int recurrence = -1;
+			int interval = 1;
+			date finishDate = { 2020, 8, 8 };
+			vecStartDate.push_back(d1);
+			expectVecStartDate.push_back(d1);
+			vecEndDate.push_back(d2);
+			expectVecEndDate.push_back(d2);
+			dateparser.completeRecurring(frequency, vecStartDate, vecEndDate, vecStartTime, vecEndTime, recurrence, interval, finishDate);
+			std::ostringstream oss1, oss2;
+			for (int i = 0; i < 24; i++){
+				d1 = d1 + months(interval);
+				d2 = d2 + months(interval);
+				expectVecStartDate.push_back(d1);
+				expectVecEndDate.push_back(d2);
+			}
+			for (int i = 0; i < vecEndDate.size(); i++){
+				oss1 << expectVecStartDate[i];
+				oss2 << vecStartDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+				oss1 << expectVecEndDate[i];
+				oss2 << vecEndDate[i];
+				Assert::AreEqual(oss1.str(), oss2.str());
+			}
+		}
+	};
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testDateParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testParser.cpp
+	 */
+
+#include "stdafx.h"
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace TestLibrary
+{
+	TEST_CLASS(TestParser){
+public:
+
+	TEST_METHOD(testProcessCommand_1_add){
+		Parser parser;
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		std::ostringstream oss3;
+		std::ostringstream oss4;
+		std::ostringstream oss5;
+		std::ostringstream oss6;
+		std::ostringstream oss7;
+		std::ostringstream oss8;
+		std::string input = "add project due by 6 June";
+		std::string commandType;
+		std::string userTask;
+		date d1;
+		date d2;
+		ptime t1;
+		ptime t2;
+		int num;
+		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
+		std::string expectCommandType = "add";
+		std::string expectUserTask = "project due";
+		date expectD1;
+		date expectD2{ 2015, 6, 6 };
+		ptime expectT1;
+		ptime expectT2{ expectD2, hours(23) + minutes(59) + seconds(59) };
+		int expectNum = -1;
+		oss1 << d1;
+		oss2 << d2;
+		oss3 << t1;
+		oss4 << t2;
+		oss5 << expectD1;
+		oss6 << expectD2;
+		oss7 << expectT1;
+		oss8 << expectT2;
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(expectCommandType, commandType);
+		Assert::AreEqual(expectUserTask, userTask);
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(oss1.str(), oss5.str());
+		Assert::AreEqual(oss2.str(), oss6.str());
+		Assert::AreEqual(oss3.str(), oss7.str());
+		Assert::AreEqual(oss4.str(), oss8.str());
+	}
+	TEST_METHOD(testProcessCommand_2_add){
+		Parser parser;
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		std::ostringstream oss3;
+		std::ostringstream oss4;
+		std::ostringstream oss5;
+		std::ostringstream oss6;
+		std::ostringstream oss7;
+		std::ostringstream oss8;
+		std::string input = "add meeting with boss from 0505 to 20151231";
+		std::string commandType;
+		std::string userTask;
+		date d1;
+		date d2;
+		ptime t1;
+		ptime t2;
+		int num;
+		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
+		std::string expectCommandType = "add";
+		std::string expectUserTask = "meeting with boss";
+		date expectD1{ 2015, 5, 5 };
+		date expectD2{ 2015, 12, 31 };
+		ptime expectT1;
+		ptime expectT2;
+		int expectNum = -1;
+		oss1 << d1;
+		oss2 << d2;
+		oss3 << t1;
+		oss4 << t2;
+		oss5 << expectD1;
+		oss6 << expectD2;
+		oss7 << expectT1;
+		oss8 << expectT2;
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(expectCommandType, commandType);
+		Assert::AreEqual(expectUserTask, userTask);
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(oss1.str(), oss5.str());
+		Assert::AreEqual(oss2.str(), oss6.str());
+		Assert::AreEqual(oss3.str(), oss7.str());
+		Assert::AreEqual(oss4.str(), oss8.str());
+	}
+	TEST_METHOD(testProcessCommand_3_add){
+		Parser parser;
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		std::ostringstream oss3;
+		std::ostringstream oss4;
+		std::ostringstream oss5;
+		std::ostringstream oss6;
+		std::ostringstream oss7;
+		std::ostringstream oss8;
+		std::string input = "add swimming with friend";
+		std::string commandType;
+		std::string userTask;
+		date d1;
+		date d2;
+		ptime t1;
+		ptime t2;
+		int num;
+		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
+		std::string expectCommandType = "add";
+		std::string expectUserTask = "swimming with friend";
+		date expectD1;
+		date expectD2;
+		ptime expectT1;
+		ptime expectT2;
+		int expectNum = -1;
+		oss1 << d1;
+		oss2 << d2;
+		oss3 << t1;
+		oss4 << t2;
+		oss5 << expectD1;
+		oss6 << expectD2;
+		oss7 << expectT1;
+		oss8 << expectT2;
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(expectCommandType, commandType);
+		Assert::AreEqual(expectUserTask, userTask);
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(oss1.str(), oss5.str());
+		Assert::AreEqual(oss2.str(), oss6.str());
+		Assert::AreEqual(oss3.str(), oss7.str());
+		Assert::AreEqual(oss4.str(), oss8.str());
+	}
+	TEST_METHOD(testProcessCommand_4_delete){
+		Parser parser;
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		std::ostringstream oss3;
+		std::ostringstream oss4;
+		std::ostringstream oss5;
+		std::ostringstream oss6;
+		std::ostringstream oss7;
+		std::ostringstream oss8;
+		std::string input = "delete 3";
+		std::string commandType;
+		std::string userTask;
+		date d1;
+		date d2;
+		ptime t1;
+		ptime t2;
+		int num;
+		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
+		std::string expectCommandType = "delete";
+		std::string expectUserTask = "3";
+		date expectD1;
+		date expectD2;
+		ptime expectT1;
+		ptime expectT2;
+		int expectNum = 3;
+		oss1 << d1;
+		oss2 << d2;
+		oss3 << t1;
+		oss4 << t2;
+		oss5 << expectD1;
+		oss6 << expectD2;
+		oss7 << expectT1;
+		oss8 << expectT2;
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(expectCommandType, commandType);
+		Assert::AreEqual(expectUserTask, userTask);
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(oss1.str(), oss5.str());
+		Assert::AreEqual(oss2.str(), oss6.str());
+		Assert::AreEqual(oss3.str(), oss7.str());
+		Assert::AreEqual(oss4.str(), oss8.str());
+	}
+	TEST_METHOD(testProcessCommand_5_display){
+		Parser parser;
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		std::ostringstream oss3;
+		std::ostringstream oss4;
+		std::ostringstream oss5;
+		std::ostringstream oss6;
+		std::ostringstream oss7;
+		std::ostringstream oss8;
+		std::string input = "display norm";
+		std::string commandType;
+		std::string userTask;
+		date d1;
+		date d2;
+		ptime t1;
+		ptime t2;
+		int num;
+		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
+		std::string expectCommandType = "display";
+		std::string expectUserTask = "normal";
+		date expectD1;
+		date expectD2;
+		ptime expectT1;
+		ptime expectT2;
+		int expectNum = -1;
+		oss1 << d1;
+		oss2 << d2;
+		oss3 << t1;
+		oss4 << t2;
+		oss5 << expectD1;
+		oss6 << expectD2;
+		oss7 << expectT1;
+		oss8 << expectT2;
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(expectCommandType, commandType);
+		Assert::AreEqual(expectUserTask, userTask);
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(oss1.str(), oss5.str());
+		Assert::AreEqual(oss2.str(), oss6.str());
+		Assert::AreEqual(oss3.str(), oss7.str());
+		Assert::AreEqual(oss4.str(), oss8.str());
+	}
+	TEST_METHOD(testProcessCommand_6_invalid){
+		Parser parser;
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		std::ostringstream oss3;
+		std::ostringstream oss4;
+		std::ostringstream oss5;
+		std::ostringstream oss6;
+		std::ostringstream oss7;
+		std::ostringstream oss8;
+		std::string input = "add task from 0808 to June 5";
+		std::string commandType;
+		std::string userTask;
+		date d1;
+		date d2;
+		ptime t1;
+		ptime t2;
+		int num;
+		parser.processCommand(input, commandType, userTask, d1, d2, t1, t2, num);
+		std::string expectCommandType = "Invalid Date";
+		std::string expectUserTask = "task";
+		date expectD1{ 2015, 8, 8 };
+		date expectD2{ 2015, 6, 5 };
+		ptime expectT1;
+		ptime expectT2;
+		int expectNum = -1;
+		oss1 << d1;
+		oss2 << d2;
+		oss3 << t1;
+		oss4 << t2;
+		oss5 << expectD1;
+		oss6 << expectD2;
+		oss7 << expectT1;
+		oss8 << expectT2;
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(expectCommandType, commandType);
+		Assert::AreEqual(expectUserTask, userTask);
+		Assert::AreEqual(expectNum, num);
+		Assert::AreEqual(oss1.str(), oss5.str());
+		Assert::AreEqual(oss2.str(), oss6.str());
+		Assert::AreEqual(oss3.str(), oss7.str());
+		Assert::AreEqual(oss4.str(), oss8.str());
+	}
+	};
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testTimeParser.cpp
+	 */
+
+#include "stdafx.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace TestLibrary
+{
+	TEST_CLASS(TestTimeParser)
+	{
+	public:
+
+		TEST_METHOD(standardTime_1_Valid)
+		{
+			TimeParser timeparser;
+			std::string input = "22:04";
+			boost::posix_time::ptime t = timeparser.standardTime(input);
+			boost::posix_time::ptime expectedT(boost::gregorian::date(boost::gregorian::day_clock::local_day()), boost::posix_time::hours(22) + boost::posix_time::minutes(4));
+			std::ostringstream  oss1, oss2;
+			oss1 << expectedT;
+			std::string expected = oss1.str();
+			oss2 << t;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(standardTime_2_Invalid)
+		{
+			TimeParser timeparser;
+			std::string input = "25:01";
+			boost::posix_time::ptime t = timeparser.standardTime(input);
+			boost::posix_time::ptime expectedT(max_date_time);
+			std::ostringstream  oss1, oss2;
+			oss1 << expectedT;
+			std::string expected = oss1.str();
+			oss2 << t;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(standardTime_3_Invalid)
+		{
+			TimeParser timeparser;
+			std::string input = "23*22";
+			boost::posix_time::ptime t = timeparser.standardTime(input);
+			boost::posix_time::ptime expectedT(not_a_date_time);
+			std::ostringstream  oss1, oss2;
+			oss1 << expectedT;
+			std::string expected = oss1.str();
+			oss2 << t;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(standardTime_4_Invalid)
+		{
+			TimeParser timeparser;
+			std::string input = "23:66";
+			boost::posix_time::ptime t = timeparser.standardTime(input);
+			boost::posix_time::ptime expectedT(max_date_time);
+			std::ostringstream  oss1, oss2;
+			oss1 << expectedT;
+			std::string expected = oss1.str();
+			oss2 << t;
+			std::string actual = oss2.str();
+			Assert::AreEqual(expected, actual);
+		}
+
+	};
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testTimeParser.cpp
+
+
+
+
+

@@ -1,0 +1,72 @@
+//@author: a0115016x
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
+
+#pragma once
+
+#include <stdlib.h>
+#include <msclr\marshal_cppstd.h>
+#include <boost/date_time.hpp>
+#include <iostream>
+#include <vector>
+#include <string>
+#include "logic.h"
+#include "storage.h"
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
+
+	private:
+		Logic* logic;
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
+
+			 Storage* storage;
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
+
+			 int counter;
+
+	public:
+		GUI(void)
+		{
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+			logic = new Logic;
+			storage = new Storage;
+			commandHistory = new std::vector<std::string>;
+			counter = 0;
+			timer1->Start();
+		}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+

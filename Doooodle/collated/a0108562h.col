@@ -1,0 +1,1473 @@
+//@author: a0108562h
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\CommandDetails.cpp
+	 */
+
+#include "CommandDetails.h"
+
+CommandDetails::CommandDetails(void) {
+	commandType = "";
+	task = "";
+	indexReference = 0;
+	dateStart = day_clock::local_day();
+	dateEnd = day_clock::local_day();
+	timeStart = not_a_date_time;
+	timeEnd = not_a_date_time;
+}
+
+CommandDetails::~CommandDetails(void) {
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\CommandDetails.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\CommandDetails.h
+	 */
+
+#ifndef COMMANDDETAILS_H_
+#define COMMANDDETAILS_H_
+
+#include <iostream>
+#include <boost/date_time.hpp>
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class CommandDetails {
+
+public:
+	std::string commandType;		//for "add", "delete", "edit", "undo" etc.
+	std::string task;		//to store details for add, edit, reschedule etc.
+	int indexReference;		//to store reference index for delete, edit, reschedule etc.
+	date dateStart;
+	date dateEnd;
+	ptime timeStart;
+	ptime timeEnd;
+	//following vectors for recurring events to store future recurrence
+	std::vector<date> dateStartRecur;
+	std::vector<date> dateEndRecur;
+	std::vector<ptime> timeStartRecur;
+	std::vector<ptime> timeEndRecur;
+
+	CommandDetails(void);
+	~CommandDetails(void);
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\CommandDetails.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeadlineTask.cpp
+	 */
+
+#include "DeadlineTask.h"
+
+DeadlineTask::DeadlineTask(void) {
+	task = "";
+	dateEnd = day_clock::local_day();
+	timeEnd = not_a_date_time;
+}
+
+DeadlineTask::~DeadlineTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::string DeadlineTask::loadTask(std::string task, date dateEnd, ptime timeEnd, Storage& storage) {
+	this->task = task;
+	this->dateEnd = dateEnd;
+	this->timeEnd = timeEnd;
+	displayMessage = storage.addDeadlineTask(task, dateEnd, timeEnd);
+	storage.sortStorage();
+	storage.writeToFile();
+	return displayMessage;
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeadlineTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeadlineTask.h
+	 */
+
+//DeadlineTask deals with deadline tasks
+
+#ifndef DEADLINETASK_H_
+#define DEADLINETASK_H_
+
+#include <iostream>
+#include "ITask.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class DeadlineTask : public ITask {
+
+public:
+	DeadlineTask(void);
+	~DeadlineTask(void);
+	std::string loadTask(std::string, date, ptime, Storage&);
+
+private:
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeadlineTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeleteTask.cpp
+	 */
+
+#include "DeleteTask.h"
+
+DeleteTask::DeleteTask(void) {
+}
+
+DeleteTask::~DeleteTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::string DeleteTask::loadTask(int intToDelete, Storage& storage){
+	displayMessage =  storage.deleteTask(intToDelete);
+	storage.writeToFile();
+	return displayMessage;
+}
+
+//method is called when last search command is "search" to delete search result
+std::string DeleteTask::deleteSearchTask(int intToDelete, Storage& storage){
+	displayMessage = storage.deleteSearchTask(intToDelete);
+	storage.writeToFile();
+	return displayMessage;
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeleteTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeleteTask.h
+	 */
+
+//DeleteTask deals with deleting a task
+
+#ifndef DELETETASK_H_
+#define DELETETASK_H_
+
+#include <iostream>
+#include "ITask.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class DeleteTask : public ITask {
+
+public:
+	DeleteTask(void);
+	~DeleteTask(void);
+	std::string loadTask(int, Storage&);
+	std::string deleteSearchTask(int, Storage&);
+
+private:
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\DeleteTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\EditTask.cpp
+	 */
+
+#include "EditTask.h"
+
+EditTask::EditTask(void) {
+}
+
+EditTask::~EditTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::string EditTask::loadTask(int index, std::string stringToEdit, date startDate, date endDate, ptime startTime, ptime endTime, Storage& storage){
+	displayMessage = storage.editTask(index, stringToEdit, startDate, endDate, startTime, endTime);
+	storage.sortStorage();
+	storage.writeToFile();
+	assert(!(displayMessage.empty()));
+	return displayMessage;
+}
+
+//method is called when last search command is "search" to delete search result
+std::string EditTask::editSearchTask(int index, std::string stringToEdit, date startDate, date endDate, ptime startTime, ptime endTime, Storage& storage){
+	displayMessage = storage.editSearchTask(index, stringToEdit, startDate, endDate, startTime, endTime);
+	storage.sortStorage();
+	storage.writeToFile();
+	assert(!(displayMessage.empty()));
+	return displayMessage;
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\EditTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\EditTask.h
+	 */
+
+//EditTask deals with editting a task
+
+#ifndef EDITTASK_H_
+#define EDITTASK_H_
+
+#include <iostream>
+#include "ITask.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class EditTask : public ITask {
+
+public:
+	EditTask(void);
+	~EditTask(void);
+	std::string loadTask(int, std::string, date, date, ptime, ptime, Storage&);
+	std::string editSearchTask(int, std::string, date, date, ptime, ptime, Storage&);
+
+private:
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\EditTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\FloatingTask.cpp
+	 */
+
+#include "FloatingTask.h"
+
+FloatingTask::FloatingTask(void) {
+	task = "";
+}
+
+FloatingTask::~FloatingTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::string FloatingTask::loadTask(std::string task, Storage& storage) {
+	this->task = task;
+	displayMessage = storage.addFloatingTask(task);
+	storage.sortStorage();
+	storage.writeToFile();
+	return displayMessage;
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\FloatingTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\FloatingTask.h
+	 */
+
+//FloatTask deals with floating tasks
+
+#ifndef FLOATINGTASK_H_
+#define FLOATINGTASK_H_
+
+#include <iostream>
+#include "ITask.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class FloatingTask : public ITask {
+
+public:
+	FloatingTask(void);
+	~FloatingTask(void);
+	std::string loadTask(std::string, Storage&);
+
+private:
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\FloatingTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\ITask.cpp
+	 */
+
+#include "ITask.h"
+
+const std::string ITask::STRING_TEMPLATE = "Interface Class";
+
+ITask::~ITask(void) {
+}
+
+std::string ITask::loadTask() {
+	return "";
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\ITask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\ITask.h
+	 */
+
+//ITASK is an Interface Class for other Logic classes such as:
+//DeadlineTask, DeleteTask, EditTask, FloatingTask, NormalTask, RescheduleTask, SearchTask, UndoTask
+
+#ifndef ITASK_H_
+#define ITASK_H_
+
+#include <iostream>
+#include <assert.h>
+#include "Storage.h"
+#include <boost/date_time.hpp>
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class ITask {
+
+public:
+	virtual ~ITask(void) = 0;
+	virtual std::string loadTask();
+
+protected:
+	std::string task;
+	std::string displayMessage;
+	date dateStart;
+	date dateEnd;
+	ptime timeStart;
+	ptime timeEnd;
+
+private:
+	static const std::string STRING_TEMPLATE;
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\ITask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Logic.cpp
+	 */
+
+#include "Logic.h"
+
+const std::string Logic::STRING_ADD = "add";
+const std::string Logic::STRING_ARCHIVE = "archive";
+const std::string Logic::STRING_CD = "cd";
+const std::string Logic::STRING_COMPLETE = "complete";
+const std::string Logic::STRING_DISPLAY = "display";
+const std::string Logic::STRING_DELETE = "delete";
+const std::string Logic::STRING_EDIT = "edit";
+const std::string Logic::STRING_EXIT = "exit";
+const std::string Logic::STRING_HELP = "help";
+const std::string Logic::STRING_INVALID = "ERROR!";
+const std::string Logic::STRING_NIL = " ";
+const std::string Logic::STRING_SEARCH = "search";
+const std::string Logic::STRING_UNDO = "undo";
+const int Logic::BAD_INDEX = -1; //for exception
+
+Logic::Logic(void) {
+}
+
+Logic::~Logic(void) {
+}
+
+//facade to shield from logic execution
+std::string Logic::receiveCommand(std::string userInput) {
+	std::string displayMessage = executeLogicCore(userInput);
+	return displayMessage;
+}
+
+//Start of getter functions 
+std::vector<std::string> Logic::displayTopTask(void) {
+	std::vector<std::string> listToDisplay = storage.retrieveTopTask();
+	return listToDisplay; 
+}
+
+std::vector<std::string> Logic::displayFloatingTask(void) {
+	std::vector<std::string> floatingTask = storage.retrieveFloatingTask();
+	return floatingTask; 
+}
+
+std::vector<std::string> Logic::displaySearchResults(std::string userInput) {
+	int index = createDynamicNewCommandDetails();
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+	assert(commandDetails[index]->commandType==STRING_SEARCH);
+	return searchTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
+}
+
+std::vector<std::string> Logic::displayCategoricalTask(std::string userInput, std::string& taskType) {
+	int index = createDynamicNewCommandDetails();
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+	taskType = commandDetails[index]->task;
+	return storage.retrieveCategoricalTask(taskType);
+}
+
+std::string Logic::getCommandType(std::string userInput) {
+	int index = createDynamicNewCommandDetails();
+	parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+	std::string lastCommand = commandDetails[index]->commandType;
+	commandDetails.pop_back();
+	return lastCommand;
+}
+
+int Logic::getDeadlineSize(void) {
+	return storage.retrieveDeadlineSize();
+}
+
+int Logic::getNormalSize(void) {
+	return storage.retrieveNormalSize();
+}
+
+int Logic::getFloatingSize(void) {
+	return storage.retrieveFloatingSize();
+}
+
+std::vector<int> Logic::getColourIndex(void){
+	return storage.retrieveColourIndex();
+}
+
+Storage* Logic::getStorage() {
+	return &storage;
+}
+//end of getter functions
+
+
+std::string Logic::executeLogicCore(std::string userInput) {
+	int index = createDynamicNewCommandDetails();
+	std::string displayMessage = determineParserCase(userInput, index);
+	return displayMessage;
+}
+
+//index refers to the last element in commandDetail vector
+int Logic::createDynamicNewCommandDetails(void) {
+	int index = commandDetails.size();
+	commandDetails.push_back(new CommandDetails());
+	assert(index >= 0);
+	return index;
+}
+
+//Parser public function works differently based on parameter passed. 1 for Recurring and 1 for every other commands
+std::string Logic::determineParserCase(std::string userInput, int index) {
+	if (parser.isRecurring(userInput)) {
+		parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
+		return executeRecurringTask(userInput, index);
+	}
+	else {
+		parser.processCommand(userInput, commandDetails[index]->commandType, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, commandDetails[index]->indexReference);
+		TASK_TYPE taskType = determineSpecificTaskType(index);
+		return executeTask(taskType, index);
+	}
+}
+
+Logic::TASK_TYPE Logic::determineSpecificTaskType(int index) {
+	date dateNull(not_a_date_time);
+	//if there are no dates or time, it is a floating task
+	//if there is ONE date and/or time, it is a deadline task
+	//else it is a normal task
+	try {
+		if (commandDetails[index]->commandType == STRING_ADD) {
+			if ((commandDetails[index]->timeEnd == not_a_date_time) && (commandDetails[index]->dateEnd == dateNull)) {
+				return FLOATING;
+			}
+			else if ((commandDetails[index]->timeStart == not_a_date_time) && (commandDetails[index]->dateStart == dateNull)) {
+				return DEADLINE;
+			}
+			else {
+				return NORMAL;
+			}
+		}
+		else if (commandDetails[index]->commandType == STRING_DELETE) {
+			return ERASE;
+		}
+		else if (commandDetails[index]->commandType == STRING_SEARCH) {
+			return SEARCH;
+		}
+		else if (commandDetails[index]->commandType == STRING_EXIT) {
+			return EXIT;
+		}
+		else if (commandDetails[index]->commandType == STRING_UNDO) {
+			return UNDO;
+		}
+		else if (commandDetails[index]->commandType == STRING_EDIT) {
+			return EDIT;
+		}
+		else if (commandDetails[index]->commandType == STRING_COMPLETE) {
+			return COMPLETE;
+		}
+		else if (commandDetails[index]->commandType == STRING_DISPLAY) {
+			return DISPLAY;
+		}
+		else if (commandDetails[index]->commandType == STRING_CD) {
+			return CD;
+		}
+		else if (commandDetails[index]->commandType == STRING_HELP) {
+			return HELP;
+		}
+		else throw BAD_INDEX;
+	}
+	catch(int i){
+		return INVALID;
+	}
+}
+
+bool Logic::lastCommandIsSearch(void) {
+	int index = commandDetails.size() - 2; //-2 to ignore the most recent command
+	return ((index >= 0) && (commandDetails[index]->commandType == STRING_SEARCH));
+}
+
+std::string Logic::executeTask(TASK_TYPE taskType, int index) {
+	std::string displayMessageToUI;
+	switch (taskType) {
+		//loadTask method goes through Interface Class ITask for command when last command is not "search",
+		//delete, edit, and complete have to take into account if last user command is "search" and hence calls a different method
+		//string_NIL are returned for functions that will not return a message, such as when the user types "display normal"
+	case NORMAL:
+		displayMessageToUI = normTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
+		break;
+	case DEADLINE:
+		displayMessageToUI = deadlineTask.loadTask(commandDetails[index]->task, commandDetails[index]->dateEnd, commandDetails[index]->timeEnd, storage);
+		break;
+	case FLOATING:
+		displayMessageToUI = floatingTask.loadTask(commandDetails[index]->task, storage);
+		break;
+	case ERASE:
+		if (lastCommandIsSearch()) {
+			displayMessageToUI = deleteTask.deleteSearchTask(commandDetails[index]->indexReference, storage);
+		}
+		else{
+			displayMessageToUI = deleteTask.loadTask(commandDetails[index]->indexReference, storage);
+		}
+		break;
+	case SEARCH:
+		displayMessageToUI = STRING_NIL;
+		break;
+	case EXIT:
+		exit(0);
+		break;
+	case UNDO:
+		displayMessageToUI = undoTask.loadTask(commandDetails, storage);
+		break;
+	case EDIT:
+		if (lastCommandIsSearch()) {
+			displayMessageToUI = editTask.editSearchTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
+		}
+		else{
+			displayMessageToUI = editTask.loadTask(commandDetails[index]->indexReference, commandDetails[index]->task, commandDetails[index]->dateStart, commandDetails[index]->dateEnd, commandDetails[index]->timeStart, commandDetails[index]->timeEnd, storage);
+		}
+		break;
+	case COMPLETE:
+		if (lastCommandIsSearch()) {
+			displayMessageToUI = overdueTask.completeSearchTask(commandDetails[index]->indexReference, storage);
+		}
+		else{
+			displayMessageToUI = overdueTask.completeTask(commandDetails[index]->indexReference, storage);
+		}
+		break;
+	case DISPLAY:
+		displayMessageToUI = STRING_NIL;
+		break;
+	case CD:
+		displayMessageToUI = storage.changeDirectory(commandDetails[index]->task);
+		break;
+	case HELP:
+		displayMessageToUI = STRING_NIL;
+		break;
+	case INVALID:
+		displayMessageToUI = STRING_INVALID;
+		break;
+	}
+	assert(!displayMessageToUI.empty());
+	return displayMessageToUI;
+}
+
+std::string Logic::executeRecurringTask(std::string userInput, int index) {
+	return storage.addRecurringTask(commandDetails[index]->task, commandDetails[index]->dateStartRecur, commandDetails[index]->dateEndRecur, commandDetails[index]->timeStartRecur, commandDetails[index]->timeEndRecur);
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Logic.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Logic.h
+	 */
+
+#ifndef LOGIC_H_
+#define LOGIC_H_
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <assert.h>
+#include "Parser.h"
+#include "Storage.h"
+#include "CommandDetails.h"
+#include "NormalTask.h"
+#include "DeadlineTask.h"
+#include "FloatingTask.h"
+#include "OverdueTask.h"
+#include "UndoTask.h"
+#include "DeleteTask.h"
+#include "SearchTask.h"
+#include "EditTask.h"
+#include <boost/date_time.hpp>
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class Logic {
+
+public:
+	Logic(void);
+	~Logic(void);
+	//facade function for GUI to call logic to process user commands
+	std::string receiveCommand(std::string);
+
+	//getter functions for GUI
+	std::vector<std::string> displayTopTask(void);
+	std::vector<std::string> displayFloatingTask(void);
+	std::vector<std::string> displaySearchResults(std::string);
+	std::vector<std::string> displayCategoricalTask(std::string, std::string&);
+	std::string getCommandType(std::string);
+	int getDeadlineSize(void);
+	int getNormalSize(void);
+	int getFloatingSize(void);
+	std::vector<int> getColourIndex(void);
+	Storage* getStorage(void);
+
+private:
+	Storage storage;
+	Parser parser;
+	NormalTask normTask;
+	DeadlineTask deadlineTask;
+	FloatingTask floatingTask;
+	UndoTask undoTask;
+	DeleteTask deleteTask;
+	OverdueTask overdueTask;
+	SearchTask searchTask;
+	EditTask editTask;
+	std::vector<CommandDetails*> commandDetails;
+
+	static const std::string STRING_ADD;
+	static const std::string STRING_ARCHIVE;
+	static const std::string STRING_CD;
+	static const std::string STRING_COMPLETE;
+	static const std::string STRING_DISPLAY;
+	static const std::string STRING_DELETE;
+	static const std::string STRING_EDIT;
+	static const std::string STRING_EXIT;
+	static const std::string STRING_HELP;
+	static const std::string STRING_INVALID;
+	static const std::string STRING_NIL;
+	static const std::string STRING_SEARCH;
+	static const std::string STRING_UNDO;
+	static const int BAD_INDEX; //for exception
+
+	enum TASK_TYPE {
+		CD, COMPLETE, DEADLINE, DISPLAY, EDIT, ERASE, EXIT, FLOATING, HELP, INVALID, NORMAL, SEARCH, UNDO
+	};
+
+	//SLAP level 2
+	int createDynamicNewCommandDetails(void);
+	std::string executeLogicCore(std::string);
+	//SLAP level 3
+	std::string determineParserCase(std::string, int);
+	TASK_TYPE determineSpecificTaskType(int);
+	bool lastCommandIsSearch(void);
+	//SLAP level 4
+	std::string executeTask(TASK_TYPE, int);
+	std::string executeRecurringTask(std::string, int);
+
+};
+
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Logic.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\NormalTask.cpp
+	 */
+
+#include "NormalTask.h"
+
+NormalTask::NormalTask(void) {
+	task = "";
+	dateStart = day_clock::local_day();
+	dateEnd = day_clock::local_day();
+	timeStart = not_a_date_time;
+	timeEnd = not_a_date_time;
+}
+
+NormalTask::~NormalTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::string NormalTask::loadTask(std::string task, date dateStart, date dateEnd, ptime timeStart, ptime timeEnd, Storage& storage) {
+	this->task = task;
+	this->dateStart = dateStart;
+	this->dateEnd = dateEnd;
+	this->timeStart = timeStart;
+	this->timeEnd = timeEnd;
+	displayMessage = storage.addNormalTask(task, dateStart, dateEnd, timeStart, timeEnd);
+	storage.sortStorage();
+	storage.writeToFile();
+	return displayMessage;
+}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\NormalTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\NormalTask.h
+	 */
+
+//NormalTask deals with normal tasks
+
+#ifndef NORMALTASK_H_
+#define NORMALTASK_H_
+
+#include <iostream>
+#include "ITask.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class NormalTask : public ITask {
+
+public:
+	NormalTask(void);
+	~NormalTask(void);
+	std::string loadTask(std::string, date, date, ptime, ptime, Storage&);
+
+private:
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\NormalTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\OverdueTask.cpp
+	 */
+
+#include "OverdueTask.h"
+
+OverdueTask::OverdueTask(void) {
+}
+
+OverdueTask::~OverdueTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::string OverdueTask::loadTask(Storage& storage){
+	displayMessage = storage.completeAll();
+	storage.sortStorage();
+	storage.writeToFile();
+	assert(!(displayMessage.empty()));
+	return displayMessage;
+}
+
+//method is called on completion of task in the TopList
+std::string OverdueTask::completeTask(int intToComplete, Storage& storage) {
+	displayMessage = storage.completeTask(intToComplete);
+	storage.sortStorage();
+	storage.writeToFile();
+	assert(!(displayMessage.empty()));
+	return displayMessage;
+}
+
+//method is called when last search command is "search" to delete search result
+std::string OverdueTask::completeSearchTask(int intToComplete, Storage& storage) {
+	displayMessage = storage.completeSearchTask(intToComplete);
+	storage.sortStorage();
+	storage.writeToFile();
+	assert(!(displayMessage.empty()));
+	return displayMessage;
+}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\OverdueTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\OverdueTask.h
+	 */
+
+//OverdueTask deals with completion of tasks
+
+#ifndef OVERDUETASK_H_
+#define OVERDUETASK_H_
+
+#include <iostream>
+#include "ITask.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class OverdueTask : public ITask {
+
+public:
+	OverdueTask(void);
+	~OverdueTask(void);
+	std::string loadTask(Storage&);
+	std::string completeTask(int, Storage&);
+	std::string completeSearchTask(int, Storage&);
+
+private:
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\OverdueTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\SearchTask.cpp
+	 */
+
+#include "SearchTask.h"
+
+SearchTask::SearchTask(void) {
+}
+
+SearchTask::~SearchTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::vector<std::string> SearchTask::loadTask(std::string stringToSearch, date dateToSearch, ptime timeToSearch, Storage& storage){
+	std::vector<std::string> displayMessage;
+	displayMessage = storage.searchTask(stringToSearch, dateToSearch, timeToSearch);
+	assert(displayMessage.size()>=0);
+	return displayMessage;
+}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\SearchTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\SearchTask.h
+	 */
+
+//SearchTask deals with searching of tasks
+
+#ifndef SEARCHTASK_H_
+#define SEARCHTASK_H_
+
+#include <iostream>
+#include "assert.h"
+#include "ITask.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class SearchTask {
+
+public:
+	SearchTask(void);
+	~SearchTask(void);
+	std::vector<std::string> loadTask(std::string, date, ptime, Storage&);
+
+private:
+
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\SearchTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\UndoTask.cpp
+	 */
+
+#include "UndoTask.h"
+
+const std::string UndoTask::STRING_ADD = "add";
+const std::string UndoTask::STRING_COMPLETE = "complete";
+const std::string UndoTask::STRING_DELETE = "delete";
+const std::string UndoTask::STRING_EDIT = "edit";
+const std::string UndoTask::STRING_UNDO_FAILURE = "Nothing to undo!";
+
+UndoTask::UndoTask(void) {
+}
+
+UndoTask::~UndoTask(void) {
+}
+
+//overwrite ITask and calls appropriate storage public API
+std::string UndoTask::loadTask(std::vector<CommandDetails*>& CD, Storage& storage) {
+	TASK_TYPE taskType = retrieveTaskTypeToUndo(CD);
+	switch(taskType) {
+	case NIL:
+		displayMessage = STRING_UNDO_FAILURE;
+		break;
+	case ADD:
+		displayMessage = executeUndoAdd(CD, storage);
+		break;
+	case COMPLETE:
+		displayMessage = executeUndoComplete(CD, storage);
+		break;
+	case ERASE:
+		displayMessage = executeUndoDelete(CD, storage);
+		break;
+	case EDIT:
+		displayMessage = executeUndoEdit(CD, storage);
+		break;
+	}
+	storage.sortStorage();
+	storage.writeToFile();
+	return displayMessage;
+}
+
+std::string UndoTask::executeUndoAdd(std::vector<CommandDetails*>& CD, Storage& storage) {
+	CD.pop_back();
+	return storage.undoAdd();
+}
+
+std::string UndoTask::executeUndoComplete(std::vector<CommandDetails*>& CD, Storage& storage) {
+	CD.pop_back();
+	return storage.undoComplete();
+}
+
+std::string UndoTask::executeUndoDelete(std::vector<CommandDetails*>& CD, Storage& storage) {
+	CD.pop_back();
+	return storage.undoDelete();
+}
+
+std::string UndoTask::executeUndoEdit(std::vector<CommandDetails*>& CD, Storage& storage) {
+	CD.pop_back();
+	return storage.undoEdit();
+}
+
+UndoTask::TASK_TYPE UndoTask::retrieveTaskTypeToUndo(std::vector<CommandDetails*>& CD) {
+	int index = CD.size()-1;
+	if (index<0) {
+		return NIL;
+	} 
+	else if(CD[index]->commandType==STRING_ADD) {
+		return ADD;
+	}
+	else if(CD[index]->commandType==STRING_DELETE) {
+		return ERASE;
+	}
+	else if(CD[index]->commandType==STRING_EDIT) {
+		return EDIT;
+	}
+	else if (CD[index]->commandType == STRING_COMPLETE) {
+		return COMPLETE;
+	}
+	else { //for all other cases, recurssion
+		CD.pop_back();
+		return retrieveTaskTypeToUndo(CD);
+	};
+}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\UndoTask.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\UndoTask.h
+	 */
+
+//UndoTask deals with undoing of tasks
+
+#ifndef UNDOTASK_H_
+#define UNDOTASK_H_
+
+#include <iostream>
+#include "ITask.h"
+#include "CommandDetails.h"
+
+using namespace boost::gregorian;
+using namespace boost::posix_time;
+
+class UndoTask : public ITask {
+
+public:
+	UndoTask(void);
+	~UndoTask(void);
+	std::string loadTask(std::vector<CommandDetails*>&, Storage&);
+
+private:
+	enum TASK_TYPE {
+		ADD, ERASE, EDIT, COMPLETE, NIL
+	};
+	static const std::string STRING_ADD;
+	static const std::string STRING_COMPLETE;
+	static const std::string STRING_DELETE;
+	static const std::string STRING_EDIT;
+	static const std::string STRING_UNDO_FAILURE;
+
+	TASK_TYPE retrieveTaskTypeToUndo(std::vector<CommandDetails*>&);
+	std::string executeUndoAdd(std::vector<CommandDetails*>&, Storage&);
+	std::string executeUndoComplete(std::vector<CommandDetails*>&, Storage&);
+	std::string executeUndoDelete(std::vector<CommandDetails*>&, Storage&);
+	std::string executeUndoEdit(std::vector<CommandDetails*>&, Storage&);
+};
+
+#endif
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\UndoTask.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testLogic.cpp
+	 */
+
+#include "stdafx.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace TestLibrary {
+	TEST_CLASS(testLogic) {
+	public:
+		//Black Box integrated testing for Logic
+		TEST_METHOD(receiveCommand_1_Error) {
+			Logic logic;	
+			std::string displayMessage = logic.receiveCommand("");
+			std::string expected = "ERROR!";
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_2_addNormalTask) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			std::string expected = "Normal task: meeting [31 Dec 14:00]-[31 Dec 16:00] successfully added.\n";
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_3_addFloatingTask) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("add swimming");
+			std::string expected = "Floating task: swimming successfully added.\n";
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_4_addNormalTask) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			std::string expected = "Normal task: bintan holiday [24 Aug      ]-[28 Aug      ] successfully added.\n";
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_5_DeleteBoundary1) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			displayMessage = logic.receiveCommand("delete 0");
+			std::string expected = "Wrong index.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_6_DeleteBoundary2) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			displayMessage = logic.receiveCommand("delete 5");
+			std::string expected = "Wrong index.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+
+		TEST_METHOD(receiveCommand_7_Delete) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			displayMessage = logic.receiveCommand("delete 1");
+			std::string expected = "bintan holiday is successfully deleted.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_8_Search) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			displayMessage = logic.receiveCommand("search aug");
+			std::string expected = " ";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_9_Complete) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			displayMessage = logic.receiveCommand("complete 1");
+			std::string expected = "bintan holiday is successfully archived.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_10_CompleteBoundary1) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			displayMessage = logic.receiveCommand("complete 0");
+			std::string expected = "Wrong index.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_11_CompleteBoundary2) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			displayMessage = logic.receiveCommand("complete 5");
+			std::string expected = "Wrong index.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_12_Undo) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add bintan holiday 24 aug to 28 aug");
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("add swimming");
+			logic.receiveCommand("complete 3");
+			displayMessage = logic.receiveCommand("undo");
+			std::string expected = "Undo is successfully performed.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_13_UndoBoundary) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add meeting 31 December 2pm to 4pm");
+			logic.receiveCommand("undo");
+			displayMessage = logic.receiveCommand("undo");
+			std::string expected = "Nothing to undo!";
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_14_AddDeadlineTask) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("add project submission by 10 Nov");
+			std::string expected = "Deadline task: project submission by 10 Nov 23:59 successfully added.\n";
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_15_AddRecurringTask1) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("add gym workout 30 apr; weekly; 4");
+			std::string expected = "Recurring Task is successfully added!\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_16_AddRecurringTask2) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("add gym workout 30 apr; weekly2; 0730");
+			std::string expected = "Recurring Task is successfully added!\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+		
+		TEST_METHOD(receiveCommand_17_DeleteRecurringTask) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add gym workout 30 apr; weekly; 4");
+			displayMessage = logic.receiveCommand("delete 1");
+			std::string expected = "Recurring task is successfully deleted.\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_18_EditRecurringTask) {
+			Logic logic;
+			std::string displayMessage;
+			logic.receiveCommand("add gym workout 30 apr; weekly; 4");
+			displayMessage = logic.receiveCommand("edit 1 cardio workout");
+			std::string expected = "task is successfully edited\n";
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_19_UndoAddRecurringTask) {
+			Logic logic;
+			logic.receiveCommand("add gym workout 30 apr; weekly; 4");
+			logic.receiveCommand("undo");
+			int size = logic.getDeadlineSize();
+			int expected = 0;
+			Assert::AreEqual(expected, size);
+		}
+
+		TEST_METHOD(receiveCommand_20_UndoDeleteRecurringTask) {
+			Logic logic;
+			logic.receiveCommand("add gym workout 30 apr; weekly; 4");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("undo");
+			int size = logic.getDeadlineSize();
+			int expected = 5;
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, size);
+		}
+
+		TEST_METHOD(receiveCommand_21_DisplayBoundary) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("display archiv");
+			std::string expected = "ERROR!";
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_22_DisplayArchive) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("display archive");
+			std::string expected = " ";
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_23_DisplayNormal) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("display normal");
+			std::string expected = " ";
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(receiveCommand_24_displayDeadline) {
+			Logic logic;
+			std::string displayMessage = logic.receiveCommand("display deadline");
+			std::string expected = " ";
+			Assert::AreEqual(expected, displayMessage);
+		}
+
+		TEST_METHOD(getNormalSize_25) {
+			Logic logic;
+			logic.receiveCommand("add cycling 1 jun 2pm to 4pm");
+			logic.receiveCommand("add cycling 2 jun 2pm to 4pm");
+			logic.receiveCommand("add cycling 3 jun 2pm to 4pm");
+			logic.receiveCommand("add homework 1 jun 2pm");
+			logic.receiveCommand("add homework 2 jun 2pm");
+			logic.receiveCommand("add homework 3 jun 2pm");
+			logic.receiveCommand("add homework 4 jun 2pm");
+			logic.receiveCommand("add homework 5 jun 2pm");
+			logic.receiveCommand("add shopping for Jack");
+			logic.receiveCommand("add shopping for John");
+			int size = logic.getNormalSize();
+			int expected = 3;
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, size);
+		}
+
+		TEST_METHOD(getFloatingSize_26) {
+			Logic logic;
+			logic.receiveCommand("add cycling 1 jun 2pm to 4pm");
+			logic.receiveCommand("add cycling 2 jun 2pm to 4pm");
+			logic.receiveCommand("add cycling 3 jun 2pm to 4pm");
+			logic.receiveCommand("add homework 1 jun 2pm");
+			logic.receiveCommand("add homework 2 jun 2pm");
+			logic.receiveCommand("add homework 3 jun 2pm");
+			logic.receiveCommand("add homework 4 jun 2pm");
+			logic.receiveCommand("add homework 5 jun 2pm");
+			logic.receiveCommand("add shopping for Jack");
+			logic.receiveCommand("add shopping for John");
+			int size = logic.getFloatingSize();
+			int expected = 2;
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, size);
+		}
+
+		TEST_METHOD(getDeadlineSize_27) {
+			Logic logic;
+			logic.receiveCommand("add cycling 1 jun 2pm to 4pm");
+			logic.receiveCommand("add cycling 2 jun 2pm to 4pm");
+			logic.receiveCommand("add cycling 3 jun 2pm to 4pm");
+			logic.receiveCommand("add homework 1 jun 2pm");
+			logic.receiveCommand("add homework 2 jun 2pm");
+			logic.receiveCommand("add homework 3 jun 2pm");
+			logic.receiveCommand("add homework 4 jun 2pm");
+			logic.receiveCommand("add homework 5 jun 2pm");
+			logic.receiveCommand("add shopping for Jack");
+			logic.receiveCommand("add shopping for John");
+			int size = logic.getDeadlineSize();
+			int expected = 5;
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			logic.receiveCommand("delete 1");
+			Assert::AreEqual(expected, size);
+		}
+
+		TEST_METHOD(getNormalSize_28_Boundary) {
+			Logic logic;
+			int size = logic.getNormalSize();
+			int expected = 0;
+			Assert::AreEqual(expected, size);
+		}
+
+		TEST_METHOD(getFloatingSize_29_Boundary) {
+			Logic logic;
+			int size = logic.getFloatingSize();
+			int expected = 0;
+			Assert::AreEqual(expected, size);
+		}
+
+		TEST_METHOD(getDeadlineSize_30_Boundary) {
+			Logic logic;
+			int size = logic.getDeadlineSize();
+			int expected = 0;
+			Assert::AreEqual(expected, size);
+		}
+	};
+}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\TestLibrary\testLogic.cpp
+
+
+
+
+
