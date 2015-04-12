@@ -19,15 +19,15 @@
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
-enum TYPE_OF_TASK{
+enum TYPE_OF_TASK {
 	DEADLINE, FLOATING, NORMAL
 };
 
-enum TYPE_OF_SPECIAL_TASK{
+enum TYPE_OF_SPECIAL_TASK {
 	NONRECUR,RECUR
 };
 
-struct Task{
+struct Task {
 	std::string taskDetails;
 	date startDate;
 	date endDate;
@@ -38,7 +38,7 @@ struct Task{
 	std::string taskDisplay;
 };
 
-struct History{
+struct History {
 	date requestDate;
 	ptime requestTime;
 	Task commandDetails;
@@ -46,14 +46,14 @@ struct History{
 };
 
 
-class Storage{
+class Storage {
 public:
 	Storage(void);
 	~Storage(void);
 	std::string addNormalTask(std::string, date, date, ptime, ptime);
 	std::string addDeadlineTask(std::string, date, ptime);
 	std::string addFloatingTask(std::string);
-	std::vector<std::string> retrieveTopList();
+	std::vector<std::string>retrieveTopList ();
 	void sortStorage();
 	void writeToFile();
 	std::string deleteTask(int);
@@ -69,8 +69,6 @@ public:
 	std::vector<std::string> retrieveArchive();
 	std::vector<std::string> retrieveOverdue();
 	std::string completeAll();
-	//no more complete all?
-	//std::string reschedule(int, date, date, ptime, ptime);
 	std::vector<std::string> retrieveCategoricalTask(std::string);
 	std::string completeTask(int);
 	std::string completeSearchTask(int);
@@ -113,6 +111,11 @@ private:
 	static const std::string MESSAGE_INVALID_RECUR;
 	static const std::string MESSAGE_RECUR_SUCCESS;
 	static const std::string MESSAGE_COMPLETE_ALL;
+	static const std::string DEFAULT_NOT_A_DATE_TIME;
+	static const std::string DEFAULT_NORMAL;
+	static const std::string DEFAULT_DEADLINE;
+	static const std::string DEFAULT_FLOATING;
+	static const std::string DEFAULT_ARCHIVE;
 	static const ptime nonTime;
 	static const date nonDate;
 	static const date specialDate;
