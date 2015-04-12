@@ -2,13 +2,12 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace TestLibrary
-{
+namespace TestLibrary {
 	TEST_CLASS(testLogic) {
 	public:
 		//Black Box integrated testing for Logic
 		TEST_METHOD(receiveCommand_1_Error) {
-			Logic logic;
+			Logic logic;	
 			std::string displayMessage = logic.receiveCommand("");
 			std::string expected = "ERROR!";
 			Assert::AreEqual(expected, displayMessage);
@@ -377,6 +376,5 @@ namespace TestLibrary
 			int expected = 0;
 			Assert::AreEqual(expected, size);
 		}
-
 	};
 }
