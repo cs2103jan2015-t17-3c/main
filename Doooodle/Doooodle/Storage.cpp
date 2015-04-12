@@ -535,35 +535,51 @@ void Storage::writeToFile(){
 		outputFile << index + 1 << ". " << activeTask[index].taskDisplay << endl;
 	}
 	outputFile.close();	
-	if (activeTask.size() != 0){
+	if (activeTask.size() >= 0){
 	  ofstream tempStorage;
 	  tempStorage.open(DEFAULT_STORAGE_NAME);
 	  int index;
-	  for (index = 0; index < activeTask.size() - 1; index++){
-			tempStorage << activeTask[index].taskDetails << endl;
-			tempStorage << to_iso_string(activeTask[index].startDate) << endl;
-			tempStorage << to_iso_string(activeTask[index].endDate) << endl;
-			tempStorage << to_iso_string(activeTask[index].startTime) << endl;
-			tempStorage << to_iso_string(activeTask[index].endTime) << endl;
-			tempStorage << activeTask[index].taskDisplay << endl;
-			tempStorage << activeTask[index].taskType << endl;
-			tempStorage << activeTask[index].specialTaskType << endl;
-		}
-		tempStorage << activeTask[index].taskDetails << endl;
-		tempStorage << to_iso_string(activeTask[index].startDate) << endl;
-		tempStorage << to_iso_string(activeTask[index].endDate) << endl;
-		tempStorage << to_iso_string(activeTask[index].startTime) << endl;
-		tempStorage << to_iso_string(activeTask[index].endTime) << endl;
-		tempStorage << activeTask[index].taskDisplay << endl;
-		tempStorage << activeTask[index].taskType << endl;
-		tempStorage << activeTask[index].specialTaskType;
-		tempStorage.close();
-	}
-	if (archivedTask.size() != 0){
+	  if (activeTask.size() == 0){
+		  tempStorage.close();
+	  }else{
+		  for (index = 0; index < activeTask.size() - 1; index++){
+			  tempStorage << activeTask[index].taskDetails << endl;
+			  tempStorage << to_iso_string(activeTask[index].startDate) << endl;
+			  tempStorage << to_iso_string(activeTask[index].endDate) << endl;
+			  tempStorage << to_iso_string(activeTask[index].startTime) << endl;
+			  tempStorage << to_iso_string(activeTask[index].endTime) << endl;
+			  tempStorage << activeTask[index].taskDisplay << endl;
+			  tempStorage << activeTask[index].taskType << endl;
+			  tempStorage << activeTask[index].specialTaskType << endl;
+		  }
+		  tempStorage << activeTask[index].taskDetails << endl;
+		  tempStorage << to_iso_string(activeTask[index].startDate) << endl;
+		  tempStorage << to_iso_string(activeTask[index].endDate) << endl;
+		  tempStorage << to_iso_string(activeTask[index].startTime) << endl;
+		  tempStorage << to_iso_string(activeTask[index].endTime) << endl;
+		  tempStorage << activeTask[index].taskDisplay << endl;
+		  tempStorage << activeTask[index].taskType << endl;
+		  tempStorage << activeTask[index].specialTaskType;
+		  tempStorage.close();
+	      }
+	  }
+	if (archivedTask.size() >= 0){
 		ofstream tempArchive;
 		tempArchive.open(DEFAULT_ARCHIVE_NAME);
 		int archiveIndex = 0;
-		for (archiveIndex = 0; archiveIndex < archivedTask.size() - 1; archiveIndex++){
+		if (archivedTask.size() == 0){
+			tempArchive.close();
+		}else{
+			for (archiveIndex = 0; archiveIndex < archivedTask.size() - 1; archiveIndex++){
+				tempArchive << archivedTask[archiveIndex].taskDetails << endl;
+				tempArchive << to_iso_string(archivedTask[archiveIndex].startDate) << endl;
+				tempArchive << to_iso_string(archivedTask[archiveIndex].endDate) << endl;
+				tempArchive << to_iso_string(archivedTask[archiveIndex].startTime) << endl;
+				tempArchive << to_iso_string(archivedTask[archiveIndex].endTime) << endl;
+				tempArchive << archivedTask[archiveIndex].taskDisplay << endl;
+				tempArchive << archivedTask[archiveIndex].taskType << endl;
+				tempArchive << archivedTask[archiveIndex].specialTaskType << endl;
+			}
 			tempArchive << archivedTask[archiveIndex].taskDetails << endl;
 			tempArchive << to_iso_string(archivedTask[archiveIndex].startDate) << endl;
 			tempArchive << to_iso_string(archivedTask[archiveIndex].endDate) << endl;
@@ -571,17 +587,9 @@ void Storage::writeToFile(){
 			tempArchive << to_iso_string(archivedTask[archiveIndex].endTime) << endl;
 			tempArchive << archivedTask[archiveIndex].taskDisplay << endl;
 			tempArchive << archivedTask[archiveIndex].taskType << endl;
-			tempArchive << archivedTask[archiveIndex].specialTaskType << endl;
+			tempArchive << archivedTask[archiveIndex].specialTaskType;
+			tempArchive.close();
 		}
-		tempArchive << archivedTask[archiveIndex].taskDetails << endl;
-		tempArchive << to_iso_string(archivedTask[archiveIndex].startDate) << endl;
-		tempArchive << to_iso_string(archivedTask[archiveIndex].endDate) << endl;
-		tempArchive << to_iso_string(archivedTask[archiveIndex].startTime) << endl;
-		tempArchive << to_iso_string(archivedTask[archiveIndex].endTime) << endl;
-		tempArchive << archivedTask[archiveIndex].taskDisplay << endl;
-		tempArchive << archivedTask[archiveIndex].taskType << endl;
-		tempArchive << archivedTask[archiveIndex].specialTaskType;
-		tempArchive.close();
 	}
 }
 
