@@ -67,9 +67,8 @@ public:
 	std::string editTask(int, std::string, date, date, ptime, ptime);
 	std::vector<std::string> retrieveFloatingTask();
 	std::string changeDirectory(std::string);
-	std::vector<std::string> retrieveArchive();
-	std::vector<std::string> retrieveOverdue();
 	std::string completeAll();
+	std::vector<std::string> retrieveArchive();
 	std::vector<std::string> retrieveCategoricalTask(std::string);
 	std::string completeTask(int);
 	std::string completeSearchTask(int);
@@ -79,7 +78,6 @@ public:
 	int retrieveFloatingSize();
 	std::vector<int> retrieveColourIndex();
 	std::string undoComplete();
-	void deleteRecurringTask(std::vector<int>);
 	std::vector<std::string> retrieveTopTask();
 
 
@@ -142,6 +140,8 @@ private:
 	void updateRecurTask(Task &, std::string, ptime, ptime);
 	void updateStandardTask(Task &, std::string, date, date, ptime, ptime);
 	std::vector<std::string> reformat(std::vector<std::string>);
+	std::vector<std::string> retrieveOverdue();
+	void deleteRecurringTask(std::vector<int>);
 };
 
 #endif
