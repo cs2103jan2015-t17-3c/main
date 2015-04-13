@@ -32,13 +32,13 @@
     <ClCompile Include="testStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="testIntegrated.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="testDateParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="testTimeParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="testParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
