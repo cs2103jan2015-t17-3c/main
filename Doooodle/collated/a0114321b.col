@@ -644,7 +644,9 @@ void Parser::processCommand(std::string input, std::string& commandType, std::st
 			commandType = EMPTY;
 		}
 	}
+	std::cout << startDate << endDate << startTime << endTime;
 	justify(input, commandType, startDate, endDate, startTime, endTime);
+	std::cout << startDate << endDate << startTime << endTime;
 	return;
 }
 //furthure process the date and time taken from the input string
