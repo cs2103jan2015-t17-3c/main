@@ -6,7 +6,6 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="UI.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="NormalTask.cpp" />
     <ClCompile Include="DeadlineTask.cpp" />
     <ClCompile Include="FloatingTask.cpp" />
@@ -17,7 +16,6 @@
     <ClCompile Include="DeleteTask.cpp" />
     <ClCompile Include="EditTask.cpp" />
     <ClCompile Include="ITask.cpp" />
-    <ClCompile Include="RescheduleTask.cpp" />
     <ClCompile Include="OverdueTask.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -37,7 +35,6 @@
     <ClInclude Include="DeleteTask.h" />
     <ClInclude Include="EditTask.h" />
     <ClInclude Include="ITask.h" />
-    <ClInclude Include="RescheduleTask.h" />
     <ClInclude Include="OverdueTask.h" />
   </ItemGroup>
 </Project>
