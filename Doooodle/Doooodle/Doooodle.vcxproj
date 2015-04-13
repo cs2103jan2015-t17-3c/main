@@ -16,7 +16,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -45,7 +45,6 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\boost\boost_1_57_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -75,9 +74,11 @@
     <ClCompile Include="FloatingTask.cpp" />
     <ClCompile Include="ITask.cpp" />
     <ClCompile Include="Logic.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="NormalTask.cpp" />
     <ClCompile Include="OverdueTask.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="RescheduleTask.cpp" />
     <ClCompile Include="SearchTask.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="TimeParser.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="NormalTask.h" />
     <ClInclude Include="OverdueTask.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="RescheduleTask.h" />
     <ClInclude Include="SearchTask.h" />
     <ClInclude Include="standardForm.h" />
     <ClInclude Include="Storage.h" />
