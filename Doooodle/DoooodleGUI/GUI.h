@@ -1,4 +1,3 @@
-//@author A0115016X
 #pragma once
 
 #include <stdlib.h>
@@ -9,7 +8,7 @@
 #include <string>
 #include "logic.h"
 #include "storage.h"
-//@author A0115016X generated
+
 namespace DoooodleGUI {
 
 	using namespace System;
@@ -24,16 +23,14 @@ namespace DoooodleGUI {
 	/// </summary>
 	public ref class GUI : public System::Windows::Forms::Form
 	{
-		//@author A0115016X
 	private:
 		Logic* logic;
-		//@author A0115016X generated
+
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::TextBox^  textBox4;
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
-			 //@author A0115016X
+
 			 Storage* storage;
-			 //@author A0115016X generated
 			 std::vector<std::string>* commandHistory;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label4;
@@ -48,7 +45,7 @@ namespace DoooodleGUI {
 
 
 
-			 //@author A0115016X
+
 			 int counter;
 
 	public:
@@ -60,11 +57,11 @@ namespace DoooodleGUI {
 			//
 			logic = new Logic;
 			storage = new Storage;
-			commandHistory = new std::vector < std::string > ;
+			commandHistory = new std::vector<std::string>;
 			counter = 0;
 			timer1->Start();
 		}
-		//@author A0115016X generated
+
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -92,7 +89,7 @@ namespace DoooodleGUI {
 		/// Required designer variable.
 		/// </summary>
 
-		//@author A0115016X generated
+
 #pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -121,7 +118,7 @@ namespace DoooodleGUI {
 			this->SuspendLayout();
 			// 
 			// textBox1
-			//
+			// 
 			this->textBox1->Location = System::Drawing::Point(17, 418);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(835, 20);
@@ -141,7 +138,7 @@ namespace DoooodleGUI {
 			this->pictureBox1->TabStop = false;
 			// 
 			// label1
-			//
+			// 
 			this->label1->AutoSize = true;
 			this->label1->BackColor = System::Drawing::Color::Transparent;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Gabriola", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
@@ -244,7 +241,7 @@ namespace DoooodleGUI {
 			this->timer1->Tick += gcnew System::EventHandler(this, &GUI::timer1_Tick);
 			// 
 			// label5
-			//
+			// 
 			this->label5->AutoSize = true;
 			this->label5->BackColor = System::Drawing::Color::Transparent;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Agency FB", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
@@ -267,7 +264,7 @@ namespace DoooodleGUI {
 			this->pictureBox3->TabStop = false;
 			// 
 			// GUI
-			//
+			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
@@ -291,50 +288,54 @@ namespace DoooodleGUI {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
+
 		}
-		//@author A0115016X
+		
 		System::String^ convertStdToManaged(std::string std_string){ //convert std string to String^
 			return gcnew String(std_string.c_str());
+		}
 
-			void MarshalString(String ^ s, std::string& os) {
-				using namespace Runtime::InteropServices;
-				const char* chars = (const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
-				os = chars;
-				Marshal::FreeHGlobal(IntPtr((void*)chars));
-			}
-			void MarshalString(String ^ s, std::wstring& os) {
-				using namespace Runtime::InteropServices;
-				const wchar_t* chars = (const wchar_t*)(Marshal::StringToHGlobalUni(s)).ToPointer();
-				os = chars;
-				Marshal::FreeHGlobal(IntPtr((void*)chars));
-			}
 
-			void clearUserInput(){
-				textBox1->Clear();
-			}
+		void MarshalString(String ^ s, std::string& os) {
+			using namespace Runtime::InteropServices;
+			const char* chars =	(const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
+			os = chars;
+			Marshal::FreeHGlobal(IntPtr((void*)chars));
+		}
 
-			void clearGUI(){
-				textBox2->Clear();
-				richTextBox1->Clear();
-				pictureBox2->Hide();
-				label1->Text = "";
-				textBox2->Clear();
-				pictureBox3->Hide();
-			}
+		void MarshalString(String ^ s, std::wstring& os) {
+			using namespace Runtime::InteropServices;
+			const wchar_t* chars = (const wchar_t*)(Marshal::StringToHGlobalUni(s)).ToPointer();
+			os = chars;
+			Marshal::FreeHGlobal(IntPtr((void*)chars));
+		}
 
-			Color determineColour(int index) {
-				if (index == 0) {
-					return Color::Red;
-				}
-				else if (index == 1) {
-					return Color::DarkOliveGreen;
-				}
-				else if (index == 2) {
-					return Color::Blue;
-				}
-				else
-					return Color::Black;
+		void clearUserInput(){
+			textBox1->Clear();
+		}
+
+		void clearGUI(){
+			textBox2->Clear();
+			richTextBox1->Clear();
+			pictureBox2->Hide();
+			label1->Text = "";
+			textBox2->Clear();
+			pictureBox3->Hide();
+		}
+
+		Color determineColour(int index) {
+			if (index == 0) {
+				return Color::Red;
 			}
+			else if (index == 1) {
+				return Color::DarkOliveGreen;
+			}
+			else if (index == 2) {
+				return Color::Blue;
+			}
+			else
+				return Color::Black;
+		}
 
 
 #pragma endregion
@@ -359,7 +360,7 @@ namespace DoooodleGUI {
 				displayMessage = logic->displaySearchResults(input);
 				colourIndex = logic->getColourIndex();
 				label3->Text = "Search Results [" + Convert::ToUInt32(displayMessage.size()) + "]:";
-				if (displayMessage.size() > 0) {
+				if (displayMessage.size()>0) {
 					for (int i = 0; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
@@ -399,7 +400,7 @@ namespace DoooodleGUI {
 				label3->Text = "Below is the list of upcoming events in your calendar:";
 				colourIndex = logic->getColourIndex();
 				displayMessage = topTask;
-				if (displayMessage.size() > 0) {
+				if (displayMessage.size()>0) {
 					for (int i = 0; i < displayMessage.size(); i++) {
 						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
 						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
@@ -450,8 +451,7 @@ namespace DoooodleGUI {
 			if (commandHistory->size() > 0) {
 				if (counter < commandHistory->size() - 1) {
 					counter++;
-				}
-				else if (counter == commandHistory->size()) {
+				} else if (counter == commandHistory->size()) {
 					counter--;
 				}
 				textBox1->Text = convertStdToManaged(commandHistory->at(counter));
@@ -460,12 +460,12 @@ namespace DoooodleGUI {
 		}
 	}
 
-	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		textBox1->ForeColor = Color::Black;
-	}
-	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-		DateTime dateTime = DateTime::Now;
-		label5->Text = dateTime.DayOfWeek.ToString() + ", " + dateTime.ToString();
-	}
-		};
-	}
+private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+	textBox1->ForeColor = Color::Black;
+}
+private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	DateTime dateTime = DateTime::Now;
+	label5->Text = dateTime.DayOfWeek.ToString() + ", " + dateTime.ToString();
+}
+};
+}
