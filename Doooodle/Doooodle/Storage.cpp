@@ -7,10 +7,10 @@ const date Storage::specialDate(1900, Jan, 10);
 const std::string Storage::MESSAGE_UNDO = "Undo is successfully performed.\n";
 const std::string Storage::MESSAGE_UNDO_EMPTY = "Nothing to undo.\n";
 const std::string Storage::DEFAULT_DIRECTORY = "dooodle.txt";
-const std::string Storage::DEFAULT_NORMAL = "normal";
-const std::string Storage::DEFAULT_DEADLINE = "deadline";
-const std::string Storage::DEFAULT_FLOATING = "floating";
-const std::string Storage::DEFAULT_ARCHIVE = "archive";
+const std::string Storage::TASK_NORMAL = "normal";
+const std::string Storage::TASK_DEADLINE = "deadline";
+const std::string Storage::TASK_FLOATING = "floating";
+const std::string Storage::TASK_ARCHIVE = "archive";
 const std::string Storage::DEFAULT_NOT_A_DATE_TIME = "not-a-date-time";
 const std::string Storage::DEFAULT_STORAGE_NAME = "storageFile.txt";
 const std::string Storage::DEFAULT_ARCHIVE_NAME = "archiveFile.txt";
@@ -179,7 +179,7 @@ void Storage::initializeTaskDetails(Task &temp) {
 			}
 		} else {
 			if(temp.startTime != nonTime && temp.endTime != nonTime) {
-				if(temp.endDate.year() != currentDate.year()) {
+				if (temp.endDate.year() != currentDate.year()) {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [      " << std::right << std::setfill(' ') << std::setw(2) << temp.startTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << ", " << std::setfill(' ') << std::setw(2) << temp.endTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.endTime.time_of_day().minutes() << "]";
 				} else {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [      " << std::right << std::setfill(' ') << std::setw(2) << temp.startTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.startTime.time_of_day().minutes() << "]-[" << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << std::setfill(' ') << std::setw(2) << temp.endTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.endTime.time_of_day().minutes() << "]";
@@ -188,13 +188,13 @@ void Storage::initializeTaskDetails(Task &temp) {
 		}
 	} else if(temp.taskType == DEADLINE) {
 			if(temp.endTime == nonTime) {
-				if(temp.endDate.year() != currentDate.year()) {
+				if (temp.endDate.year() != currentDate.year()) {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << std::right << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << "      ]";
 				} else {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << std::right << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << "      ]";
 				}
 			} else {
-				if(temp.endDate.year() != currentDate.year()) {
+				if(temp.endDate != nonDate&& temp.endDate.year() != currentDate.year()) {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << std::right << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << temp.endDate.year() << ", " << std::setfill(' ') << std::setw(2) << temp.endTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.endTime.time_of_day().minutes() << "]";
 				} else {
 					outputTask << std::left << std::setw(DEFAULT_WIDTH) << temp.taskDetails << " [" << std::right << std::setfill(' ') << std::setw(2) << temp.endDate.day() << " " << temp.endDate.month() << " " << std::setfill(' ') << std::setw(2) << temp.endTime.time_of_day().hours() << ":" << std::setfill('0') << std::setw(2) << temp.endTime.time_of_day().minutes() << "]";
@@ -419,7 +419,7 @@ int index;
 std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask) {
 	colourIndex.clear();
 	std::vector<std::string> displayedTasks;
-	if(typeTask == DEFAULT_NORMAL) {
+	if(typeTask == TASK_NORMAL) {
 		for (int i = 0; i < activeTask.size(); i++) {
 			if(activeTask[i].taskType == NORMAL) {
 				registerColourIndex(activeTask[i]);
@@ -431,7 +431,7 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask) 
 		lastCommandIsDisplay = true;
 		return displayedTasks;
 	}
-	if(typeTask == DEFAULT_FLOATING) {
+	if(typeTask == TASK_FLOATING) {
 			for (int i = 0; i < activeTask.size(); i++) {
 				if(activeTask[i].taskType == FLOATING) {
 					std::ostringstream oneTask;
@@ -443,7 +443,7 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask) 
 			lastCommandIsDisplay = true;
 			return displayedTasks;
 	}
-	if(typeTask == DEFAULT_DEADLINE) {
+	if(typeTask == TASK_DEADLINE) {
 			for (int i = 0; i < activeTask.size(); i++) {
 				if(activeTask[i].taskType == DEADLINE) {
 					registerColourIndex(activeTask[i]);
@@ -455,7 +455,7 @@ std::vector<std::string> Storage::retrieveCategoricalTask(std::string typeTask) 
 			lastCommandIsDisplay = true;
 	        return displayedTasks;
 	}
-	if(typeTask == DEFAULT_ARCHIVE) {
+	if(typeTask == TASK_ARCHIVE) {
 			for (int i = 0; i < archivedTask.size() && i < NUMBER_OF_ARCHIVED_DISPLAY; i++) {
 				colourIndex.push_back(4);
 				std::ostringstream oneTask;
@@ -873,7 +873,9 @@ void Storage::updateStandardTask(Task &temporaryTask, std::string information, d
 		temporaryTask.endDate = tempEndDate;
 	}
 	if(tempEndTime != temporaryTask.endTime && tempEndTime != nonTime) {
-		if(temporaryTask.endTime == nonTime) {
+		date currentDate(day_clock::local_day());
+		if(temporaryTask.endTime == nonTime && temporaryTask.endDate == nonDate) {
+			temporaryTask.endDate = currentDate;
 			temporaryTask.taskType = DEADLINE;
 		}
 		temporaryTask.endTime = tempEndTime;

@@ -113,10 +113,10 @@ private:
 	static const std::string MESSAGE_RECUR_SUCCESS;
 	static const std::string MESSAGE_COMPLETE_ALL;
 	static const std::string DEFAULT_NOT_A_DATE_TIME;
-	static const std::string DEFAULT_NORMAL;
-	static const std::string DEFAULT_DEADLINE;
-	static const std::string DEFAULT_FLOATING;
-	static const std::string DEFAULT_ARCHIVE;
+	static const std::string TASK_NORMAL;
+	static const std::string TASK_DEADLINE;
+	static const std::string TASK_FLOATING;
+	static const std::string TASK_ARCHIVE;
 	static const ptime nonTime;
 	static const date nonDate;
 	static const date specialDate;
