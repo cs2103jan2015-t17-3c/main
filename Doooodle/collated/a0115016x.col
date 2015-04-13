@@ -70,3 +70,189 @@
 
 
 
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
+
+		System::String^ convertStdToManaged(std::string std_string){ //convert std string to String^
+			return gcnew String(std_string.c_str());
+		
+		void MarshalString(String ^ s, std::string& os) {
+			using namespace Runtime::InteropServices;
+			const char* chars =	(const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
+			os = chars;
+			Marshal::FreeHGlobal(IntPtr((void*)chars));
+		}
+		void MarshalString(String ^ s, std::wstring& os) {
+			using namespace Runtime::InteropServices;
+			const wchar_t* chars = (const wchar_t*)(Marshal::StringToHGlobalUni(s)).ToPointer();
+			os = chars;
+			Marshal::FreeHGlobal(IntPtr((void*)chars));
+		}
+
+		void clearUserInput(){
+			textBox1->Clear();
+		}
+
+		void clearGUI(){
+			textBox2->Clear();
+			richTextBox1->Clear();
+			pictureBox2->Hide();
+			label1->Text = "";
+			textBox2->Clear();
+			pictureBox3->Hide();
+		}
+
+		Color determineColour(int index) {
+			if (index == 0) {
+				return Color::Red;
+			}
+			else if (index == 1) {
+				return Color::DarkOliveGreen;
+			}
+			else if (index == 2) {
+				return Color::Blue;
+			}
+			else
+				return Color::Black;
+		}
+
+
+#pragma endregion
+
+	private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+		if (e->KeyCode == Keys::Enter) {
+			clearGUI();
+			String^ userInput = textBox1->Text;
+			std::string input;
+			String^ line;
+			std::string cat;
+			std::vector<std::string> displayMessage;
+			std::vector<int> colourIndex;
+			MarshalString(userInput, input);
+			commandHistory->push_back(input);
+			std::string message = logic->receiveCommand(input);
+			storage = logic->getStorage();
+			std::vector<std::string> floatingTask = storage->retrieveFloatingTask();
+			std::vector<std::string> topTask = storage->retrieveTopTask();
+			//search tasks
+			if (logic->getCommandType(input) == "search") {
+				displayMessage = logic->displaySearchResults(input);
+				colourIndex = logic->getColourIndex();
+				label3->Text = "Search Results [" + Convert::ToUInt32(displayMessage.size()) + "]:";
+				if (displayMessage.size()>0) {
+					for (int i = 0; i < displayMessage.size(); i++) {
+						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
+						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
+					}
+				}
+				richTextBox1->SelectionStart = 0;
+				richTextBox1->ScrollToCaret();
+				label2->Text = " ";
+				label4->ForeColor = Color::Black;
+				label4->Text = "[" + Convert::ToUInt32(displayMessage.size()) + "]";
+			}
+			//display
+			else if (logic->getCommandType(input) == "display"){
+				displayMessage = logic->displayCategoricalTask(input, cat);
+				colourIndex = logic->getColourIndex();
+				label3->Text = "Below is the list of " + convertStdToManaged(cat) + " tasks:";
+				if (displayMessage.size()>0) {
+					for (int i = 0; i < displayMessage.size(); i++) {
+						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
+						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
+					}
+				}
+				richTextBox1->SelectionStart = 0;
+				richTextBox1->ScrollToCaret();
+				label2->Text = " ";
+				label4->ForeColor = Color::Black;
+				label4->Text = "[" + Convert::ToUInt32(displayMessage.size()) + "]";
+			}
+			else if (logic->getCommandType(input) == "help") {
+				label3->Text = "Help Page:";
+				label2->Text = " ";
+				label4->Text = " ";
+				pictureBox2->Show();
+			}
+			//topFifteen
+			else {
+				label3->Text = "Below is the list of upcoming events in your calendar:";
+				colourIndex = logic->getColourIndex();
+				displayMessage = topTask;
+				if (displayMessage.size()>0) {
+					for (int i = 0; i < displayMessage.size(); i++) {
+						richTextBox1->SelectionColor = determineColour(colourIndex[i]);
+						richTextBox1->SelectedText = convertStdToManaged(displayMessage[i]) + "\r\n";
+					}
+				}
+				richTextBox1->SelectionStart = 0;
+				richTextBox1->ScrollToCaret();
+				label2->ForeColor = Color::DarkOliveGreen;
+				label2->Text = "[" + Convert::ToUInt32(logic->getDeadlineSize()) + "]";
+				label4->ForeColor = Color::Blue;
+				label4->Text = "[" + Convert::ToUInt32(logic->getNormalSize()) + "]";
+				//Floating tasks
+				label1->Text = "Floating Tasks:      [" + Convert::ToUInt32(logic->getFloatingSize()) + "]";
+				if (floatingTask.size() > 0) {
+					textBox2->Text = convertStdToManaged(floatingTask[0]);
+					for (int i = 1; i < floatingTask.size(); i++) {
+						textBox2->Text = textBox2->Text + "\r\n" + (convertStdToManaged(floatingTask[i]));
+					}
+				}
+				textBox2->SelectionStart = 0;
+				textBox2->ScrollToCaret();
+
+			}
+			try {
+				if (userInput == "") {
+					throw - 1;
+				}
+				textBox4->Text = convertStdToManaged(message);
+
+			}
+			catch (int i){
+				textBox4->Clear();
+			}
+			textBox1->ForeColor = Color::Black;
+			counter = commandHistory->size();
+			clearUserInput();
+		}
+		if (e->KeyCode == Keys::Up) {
+			if (commandHistory->size() > 0) {
+				if (counter > 0) {
+					counter--;
+				}
+				textBox1->Text = convertStdToManaged(commandHistory->at(counter));
+				textBox1->ForeColor = Color::DarkGoldenrod;
+			}
+		}
+		if (e->KeyCode == Keys::Down) {
+			if (commandHistory->size() > 0) {
+				if (counter < commandHistory->size() - 1) {
+					counter++;
+				} else if (counter == commandHistory->size()) {
+					counter--;
+				}
+				textBox1->Text = convertStdToManaged(commandHistory->at(counter));
+				textBox1->ForeColor = Color::DarkGoldenrod;
+			}
+		}
+	}
+
+private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+	textBox1->ForeColor = Color::Black;
+}
+private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	DateTime dateTime = DateTime::Now;
+	label5->Text = dateTime.DayOfWeek.ToString() + ", " + dateTime.ToString();
+}
+};
+}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+
