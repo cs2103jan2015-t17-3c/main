@@ -675,21 +675,15 @@ void Parser::justify(std::string input, std::string& commandType, date& startDat
 		commandType = INVALID_DATE;
 	}
 }
-//tokenize the string according to the delimiter string passed in
-void Parser::tokenizeInput(std::string input,std::string delimiters) {
-	tokens.clear();
-	char str[DEFAULT_SIZE] = " ";
-	for (int i = 0; i < input.size(); i++) {
-		str[i] = input[i];
-	}
-	char * pch;
-	pch = strtok(str, delimiters.c_str());
-	while (pch != NULL)
-	{
-		tokens.push_back(pch);
-		pch = strtok(NULL, delimiters.c_str());
-	}
-}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.cpp
+	 */
 
 std::string Parser::getCommandType(std::string input) {
 	std::string task;
@@ -915,22 +909,16 @@ void Parser::getRecurringParameter(std::string input,std::string& frequency, int
 	}
 	return;
 }
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.cpp
 
-std::vector<std::string> Parser::recurringTokenizer(std::string input) {
-	std::vector<std::string> recurringTokens;
-	char str[DEFAULT_SIZE] = " ";
-	for (int i = 0; i < input.size(); i++) {
-		str[i] = input[i];
-	}
-	char * pch;
-	pch = strtok(str, RECURRING_INDENTIFIER.c_str());
-	while (pch != NULL)
-	{
-		recurringTokens.push_back(pch);
-		pch = strtok(NULL, RECURRING_INDENTIFIER.c_str());
-	}
-	return recurringTokens;
-}
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\Doooodle\Parser.cpp
+	 */
+
 //return special date to logic for month searching
 void Parser::monthParsingForSearch(std::string& input) {
 	size_t pos;

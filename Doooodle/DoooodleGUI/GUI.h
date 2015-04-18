@@ -1,3 +1,4 @@
+//@author A0115016X
 #pragma once
 
 #include <stdlib.h>
@@ -8,7 +9,7 @@
 #include <string>
 #include "logic.h"
 #include "storage.h"
-
+//@author A0115016X -generated
 namespace DoooodleGUI {
 
 	using namespace System;
@@ -23,15 +24,17 @@ namespace DoooodleGUI {
 	/// </summary>
 	public ref class GUI : public System::Windows::Forms::Form
 	{
+	//@author A0115016X
 	private:
 		Logic* logic;
-
+	//@author A0115016X -generated
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::TextBox^  textBox4;
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
-
+    //@author A0115016X
 			 Storage* storage;
 			 std::vector<std::string>* commandHistory;
+    //@author A0115016X -generated
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
@@ -45,7 +48,7 @@ namespace DoooodleGUI {
 
 
 
-
+    //@author A0115016X
 			 int counter;
 
 	public:
@@ -61,7 +64,7 @@ namespace DoooodleGUI {
 			counter = 0;
 			timer1->Start();
 		}
-
+	//@author A0115016X -generated
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -290,26 +293,26 @@ namespace DoooodleGUI {
 			this->PerformLayout();
 
 		}
-		
+		//@author A0115016X
 		System::String^ convertStdToManaged(std::string std_string){ //convert std string to String^
 			return gcnew String(std_string.c_str());
 		}
 
-
+		//@author A0115016X -reused
 		void MarshalString(String ^ s, std::string& os) {
 			using namespace Runtime::InteropServices;
 			const char* chars =	(const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
 			os = chars;
 			Marshal::FreeHGlobal(IntPtr((void*)chars));
 		}
-
+		//@author A0115016X -reused
 		void MarshalString(String ^ s, std::wstring& os) {
 			using namespace Runtime::InteropServices;
 			const wchar_t* chars = (const wchar_t*)(Marshal::StringToHGlobalUni(s)).ToPointer();
 			os = chars;
 			Marshal::FreeHGlobal(IntPtr((void*)chars));
 		}
-
+		//@author A0115016X 
 		void clearUserInput(){
 			textBox1->Clear();
 		}

@@ -22,7 +22,6 @@
     <ClInclude Include="CommandDetails.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="standardForm.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="NormalTask.h" />

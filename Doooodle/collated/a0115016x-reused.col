@@ -1,0 +1,36 @@
+//@author: a0115016x-reused
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
+
+		void MarshalString(String ^ s, std::string& os) {
+			using namespace Runtime::InteropServices;
+			const char* chars =	(const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
+			os = chars;
+			Marshal::FreeHGlobal(IntPtr((void*)chars));
+		}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
+
+		void MarshalString(String ^ s, std::wstring& os) {
+			using namespace Runtime::InteropServices;
+			const wchar_t* chars = (const wchar_t*)(Marshal::StringToHGlobalUni(s)).ToPointer();
+			os = chars;
+			Marshal::FreeHGlobal(IntPtr((void*)chars));
+		}
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+

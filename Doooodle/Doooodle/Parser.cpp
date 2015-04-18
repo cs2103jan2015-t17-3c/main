@@ -163,6 +163,7 @@ void Parser::justify(std::string input, std::string& commandType, date& startDat
 		commandType = INVALID_DATE;
 	}
 }
+//@author A0114321B -reused
 //tokenize the string according to the delimiter string passed in
 void Parser::tokenizeInput(std::string input,std::string delimiters) {
 	tokens.clear();
@@ -178,7 +179,7 @@ void Parser::tokenizeInput(std::string input,std::string delimiters) {
 		pch = strtok(NULL, delimiters.c_str());
 	}
 }
-
+//@author A0114321B
 std::string Parser::getCommandType(std::string input) {
 	std::string task;
 	if(tokens.empty()) {
@@ -403,7 +404,7 @@ void Parser::getRecurringParameter(std::string input,std::string& frequency, int
 	}
 	return;
 }
-
+//@author A0114321B -reused
 std::vector<std::string> Parser::recurringTokenizer(std::string input) {
 	std::vector<std::string> recurringTokens;
 	char str[DEFAULT_SIZE] = " ";
@@ -419,6 +420,7 @@ std::vector<std::string> Parser::recurringTokenizer(std::string input) {
 	}
 	return recurringTokens;
 }
+//@author A0114321B
 //return special date to logic for month searching
 void Parser::monthParsingForSearch(std::string& input) {
 	size_t pos;

@@ -39,6 +39,7 @@
 	 */
 
 			 Storage* storage;
+			 std::vector<std::string>* commandHistory;
 	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
 
 
@@ -76,19 +77,17 @@
 
 		System::String^ convertStdToManaged(std::string std_string){ //convert std string to String^
 			return gcnew String(std_string.c_str());
-		
-		void MarshalString(String ^ s, std::string& os) {
-			using namespace Runtime::InteropServices;
-			const char* chars =	(const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
-			os = chars;
-			Marshal::FreeHGlobal(IntPtr((void*)chars));
 		}
-		void MarshalString(String ^ s, std::wstring& os) {
-			using namespace Runtime::InteropServices;
-			const wchar_t* chars = (const wchar_t*)(Marshal::StringToHGlobalUni(s)).ToPointer();
-			os = chars;
-			Marshal::FreeHGlobal(IntPtr((void*)chars));
-		}
+
+	// End of segment: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\wyf\Desktop\NOTES\Year2\Sem2\CS2103\main\Doooodle\DoooodleGUI\GUI.h
+	 */
 
 		void clearUserInput(){
 			textBox1->Clear();

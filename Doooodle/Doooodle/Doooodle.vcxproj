@@ -97,7 +97,6 @@
     <ClInclude Include="OverdueTask.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="SearchTask.h" />
-    <ClInclude Include="standardForm.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="TimeParser.h" />
     <ClInclude Include="UI.h" />
